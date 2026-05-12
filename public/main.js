@@ -1610,7 +1610,11 @@ function containsApartmentDong(areaText, address) {
   ]);
   const keywords = words.filter((word) => !stopwords.has(word));
   if (keywords.some((word) => areaNorm.includes(word))) return true;
-  return hasSharedApartmentBrand(areaNorm, addrNorm);
+
+  // 같은 브랜드(e편한세상 등)와 같은 동 번호만으로는 서로 다른 단지가
+  // 잘못 잡힐 수 있다. 예: "세마e편한세상 101동" → "오산세교대림e편한세상 101동".
+  // 따라서 동 번호 매칭에서는 브랜드 공유만으로는 후보로 인정하지 않는다.
+  return false;
 }
 
 function containsBlock(areaText, address) {
@@ -1712,20 +1716,23 @@ function normalizeText(value) {
 }
 
 function normalizeSearchKey(value) {
-  return cleanText(value).toLowerCase().replace(/\s+/g, "").replaceAll("경기도", "");
+  return normalizeApartmentName(cleanText(value))
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replaceAll("경기도", "");
+}
+
+function normalizeApartmentName(value) {
+  return cleanText(value).replace(/(?:이|e)\s*[-~]?\s*편한세상/gi, "e편한세상");
 }
 
 function normalizeForApartment(value) {
-  return cleanText(value)
+  return normalizeApartmentName(value)
     .replace(/\s+/g, "")
     .replaceAll("엘에이치", "LH")
     .replaceAll("엘에치", "LH")
     .replaceAll("에이치엘", "HL")
     .replaceAll("～", "~")
-    .replaceAll("이편한세상", "e편한세상")
-    .replaceAll("E편한세상", "e편한세상")
-    .replaceAll("e~편한세상", "e편한세상")
-    .replaceAll("이-편한세상", "e편한세상")
     .replaceAll("아파트", "")
     .replaceAll("APT", "");
 }
