@@ -861,3 +861,10 @@ summary::-webkit-details-marker {
     grid-template-columns: 1fr;
   }
 }
+
+.result-note {
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
