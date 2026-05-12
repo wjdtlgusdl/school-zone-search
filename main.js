@@ -548,25 +548,16 @@ function renderSchoolAreaResult(query, result) {
     return;
   }
 
-  const schoolNames = unique(result.map((item) => item.school));
+  const groupedSchools = groupSchoolAreaBySchool(result);
+  const schoolNames = groupedSchools.map((group) => group.school);
+  const totalZones = groupedSchools.reduce((sum, group) => sum + group.zones.length, 0);
   const html = `
     <div class="summary-grid">
-      ${summaryTile("조회 학교", schoolNames.join(", "), `${formatNumber(result.length)}개 통리반 정보`)}
+      ${summaryTile("조회 학교", schoolNames.join(", "), `${formatNumber(totalZones)}개 통학구역`)}
       ${summaryTile("검색어", query, "학교명 기준")}
       ${summaryTile("자료 기준", `${state.core.meta?.dataYear || "현재"}학년도`, "보유 자료 기준")}
     </div>
-    <div class="result-card primary">
-      <div class="card-header">
-        <div class="card-title">
-          <span>학교별 통리반 정보</span>
-          <strong>${escapeHtml(schoolNames.join(", "))}</strong>
-        </div>
-        <span class="badge green">${formatNumber(result.length)}건</span>
-      </div>
-      <div class="card-list">
-        ${result.map(renderSchoolAreaRow).join("")}
-      </div>
-    </div>
+    ${groupedSchools.map(renderSchoolLookupGroup).join("")}
   `;
 
   showResults(html);
@@ -764,6 +755,74 @@ function groupAddressSchools(schools) {
     map.get(school).items.push(item);
   }
   return [...map.values()].sort((a, b) => a.school.localeCompare(b.school, "ko"));
+}
+
+function groupSchoolAreaBySchool(rows) {
+  const map = new Map();
+  for (const row of rows || []) {
+    const school = row.school || "학교명 미상";
+    if (!map.has(school)) map.set(school, { school, rows: [], zones: [] });
+    map.get(school).rows.push(row);
+  }
+  for (const group of map.values()) {
+    group.zones = groupSchoolZones(group.rows);
+  }
+  return [...map.values()].sort((a, b) => a.school.localeCompare(b.school, "ko"));
+}
+
+function groupSchoolZones(rows) {
+  const map = new Map();
+  for (const row of rows || []) {
+    const key = [row.eup, row.tongri, row.ban, row.area, row.note].map((value) => normalizeText(value || "")).join("|");
+    if (!map.has(key)) map.set(key, { ...row });
+  }
+  return [...map.values()].sort((a, b) => {
+    const left = [a.eup, a.tongri, a.ban, a.area].filter(Boolean).join(" ");
+    const right = [b.eup, b.tongri, b.ban, b.area].filter(Boolean).join(" ");
+    return left.localeCompare(right, "ko", { numeric: true });
+  });
+}
+
+function renderSchoolLookupGroup(group) {
+  const info = getSchoolInfo(group.school);
+  return `
+    <div class="school-lookup-stack">
+      <div class="result-card primary school-info-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>학교 정보</span>
+            <strong>${escapeHtml(group.school)}</strong>
+          </div>
+        </div>
+        ${renderSchoolInfoSummary(info)}
+      </div>
+      <div class="result-card school-zone-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>통학구역 전체</span>
+            <strong>${escapeHtml(group.school)}</strong>
+          </div>
+          <span class="badge green">${formatNumber(group.zones.length)}건</span>
+        </div>
+        <p class="result-note">학교 자료에 등록된 읍면동·통리반별 관할구역입니다.</p>
+        <div class="school-zone-list">
+          ${group.zones.map(renderSchoolZoneItem).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSchoolZoneItem(item) {
+  const label = [item.eup, item.tongri, item.ban].filter(Boolean).join(" ") || "통학구역";
+  const area = item.area ? ` (${item.area})` : "";
+  const note = item.note ? `<p class="zone-note">${escapeHtml(item.note)}</p>` : "";
+  return `
+    <article class="school-zone-item">
+      <strong>${escapeHtml(`${label}${area}`)}</strong>
+      ${note}
+    </article>
+  `;
 }
 
 function renderSchoolAreaRow(item) {
