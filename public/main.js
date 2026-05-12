@@ -627,6 +627,9 @@ function renderAddressSchoolCard(schools, message, matchMethod) {
             <p>건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하거나 학교명 조회에서 해당 학교의 전체 통리반 정보를 확인해 주세요.</p>
           </div>
         </div>
+        <div class="card-list school-candidate-list">
+          ${schools.map(renderAddressSchoolRow).join("")}
+        </div>
       </div>
     `;
   }
@@ -680,6 +683,7 @@ function renderAddressSchoolRow(item) {
         <span class="badge">${escapeHtml(item.match || "주소 매칭")}</span>
       </div>
       <div class="meta-line">${escapeHtml([item.eup, item.tongri, item.ban].filter(Boolean).join(" "))}</div>
+      ${renderSchoolInfoSummary(info)}
       <details>
         <summary>주소 관련 정보 보기</summary>
         <div class="details-body">
@@ -701,6 +705,7 @@ function renderSchoolAreaRow(item) {
         <span class="badge">${escapeHtml([item.eup, item.tongri].filter(Boolean).join(" "))}</span>
       </div>
       <div class="meta-line">${escapeHtml([item.eup, item.tongri, item.ban].filter(Boolean).join(" "))}</div>
+      ${renderSchoolInfoSummary(info)}
       <details>
         <summary>통리반 정보 보기</summary>
         <div class="details-body">
@@ -728,6 +733,30 @@ function renderTongbanRow(item) {
 function getSchoolInfo(schoolName) {
   const key = normalizeSchoolName(schoolName);
   return state.core?.schoolInfo?.[key] || null;
+}
+
+function renderSchoolInfoSummary(info) {
+  if (!info) {
+    return `<div class="school-info-panel muted">학교 기본정보가 없습니다.</div>`;
+  }
+  const homepage = info.homepage ? normalizeHomepage(info.homepage) : "";
+  const phone = stripHtmlBreaks(info.phone || "");
+  return `
+    <div class="school-info-panel">
+      <div class="school-info-item">
+        <span>학교 주소</span>
+        <strong>${escapeHtml(info.address || "-")}</strong>
+      </div>
+      <div class="school-info-item">
+        <span>전화번호</span>
+        <strong>${escapeHtml(phone || "-")}</strong>
+      </div>
+      ${homepage ? `<div class="school-info-item">
+        <span>홈페이지</span>
+        <strong><a href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">${escapeHtml(info.homepage)}</a></strong>
+      </div>` : ""}
+    </div>
+  `;
 }
 
 function renderSchoolInfoDetails(info) {

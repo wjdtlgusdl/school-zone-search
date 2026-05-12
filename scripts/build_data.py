@@ -13,6 +13,7 @@ PUBLIC_DATA = ROOT / "public" / "data"
 TONGBAN_FILE = ROOT / "source_data" / "tongban.csv"
 SCHOOL_FILE = ROOT / "source_data" / "school_zones_2026.xlsx"
 ROAD_FILE = ROOT / "source_data" / "road_osan_hwaseong.csv"
+SCHOOL_INFO_FILE = ROOT / "school 2026.csv"
 
 SCHOOL_HEADERS = ["학교명", "읍면동", "통리", "반", "관할구역", "비고"]
 
@@ -61,6 +62,39 @@ def make_jibun_addr(row):
     if row.get("법정리명"):
         legal_area = f"{legal_area} {row.get('법정리명')}"
     return f"{legal_area} {san}{number}".strip()
+
+
+def normalize_school_name(value):
+    return normalize_text(value).replace("초등학교", "초").replace("초교", "초")
+
+
+def read_school_info_rows():
+    if not SCHOOL_INFO_FILE.exists():
+        return {}
+
+    encodings = ("utf-8-sig", "cp949")
+    last_error = None
+    for encoding in encodings:
+        try:
+            with SCHOOL_INFO_FILE.open("r", encoding=encoding, newline="") as source:
+                reader = csv.DictReader(source)
+                info = {}
+                for row in reader:
+                    school = clean_text(row.get("학교명"))
+                    if not school:
+                        continue
+                    key = normalize_school_name(school)
+                    info[key] = {
+                        "school": school,
+                        "address": clean_text(row.get("주소")),
+                        "phone": clean_text(row.get("전화번호")),
+                        "homepage": clean_text(row.get("홈페이지")),
+                    }
+                return info
+        except UnicodeDecodeError as exc:
+            last_error = exc
+
+    raise last_error
 
 
 def read_tongban_rows():
@@ -264,6 +298,7 @@ def main():
     tongban_rows = read_tongban_rows()
     school_rows = read_xlsx_rows()
     road_rows = read_road_rows()
+    school_info = read_school_info_rows()
 
     core = {
         "meta": {
@@ -273,10 +308,12 @@ def main():
                 TONGBAN_FILE.name,
                 SCHOOL_FILE.name,
                 ROAD_FILE.name,
+                SCHOOL_INFO_FILE.name,
             ],
         },
         "tongban": tongban_rows,
         "schools": school_rows,
+        "schoolInfo": school_info,
     }
     roads = {"roads": road_rows}
     suggestions = {"suggestions": build_suggestions(tongban_rows, road_rows)}
@@ -285,7 +322,7 @@ def main():
     write_json(PUBLIC_DATA / "roads.json", roads)
     write_json(PUBLIC_DATA / "suggestions.json", suggestions)
 
-    print(f"core: {len(core['tongban'])} tongban, {len(core['schools'])} school rows")
+    print(f"core: {len(core['tongban'])} tongban, {len(core['schools'])} school rows, {len(core['schoolInfo'])} school info rows")
     print(f"roads: {len(roads['roads'])} rows")
     print(f"suggestions: {len(suggestions['suggestions'])} rows")
 

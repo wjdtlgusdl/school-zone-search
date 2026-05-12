@@ -811,3 +811,53 @@ summary::-webkit-details-marker {
     scroll-behavior: auto !important;
   }
 }
+
+.school-candidate-list {
+  margin-top: 14px;
+}
+
+.school-info-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-solid);
+}
+
+.school-info-panel.muted {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.school-info-item {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.school-info-item span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.school-info-item strong {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.school-info-item a {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .school-info-panel {
+    grid-template-columns: 1fr;
+  }
+}
