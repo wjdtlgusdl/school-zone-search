@@ -1294,10 +1294,15 @@ function findSchoolByTongban(tongbanResult) {
       }
     }
 
-    // 향남읍 A21/A22 행복주택은 통리반 자료에 통리·반이 "미정"으로 들어 있어
-    // 일반 통리반 매칭으로는 통학구역표의 화원초 행과 직접 연결되지 않는다.
-    // 해당 임시 행은 화원초 후보로 함께 노출한다.
+    // 통리·반이 비어 있거나 "미정"인 행은 통학구역표와 직접 연결되지 않을 수 있다.
+    // 이때는 같은 읍면동 안에서 관할구역 설명(블록명, 단지명, 행복주택 등)을
+    // 통학구역표의 관할구역/비고와 다시 비교해 후보 학교를 보완한다.
     if (!matchedForItem) {
+      const areaOnlySchools = findSchoolsByTongbanAreaKeyword(item);
+      for (const areaOnly of areaOnlySchools) {
+        finalResults.push(areaOnly);
+      }
+
       const specialSchools = findSpecialSchoolsForTongban(item);
       for (const special of specialSchools) {
         finalResults.push(special);
@@ -1306,6 +1311,71 @@ function findSchoolByTongban(tongbanResult) {
   }
 
   return finalResults.length ? mergeSchoolResults([], finalResults) : "통리반은 찾았지만, 통학구역 자료에서 학교를 찾지 못했습니다.";
+}
+
+function findSchoolsByTongbanAreaKeyword(item) {
+  const eup = normalizeText(item.eup || "");
+  const area = cleanText(item.area || "");
+  if (!eup || !area) return [];
+
+  const areaNorm = looseNormalize(area);
+  const areaTokens = splitMeaningfulKeywords(area).filter((token) => token.length >= 2);
+  const areaBlocks = extractBlockCodes(area);
+  const results = [];
+
+  for (const row of state.core.schools || []) {
+    if (row.eupKey !== eup) continue;
+
+    const schoolText = [row.area, row.note, row.tongri, row.ban].filter(Boolean).join(" ");
+    const schoolNorm = looseNormalize(schoolText);
+    const schoolBlocks = extractBlockCodes(schoolText);
+    let score = 0;
+    const matchedTokens = [];
+
+    const sharedBlocks = areaBlocks.filter((block) => schoolBlocks.includes(block));
+    if (sharedBlocks.length) {
+      score += 80 * sharedBlocks.length;
+      matchedTokens.push(...sharedBlocks);
+    }
+
+    for (const token of areaTokens) {
+      if (isWeakAreaToken(token)) continue;
+      if (schoolNorm.includes(token)) {
+        score += token.length >= 4 ? 35 : 20;
+        matchedTokens.push(token);
+      }
+    }
+
+    const sim = similarity(areaNorm, schoolNorm);
+    if (areaNorm.length >= 4 && sim >= 0.25) {
+      score += sim * 40;
+    }
+
+    if (score >= 55) {
+      results.push({
+        score: Math.round(score * 100) / 100,
+        tokens: unique(matchedTokens).join(", "),
+        school: row.school,
+        sigun: item.sigun || "",
+        eup: item.eup || row.eup,
+        tongri: item.tongri || "",
+        ban: item.ban || "",
+        tongbanArea: item.area || "",
+        schoolArea: row.area || "",
+        note: row.note || "",
+        match: "관할구역 설명",
+      });
+    }
+  }
+
+  return results.sort((a, b) => b.score - a.score).slice(0, 5);
+}
+
+function isWeakAreaToken(token) {
+  return new Set([
+    "행복주택", "공동주택", "단독주택", "택지", "지구", "블록", "BL",
+    "아파트", "주택", "단지", "마을", "영구임대", "LH",
+  ]).has(token);
 }
 
 function findSpecialSchoolsForTongban(item) {
