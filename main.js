@@ -1369,15 +1369,19 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
 }
 
 function jibunPartMatches(part, target) {
-  // 예: 49∼52-1, 34-1∼5, 391-1~391-13, 28
-  const rangeMatch = part.match(/(\d+(?:-\d+)?)\s*[~∼〜－–—-]\s*(\d+(?:-\d+)?)/);
-  if (rangeMatch) {
-    const start = parseJibunToken(rangeMatch[1]);
-    const end = parseJibunToken(rangeMatch[2], start.main);
+  // 예: 49∼52-1, 34-1∼5, 391-1~391-13, 상리 27부터 39까지
+  const rangePattern = /(\d+(?:-\d+)?)\s*(?:[~∼〜－–—-]|부터)\s*(\d+(?:-\d+)?)(?:\s*까지)?/g;
+  const rangeMatches = [...part.matchAll(rangePattern)];
+  if (rangeMatches.some((match) => {
+    const start = parseJibunToken(match[1]);
+    const end = parseJibunRangeEnd(match[2], start);
     return isJibunInRange(target, start, end);
+  })) {
+    return true;
   }
 
-  const tokens = part.match(/\d+(?:-\d+)?/g) || [];
+  const withoutRanges = part.replace(rangePattern, " ");
+  const tokens = withoutRanges.match(/\d+(?:-\d+)?/g) || [];
   return tokens.some((token) => isSameJibun(target, parseJibunToken(token)));
 }
 
@@ -1388,6 +1392,19 @@ function parseJibunToken(token, defaultMain = null) {
     return defaultMain !== null ? { main: defaultMain, sub: first } : { main: first, sub: null };
   }
   return { main: first, sub: second };
+}
+
+function parseJibunRangeEnd(token, start) {
+  const value = String(token);
+  if (value.includes("-")) return parseJibunToken(value);
+
+  const number = Number(value);
+  // 34-1∼5처럼 오른쪽 숫자가 시작 본번보다 작으면 같은 본번의 부번 범위로 봅니다.
+  // 623-1부터 629까지처럼 오른쪽 숫자가 시작 본번 이상이면 본번 범위로 봅니다.
+  if (start.sub !== null && number < start.main) {
+    return { main: start.main, sub: number };
+  }
+  return { main: number, sub: null };
 }
 
 function compareJibun(a, b) {
