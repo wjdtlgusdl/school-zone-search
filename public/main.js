@@ -772,16 +772,51 @@ function groupSchoolAreaBySchool(rows) {
 
 function groupSchoolZones(rows) {
   const map = new Map();
+
   for (const row of rows || []) {
-    const area = row.area || row.schoolArea || "";
-    const key = [row.eup, row.tongri, row.ban, area, row.note].map((value) => normalizeText(value || "")).join("|");
-    if (!map.has(key)) map.set(key, { ...row, area });
+    const expandedRows = expandSchoolZoneWithTongban(row);
+    for (const item of expandedRows) {
+      const area = item.area || item.schoolArea || "";
+      const key = [item.eup, item.tongri, item.ban, area, item.note].map((value) => normalizeText(value || "")).join("|");
+      if (!map.has(key)) map.set(key, { ...item, area });
+    }
   }
+
   return [...map.values()].sort((a, b) => {
     const left = [a.eup, a.tongri, a.ban, a.area].filter(Boolean).join(" ");
     const right = [b.eup, b.tongri, b.ban, b.area].filter(Boolean).join(" ");
     return left.localeCompare(right, "ko", { numeric: true });
   });
+}
+
+function expandSchoolZoneWithTongban(row) {
+  const hasSpecificSchoolArea = Boolean(cleanText(row.area || row.schoolArea));
+  const hasSpecificBan = Boolean(cleanText(row.ban));
+
+  if (hasSpecificSchoolArea || hasSpecificBan || !row.eup || !row.tongri) {
+    return [{ ...row, area: row.area || row.schoolArea || "" }];
+  }
+
+  const eupKey = normalizeText(row.eup);
+  const tongriKey = normalizeText(row.tongri);
+  const matchedTongban = (state.core.tongban || []).filter((item) => {
+    return normalizeText(item.eup) === eupKey && normalizeText(item.tongri) === tongriKey;
+  });
+
+  if (!matchedTongban.length) {
+    return [{ ...row, area: row.area || row.schoolArea || "" }];
+  }
+
+  return matchedTongban.map((item) => ({
+    ...row,
+    sigun: item.sigun || row.sigun,
+    eup: item.eup || row.eup,
+    tongri: item.tongri || row.tongri,
+    ban: item.ban || row.ban,
+    area: item.area || row.area || row.schoolArea || "",
+    schoolNote: row.note || "",
+    note: row.note || ""
+  }));
 }
 
 function renderSchoolLookupGroup(group) {
@@ -823,13 +858,13 @@ function renderSchoolZoneItem(item) {
   const label = [item.eup, item.tongri, item.ban].filter(Boolean).join(" ") || "통학구역";
   const areaText = item.area || item.schoolArea || "";
   const note = item.note ? `<p class="zone-note">${escapeHtml(item.note)}</p>` : "";
+
   return `
-    <article class="tongban-item school-zone-item">
-      <div class="tongban-item-main">
-        <span>통·반</span>
+    <article class="tongban-row school-zone-item">
+      <div class="tongban-row-main">
         <strong>${escapeHtml(label)}</strong>
       </div>
-      <div class="tongban-item-area">
+      <div class="tongban-row-detail">
         <span>관할구역</span>
         <p>${escapeHtml(areaText || "관할구역 상세 문구가 없습니다.")}</p>
       </div>
