@@ -243,6 +243,29 @@ function applySelectedRegionToTongban(rows) {
   });
 }
 
+
+function rowMatchesSelectedRegion(row) {
+  const region = getSelectedRegion();
+  if (!row) return true;
+
+  if (region.sigun) {
+    if (row.sigun && row.sigun !== region.sigun) return false;
+
+    // 통학구역(schools) 데이터에는 시군 컬럼이 없으므로,
+    // core.tongban에서 만든 시군-읍면동 맵으로 소속 시군을 판정한다.
+    const eupsInCity = state.regionMap?.[region.sigun];
+    if (!row.sigun && eupsInCity && row.eup && !eupsInCity.has(row.eup)) return false;
+  }
+
+  if (region.eup && row.eup !== region.eup) return false;
+  return true;
+}
+
+function filterResultsBySelectedRegion(results) {
+  if (!Array.isArray(results)) return results;
+  return results.filter((row) => rowMatchesSelectedRegion(row));
+}
+
 function selectedRegionLabel() {
   const region = getSelectedRegion();
   return [region.sigun, region.eup].filter(Boolean).join(" ") || "전체 지역";
@@ -1063,6 +1086,14 @@ async function searchAddress(address) {
     matchMethod = Array.isArray(school) ? "키워드 유사 매칭" : "";
   }
 
+  if (Array.isArray(school)) {
+    school = filterResultsBySelectedRegion(school);
+    if (!school.length) {
+      school = "선택한 지역 안에서는 검색 결과가 없습니다.";
+      matchMethod = "";
+    }
+  }
+
   return {
     input: original,
     regionLabel: selectedRegionLabel(),
@@ -1423,6 +1454,7 @@ function findSchoolByKeyword(keyword) {
 
   const results = [];
   for (const row of state.core.schools) {
+    if (!rowMatchesSelectedRegion(row)) continue;
     const searchText = [row.school, row.eup, row.tongri, row.ban, row.area, row.note].join(" ");
     const searchNorm = looseNormalize(searchText);
     let score = 0;
@@ -1471,6 +1503,7 @@ function findSchoolByKeyword(keyword) {
 function searchSchoolArea(schoolName) {
   const keyword = normalizeSchoolName(schoolName);
   const results = state.core.schools
+    .filter((row) => rowMatchesSelectedRegion(row))
     .filter((row) => row.schoolKey.includes(keyword))
     .map((row) => ({
       school: row.school,
