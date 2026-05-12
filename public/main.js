@@ -773,8 +773,9 @@ function groupSchoolAreaBySchool(rows) {
 function groupSchoolZones(rows) {
   const map = new Map();
   for (const row of rows || []) {
-    const key = [row.eup, row.tongri, row.ban, row.area, row.note].map((value) => normalizeText(value || "")).join("|");
-    if (!map.has(key)) map.set(key, { ...row });
+    const area = row.area || row.schoolArea || "";
+    const key = [row.eup, row.tongri, row.ban, area, row.note].map((value) => normalizeText(value || "")).join("|");
+    if (!map.has(key)) map.set(key, { ...row, area });
   }
   return [...map.values()].sort((a, b) => {
     const left = [a.eup, a.tongri, a.ban, a.area].filter(Boolean).join(" ");
@@ -790,11 +791,16 @@ function renderSchoolLookupGroup(group) {
       <div class="result-card primary school-info-card">
         <div class="card-header">
           <div class="card-title">
-            <span>학교 정보</span>
+            <span>조회 학교</span>
             <strong>${escapeHtml(group.school)}</strong>
           </div>
         </div>
-        ${renderSchoolInfoSummary(info)}
+        <details>
+          <summary>학교 관련 정보 보기</summary>
+          <div class="details-body">
+            ${renderSchoolInfoDetails(info)}
+          </div>
+        </details>
       </div>
       <div class="result-card school-zone-card">
         <div class="card-header">
@@ -815,7 +821,8 @@ function renderSchoolLookupGroup(group) {
 
 function renderSchoolZoneItem(item) {
   const label = [item.eup, item.tongri, item.ban].filter(Boolean).join(" ") || "통학구역";
-  const area = item.area ? ` (${item.area})` : "";
+  const areaText = item.area || item.schoolArea || "";
+  const area = areaText ? ` (${areaText})` : "";
   const note = item.note ? `<p class="zone-note">${escapeHtml(item.note)}</p>` : "";
   return `
     <article class="school-zone-item">
