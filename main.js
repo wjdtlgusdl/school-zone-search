@@ -1352,6 +1352,7 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
   text = text.replace(/\d{3,4}\s*동/g, " ");
   text = text.replace(/\d+\s*층/g, " ");
 
+  const target = { main: Number(mainNo), sub: subNo === null ? null : Number(subNo) };
   const parts = text.split(/[,，/ㆍ]/);
   for (let part of parts) {
     part = part.trim();
@@ -1361,20 +1362,45 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
     if (isMountain !== partHasMountain) continue;
 
     part = part.replaceAll("산", "").trim();
-    const rangeMatch = part.match(/(\d+)\s*[~-]\s*(\d+)/);
-    if (rangeMatch) {
-      const start = Number(rangeMatch[1]);
-      const end = Number(rangeMatch[2]);
-      if (start <= mainNo && mainNo <= end) return true;
-    }
-
-    const numbers = part.match(/\d+/g) || [];
-    if (numbers.some((number) => Number(number) === mainNo)) {
-      return true;
-    }
+    if (jibunPartMatches(part, target)) return true;
   }
 
   return false;
+}
+
+function jibunPartMatches(part, target) {
+  // 예: 49∼52-1, 34-1∼5, 391-1~391-13, 28
+  const rangeMatch = part.match(/(\d+(?:-\d+)?)\s*[~∼〜－–—-]\s*(\d+(?:-\d+)?)/);
+  if (rangeMatch) {
+    const start = parseJibunToken(rangeMatch[1]);
+    const end = parseJibunToken(rangeMatch[2], start.main);
+    return isJibunInRange(target, start, end);
+  }
+
+  const tokens = part.match(/\d+(?:-\d+)?/g) || [];
+  return tokens.some((token) => isSameJibun(target, parseJibunToken(token)));
+}
+
+function parseJibunToken(token, defaultMain = null) {
+  const [first, second] = String(token).split("-").map((value) => Number(value));
+  if (second === undefined) {
+    // 34-1∼5 같은 표기에서는 오른쪽 5가 본번이 아니라 부번 5입니다.
+    return defaultMain !== null ? { main: defaultMain, sub: first } : { main: first, sub: null };
+  }
+  return { main: first, sub: second };
+}
+
+function compareJibun(a, b) {
+  if (a.main !== b.main) return a.main - b.main;
+  return (a.sub || 0) - (b.sub || 0);
+}
+
+function isJibunInRange(target, start, end) {
+  return compareJibun(start, target) <= 0 && compareJibun(target, end) <= 0;
+}
+
+function isSameJibun(target, item) {
+  return target.main === item.main && (target.sub || 0) === (item.sub || 0);
 }
 
 function containsApartmentDong(areaText, address) {
