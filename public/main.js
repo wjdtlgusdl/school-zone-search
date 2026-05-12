@@ -1545,7 +1545,7 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
 
 function jibunPartMatches(part, target) {
   // 예: 49∼52-1, 34-1∼5, 391-1~391-13, 상리 27부터 39까지
-  const rangePattern = /(\d+(?:-\d+)?)\s*(?:[~∼〜－–—-]|부터)\s*(\d+(?:-\d+)?)(?:\s*까지)?/g;
+  const rangePattern = /(\d+(?:-\d+)?)\s*(?:[~∼〜－–—]|부터)\s*(\d+(?:-\d+)?)(?:\s*까지)?/g;
   const rangeMatches = [...part.matchAll(rangePattern)];
   if (rangeMatches.some((match) => {
     const start = parseJibunToken(match[1]);
