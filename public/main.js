@@ -682,12 +682,9 @@ function renderAddressSchoolRow(item) {
         <strong>${escapeHtml(item.school)}</strong>
         <span class="badge">${escapeHtml(item.match || "주소 매칭")}</span>
       </div>
-      <div class="meta-line">${escapeHtml([item.eup, item.tongri, item.ban].filter(Boolean).join(" "))}</div>
-      ${renderSchoolInfoSummary(info)}
       <details>
-        <summary>주소 관련 정보 보기</summary>
+        <summary>학교 관련 정보 보기</summary>
         <div class="details-body">
-          ${item.tongbanArea ? `<div><strong>통리반 관할구역</strong><br>${escapeHtml(item.tongbanArea)}</div>` : ""}
           ${renderSchoolInfoDetails(info)}
           ${item.note ? `<div><strong>비고</strong><br>${escapeHtml(item.note)}</div>` : ""}
         </div>
