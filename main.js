@@ -1275,9 +1275,11 @@ function findSchoolByTongban(tongbanResult) {
     const eup = normalizeText(item.eup);
     const tongri = normalizeText(item.tongri);
     const ban = normalizeText(item.ban);
+    let matchedForItem = false;
 
     for (const row of state.core.schools) {
       if (row.eupKey === eup && row.tongriKey === tongri && banMatches(row.ban, ban)) {
+        matchedForItem = true;
         finalResults.push({
           school: row.school,
           sigun: item.sigun || "",
@@ -1291,9 +1293,42 @@ function findSchoolByTongban(tongbanResult) {
         });
       }
     }
+
+    // 향남읍 A21/A22 행복주택은 통리반 자료에 통리·반이 "미정"으로 들어 있어
+    // 일반 통리반 매칭으로는 통학구역표의 화원초 행과 직접 연결되지 않는다.
+    // 해당 임시 행은 화원초 후보로 함께 노출한다.
+    if (!matchedForItem) {
+      const specialSchools = findSpecialSchoolsForTongban(item);
+      for (const special of specialSchools) {
+        finalResults.push(special);
+      }
+    }
   }
 
-  return finalResults.length ? finalResults : "통리반은 찾았지만, 통학구역 자료에서 학교를 찾지 못했습니다.";
+  return finalResults.length ? mergeSchoolResults([], finalResults) : "통리반은 찾았지만, 통학구역 자료에서 학교를 찾지 못했습니다.";
+}
+
+function findSpecialSchoolsForTongban(item) {
+  const eup = normalizeText(item.eup);
+  const tongri = normalizeText(item.tongri);
+  const areaNorm = looseNormalize(item.area || "");
+  const results = [];
+
+  if (eup === "향남읍" && tongri === "미정" && areaNorm.includes("A21") && areaNorm.includes("행복주택")) {
+    results.push({
+      school: "화원초",
+      sigun: item.sigun || "화성시",
+      eup: item.eup || "향남읍",
+      tongri: item.tongri || "미정",
+      ban: item.ban || "미정",
+      tongbanArea: item.area || "A21, A22 행복주택",
+      schoolArea: "향남읍 A21 행복주택",
+      note: "통리반 자료의 미정 행 기준 후보",
+      match: "예외 규칙",
+    });
+  }
+
+  return results;
 }
 
 function findSchoolByKeyword(keyword) {
