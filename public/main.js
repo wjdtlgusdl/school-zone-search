@@ -534,6 +534,7 @@ function renderAddressResult(result) {
 
   html += renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
+  html += renderAddressTongbanCard(tongban, result.input);
 
   showResults(html);
 }
@@ -651,6 +652,60 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
         ${groupedSchools.map(renderAddressSchoolRow).join("")}
       </div>
     </div>
+  `;
+}
+
+function renderAddressTongbanCard(tongban, input = "") {
+  if (!Array.isArray(tongban) || !tongban.length) return "";
+
+  const groups = groupTongbanRows(tongban);
+  const countLabel = groups.length === 1 ? "1개 통리반" : `${formatNumber(groups.length)}개 통리반`;
+  const guidance = groups.length === 1
+    ? "입력 주소가 속하는 통·반입니다."
+    : "같은 도로명주소에 포함된 세부 동·구역별 통·반을 함께 표시합니다.";
+
+  return `
+    <div class="result-card tongban-summary-card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>통리반 관할구역</span>
+          <strong>${escapeHtml(countLabel)}</strong>
+        </div>
+      </div>
+      <p class="result-note">${escapeHtml(guidance)}</p>
+      <div class="tongban-list">
+        ${groups.map(renderAddressTongbanRow).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function groupTongbanRows(rows) {
+  const map = new Map();
+  for (const row of rows || []) {
+    const key = [row.sigun, row.eup, row.tongri, row.ban, row.area].map((value) => normalizeText(value || "")).join("|");
+    if (!map.has(key)) map.set(key, row);
+  }
+  return [...map.values()].sort((a, b) => {
+    const left = [a.eup, a.tongri, a.ban, a.area].filter(Boolean).join(" ");
+    const right = [b.eup, b.tongri, b.ban, b.area].filter(Boolean).join(" ");
+    return left.localeCompare(right, "ko", { numeric: true });
+  });
+}
+
+function renderAddressTongbanRow(item) {
+  const label = [item.eup, item.tongri, item.ban].filter(Boolean).join(" ") || firstTongbanLabel(item) || "통리반 정보";
+  return `
+    <article class="tongban-item">
+      <div class="tongban-item-main">
+        <span>통·반</span>
+        <strong>${escapeHtml(label)}</strong>
+      </div>
+      <div class="tongban-item-area">
+        <span>관할구역</span>
+        <p>${escapeHtml(item.area || "관할구역 상세 문구가 없습니다.")}</p>
+      </div>
+    </article>
   `;
 }
 
