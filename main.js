@@ -1186,12 +1186,14 @@ function findTongban(address) {
 
     const blockMatch = containsBlock(row.area, address) || containsBlockFlexible(row.area, address);
     const apartmentDongMatch = containsApartmentDong(row.area, address);
-    const broadMatchAllowed = !explicitBlock && !extractBuildingDong(address);
+    const preciseApartmentMatch = containsPreciseApartmentKeyword(row.area, address);
+    const broadMatchAllowed = !explicitBlock && !extractBuildingDong(address) && !hasPreciseApartmentIdentifier(address);
 
     if (
       jibunMatch ||
       apartmentDongMatch ||
       blockMatch ||
+      preciseApartmentMatch ||
       (broadMatchAllowed && (containsDistrictName(row.area, address) || containsAreaKeyword(row.area, address)))
     ) {
       results.push(row);
@@ -1590,6 +1592,32 @@ function containsBlockFlexible(areaText, address) {
   return extractBlockCodes(areaText).includes(blockCode);
 }
 
+function hasPreciseApartmentIdentifier(address) {
+  const addrNorm = normalizeForApartment(address).toUpperCase();
+  return /LH\d{1,2}/.test(addrNorm) || /[A-Z]\d{1,2}블록/.test(addrNorm) || /\d{1,2}단지/.test(addrNorm) || Boolean(extractBuildingDong(address));
+}
+
+function containsPreciseApartmentKeyword(areaText, address) {
+  const areaNorm = normalizeForApartment(areaText).toUpperCase();
+  const addrNorm = normalizeForApartment(address).toUpperCase();
+  const tokens = [];
+
+  const patterns = [
+    /LH\d{1,2}/g,
+    /[A-Z]\d{1,2}블록/g,
+    /\d{1,2}단지/g,
+  ];
+
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(addrNorm)) !== null) {
+      tokens.push(match[0]);
+    }
+  }
+
+  return unique(tokens).some((token) => areaNorm.includes(token));
+}
+
 function containsDistrictName(areaText, address) {
   const areaNorm = normalizeText(areaText).replace("(2)", "2");
   const addrNorm = normalizeText(address).replace("(2)", "2");
@@ -1657,6 +1685,9 @@ function normalizeSearchKey(value) {
 function normalizeForApartment(value) {
   return cleanText(value)
     .replace(/\s+/g, "")
+    .replaceAll("엘에이치", "LH")
+    .replaceAll("엘에치", "LH")
+    .replaceAll("에이치엘", "HL")
     .replaceAll("～", "~")
     .replaceAll("이편한세상", "e편한세상")
     .replaceAll("E편한세상", "e편한세상")
