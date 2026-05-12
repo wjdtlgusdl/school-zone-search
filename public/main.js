@@ -527,15 +527,13 @@ function renderAddressResult(result) {
   let html = `
     <div class="summary-grid">
       ${summaryTile("배정 초등학교", schoolNames.length ? primarySchool : "확인 필요", schoolNames.length > 1 ? "복수 후보가 있어 상세 확인이 필요합니다." : "")}
-      ${summaryTile("통리반", tongban.length ? `${tongban.length}건` : "확인 필요", tongban.length ? firstTongbanLabel(tongban[0]) : "")}
       ${summaryTile("매칭 방식", matchLabel, result.road ? result.road : result.input)}
       ${summaryTile("검색 지역", result.regionLabel || "전체 지역", "선택 필터 기준")}
     </div>
   `;
 
   html += renderMatchedAddressCard(result);
-  html += renderAddressSchoolCard(schools, result.school, result.matchMethod);
-  html += renderTongbanCard(tongban, result.tongban);
+  html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
 
   showResults(html);
 }
@@ -598,7 +596,7 @@ function renderMatchedAddressCard(result) {
   `;
 }
 
-function renderAddressSchoolCard(schools, message, matchMethod) {
+function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
   if (!schools.length) {
     return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.", [
       "주소에 읍면동 또는 아파트명을 함께 입력해 보세요.",
@@ -606,8 +604,13 @@ function renderAddressSchoolCard(schools, message, matchMethod) {
     ]);
   }
 
-  const names = unique(schools.map((item) => item.school));
+  const groupedSchools = groupAddressSchools(schools);
+  const names = groupedSchools.map((group) => group.school);
   const isCandidate = schools.some((item) => item.score) || String(matchMethod || "").includes("유사");
+  const matchedCount = Array.isArray(tongban) ? tongban.length : 0;
+  const duplicateNotice = matchedCount > groupedSchools.length
+    ? `<p class="result-note">같은 학교로 배정되는 여러 동·통리반 결과를 하나로 묶어 표시했습니다.${matchedCount ? ` 원자료 기준 ${formatNumber(matchedCount)}건이 확인되었습니다.` : ""}</p>`
+    : "";
 
   if (isCandidate) {
     return `
@@ -627,8 +630,9 @@ function renderAddressSchoolCard(schools, message, matchMethod) {
             <p>건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하거나 학교명 조회에서 해당 학교의 전체 통리반 정보를 확인해 주세요.</p>
           </div>
         </div>
+        ${duplicateNotice}
         <div class="card-list school-candidate-list">
-          ${schools.map(renderAddressSchoolRow).join("")}
+          ${groupedSchools.map(renderAddressSchoolRow).join("")}
         </div>
       </div>
     `;
@@ -642,8 +646,9 @@ function renderAddressSchoolCard(schools, message, matchMethod) {
           <strong>${escapeHtml(names.join(", "))}</strong>
         </div>
       </div>
+      ${duplicateNotice}
       <div class="card-list">
-        ${schools.map(renderAddressSchoolRow).join("")}
+        ${groupedSchools.map(renderAddressSchoolRow).join("")}
       </div>
     </div>
   `;
@@ -675,20 +680,35 @@ function renderTongbanCard(tongban, message) {
 
 function renderAddressSchoolRow(item) {
   const info = getSchoolInfo(item.school);
+  const areaCount = Array.isArray(item.items) ? item.items.length : 1;
+  const notes = unique((item.items || [item]).map((row) => row.note).filter(Boolean));
   return `
     <article class="compact-row">
       <div class="compact-row-title">
         <strong>${escapeHtml(item.school)}</strong>
       </div>
+      ${areaCount > 1 ? `<div class="meta-line">같은 학교로 배정되는 세부 주소 ${formatNumber(areaCount)}건을 묶어서 표시했습니다.</div>` : ""}
       <details>
         <summary>학교 관련 정보 보기</summary>
         <div class="details-body">
           ${renderSchoolInfoDetails(info)}
-          ${item.note ? `<div><strong>비고</strong><br>${escapeHtml(item.note)}</div>` : ""}
+          ${notes.length ? `<div><strong>비고</strong><br>${escapeHtml(notes.join(" / "))}</div>` : ""}
         </div>
       </details>
     </article>
   `;
+}
+
+function groupAddressSchools(schools) {
+  const map = new Map();
+  for (const item of schools || []) {
+    const school = item.school || "학교명 미상";
+    if (!map.has(school)) {
+      map.set(school, { ...item, school, items: [] });
+    }
+    map.get(school).items.push(item);
+  }
+  return [...map.values()].sort((a, b) => a.school.localeCompare(b.school, "ko"));
 }
 
 function renderSchoolAreaRow(item) {
