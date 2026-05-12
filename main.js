@@ -1041,6 +1041,18 @@ async function searchAddress(address) {
   let school = findSchoolByTongban(tongban);
   let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
 
+  // A21처럼 같은 블록명이 여러 지역/자료 행에 동시에 존재하는 경우,
+  // 통리반 매칭이 먼저 성공하면 기존 로직은 키워드 매칭 결과를 더 보지 않아
+  // 통학구역표에만 있는 향남읍 A21 같은 항목이 누락될 수 있다.
+  // 블록 코드 검색에서는 통리반 결과와 통학구역 키워드 결과를 함께 보여준다.
+  if (Array.isArray(school) && extractBlockCode(original)) {
+    const keywordSchool = findSchoolByKeyword(original);
+    if (Array.isArray(keywordSchool)) {
+      school = mergeSchoolResults(school, keywordSchool);
+      matchMethod = "통리반·키워드 병합 매칭";
+    }
+  }
+
   if (typeof school === "string" && building) {
     school = findSchoolByKeyword(building);
     matchMethod = Array.isArray(school) ? "건물명 유사 매칭" : "";
@@ -1230,6 +1242,29 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
   }
 
   return results;
+}
+
+function mergeSchoolResults(primary, secondary) {
+  const merged = [];
+  const seen = new Set();
+
+  for (const item of [...(primary || []), ...(secondary || [])]) {
+    const key = [
+      item.school || "",
+      item.eup || "",
+      item.tongri || "",
+      item.ban || "",
+      item.schoolArea || "",
+      item.tongbanArea || "",
+    ].map((value) => normalizeText(value || "")).join("|");
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(item);
+    }
+  }
+
+  return merged;
 }
 
 function findSchoolByTongban(tongbanResult) {
