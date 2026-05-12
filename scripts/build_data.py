@@ -184,7 +184,9 @@ def read_xlsx_rows():
             values[idx] = clean_text(value)
 
         item = dict(zip(SCHOOL_HEADERS, values))
-        if item["학교명"] and item["읍면동"] and item["통리"]:
+        # 통리 값이 비어 있어도 관할구역/비고에 A21, A5 우미린 같은 직접 식별자가
+        # 들어 있는 행은 학교명과 직접 연결해야 검색 결과에 포함된다.
+        if item["학교명"] and item["읍면동"] and (item["통리"] or item["관할구역"] or item["비고"]):
             rows.append(
                 {
                     "school": item["학교명"],
