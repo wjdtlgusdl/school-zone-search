@@ -868,3 +868,47 @@ summary::-webkit-details-marker {
   font-size: 0.95rem;
   line-height: 1.6;
 }
+
+.tongban-summary-card {
+  margin-top: 14px;
+}
+
+.tongban-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tongban-item {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(127, 127, 127, 0.06);
+}
+
+.tongban-item-main,
+.tongban-item-area {
+  display: grid;
+  gap: 4px;
+}
+
+.tongban-item-main span,
+.tongban-item-area span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tongban-item-main strong {
+  color: var(--text);
+  font-size: 16px;
+}
+
+.tongban-item-area p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
