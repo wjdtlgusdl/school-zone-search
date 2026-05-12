@@ -822,11 +822,17 @@ function renderSchoolLookupGroup(group) {
 function renderSchoolZoneItem(item) {
   const label = [item.eup, item.tongri, item.ban].filter(Boolean).join(" ") || "통학구역";
   const areaText = item.area || item.schoolArea || "";
-  const area = areaText ? ` (${areaText})` : "";
   const note = item.note ? `<p class="zone-note">${escapeHtml(item.note)}</p>` : "";
   return `
-    <article class="school-zone-item">
-      <strong>${escapeHtml(`${label}${area}`)}</strong>
+    <article class="tongban-item school-zone-item">
+      <div class="tongban-item-main">
+        <span>통·반</span>
+        <strong>${escapeHtml(label)}</strong>
+      </div>
+      <div class="tongban-item-area">
+        <span>관할구역</span>
+        <p>${escapeHtml(areaText || "관할구역 상세 문구가 없습니다.")}</p>
+      </div>
       ${note}
     </article>
   `;
