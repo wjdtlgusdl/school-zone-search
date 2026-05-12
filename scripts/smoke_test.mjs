@@ -45,6 +45,7 @@ const result = await vm.runInContext(
 
     const address = await searchAddress("봉담읍 상리 150");
     const road = await searchAddress("동탄신리천로3길 59");
+    const representativeRoad = await searchAddress("동탄반석로 277");
     const school = searchSchoolArea("동탄초등학교");
     const suggestion = findAddressSuggestions("양산로", __suggestions);
     const schoolSuggestion = findSchoolSuggestions("동탄");
@@ -53,6 +54,8 @@ const result = await vm.runInContext(
       addressSchool: Array.isArray(address.school) ? address.school.length : 0,
       addressTongban: Array.isArray(address.tongban) ? address.tongban.length : 0,
       roadSchool: Array.isArray(road.school) ? road.school.length : 0,
+      representativeRoadTongban: Array.isArray(representativeRoad.tongban) ? representativeRoad.tongban.length : 0,
+      representativeRoadSchool: Array.isArray(representativeRoad.school) ? representativeRoad.school.length : 0,
       schoolRows: Array.isArray(school) ? school.length : 0,
       suggestions: suggestion.length,
       schoolSuggestions: schoolSuggestion.length

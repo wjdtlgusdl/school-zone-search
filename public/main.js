@@ -641,7 +641,6 @@ function renderAddressSchoolCard(schools, message, matchMethod) {
           <span>주소 기준 배정 초등학교</span>
           <strong>${escapeHtml(names.join(", "))}</strong>
         </div>
-        <span class="badge green">${escapeHtml(matchMethod || "통리반 매칭")}</span>
       </div>
       <div class="card-list">
         ${schools.map(renderAddressSchoolRow).join("")}
@@ -680,7 +679,6 @@ function renderAddressSchoolRow(item) {
     <article class="compact-row">
       <div class="compact-row-title">
         <strong>${escapeHtml(item.school)}</strong>
-        <span class="badge">${escapeHtml(item.match || "주소 매칭")}</span>
       </div>
       <details>
         <summary>학교 관련 정보 보기</summary>
@@ -845,7 +843,19 @@ async function searchAddress(address) {
     ? [sigun, admin, jibun, legal, building, original].filter(Boolean).join(" ")
     : original;
 
-  const tongban = findTongban(searchQuery);
+  let tongban = findTongban(searchQuery);
+
+  // 도로명 주소만 입력한 경우(예: 동탄반석로 277) 같은 도로명 주소 안에
+  // 여러 동이 있는 아파트는 기존 키워드 매칭만으로 누락될 수 있다.
+  // 도로명 DB가 지번/건물명을 알려주면, 해당 지번과 건물명 기준으로
+  // 통리반 자료를 한 번 더 찾아 대표 후보를 보여준다.
+  if (typeof tongban === "string" && roadInfo) {
+    const roadTongban = findTongbanByRoadInfo(roadInfo, original);
+    if (Array.isArray(roadTongban) && roadTongban.length) {
+      tongban = roadTongban;
+    }
+  }
+
   let school = findSchoolByTongban(tongban);
   let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
 
@@ -997,6 +1007,49 @@ function findTongban(address) {
   return results.length ? results : "검색 결과가 없습니다. 예외 규칙 추가가 필요할 수 있습니다.";
 }
 
+
+function findTongbanByRoadInfo(roadInfo, originalInput = "") {
+  if (!roadInfo) return [];
+
+  const jibun = cleanText(roadInfo.jibun || "");
+  const building = cleanText(roadInfo.building || "");
+  const admin = cleanText(roadInfo.admin || "");
+  const legal = cleanText(roadInfo.legal || "");
+  const originalDong = extractBuildingDong(originalInput);
+  const parsed = parseAddress([admin, jibun, legal].filter(Boolean).join(" "));
+
+  let rows = applySelectedRegionToTongban(state.core.tongban || []);
+  if (admin) {
+    const adminNorm = normalizeText(admin);
+    rows = rows.filter((row) => normalizeText(row.eup || "").includes(adminNorm));
+  }
+
+  const buildingTokens = splitMeaningfulKeywords(building).filter((token) => token.length >= 2);
+  const buildingNorm = looseNormalize(building);
+  const results = [];
+
+  for (const row of rows) {
+    const area = row.area || "";
+    const areaNorm = looseNormalize(area);
+
+    const jibunMatch = parsed.legalArea && parsed.mainNo !== null
+      ? containsJibun(area, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
+      : false;
+
+    const buildingMatch = buildingTokens.length
+      ? buildingTokens.some((token) => areaNorm.includes(token)) || hasSharedApartmentBrand(areaNorm, buildingNorm)
+      : false;
+
+    const dongMatch = originalDong ? normalizeForApartment(area).includes(originalDong) : true;
+
+    if (jibunMatch && dongMatch && (!buildingTokens.length || buildingMatch)) {
+      results.push(row);
+    }
+  }
+
+  return results;
+}
+
 function findSchoolByTongban(tongbanResult) {
   if (!Array.isArray(tongbanResult)) return tongbanResult;
 
@@ -1114,7 +1167,7 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
   area = area.replace(/\([^)]*\)/g, " ");
   let text = area.replaceAll(legalArea, "");
   text = text.replace(/\d+\s*호/g, " ");
-  text = text.replace(/\d+\s*동/g, " ");
+  text = text.replace(/\d{3,4}\s*동/g, " ");
   text = text.replace(/\d+\s*층/g, " ");
 
   const parts = text.split(/[,，/ㆍ]/);
