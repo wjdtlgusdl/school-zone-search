@@ -10,6 +10,7 @@ const APT_ALIAS = {
   "대방엘리움레이크파크": ["대방엘리움", "대방 엘리움 레이크파크"],
   "동탄파크릭스": ["파크릭스", "동탄파크릭스"],
   "호반써밋동탄": ["호반써밋", "호반써밋동탄"],
+  "동탄역시범반도유보라아이비파크4.0": ["C15블록", "반도유보라4차", "반도유보라아이비파크4차"],
 };
 
 const state = {
@@ -1302,8 +1303,14 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
     rows = rows.filter((row) => normalizeText(row.eup || "").includes(adminNorm));
   }
 
-  const buildingTokens = splitMeaningfulKeywords(building).filter((token) => token.length >= 2);
-  const buildingNorm = looseNormalize(building);
+  const aliasTexts = getApartmentAliases(building);
+  const buildingTokens = unique(
+    [building, ...aliasTexts]
+      .flatMap((value) => splitMeaningfulKeywords(value))
+      .filter((token) => token.length >= 2)
+  );
+  const blockCodes = unique([building, ...aliasTexts].flatMap((value) => extractBlockCodes(value)));
+  const buildingNorm = looseNormalize([building, ...aliasTexts].join(" "));
   const results = [];
 
   for (const row of rows) {
@@ -1314,18 +1321,32 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
       ? containsJibun(area, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
       : false;
 
-    const buildingMatch = buildingTokens.length
-      ? buildingTokens.some((token) => areaNorm.includes(token)) || hasSharedApartmentBrand(areaNorm, buildingNorm)
-      : false;
-
+    const blockMatch = blockCodes.length ? blockCodes.some((code) => areaNorm.includes(looseNormalize(code))) : false;
+    const tokenMatches = buildingTokens.filter((token) => areaNorm.includes(token));
+    const buildingMatch = tokenMatches.length >= 2 || blockMatch || hasSharedApartmentBrand(areaNorm, buildingNorm);
     const dongMatch = originalDong ? normalizeForApartment(area).includes(originalDong) : true;
 
-    if (jibunMatch && dongMatch && (!buildingTokens.length || buildingMatch)) {
-      results.push(row);
+    if (dongMatch && (jibunMatch || buildingMatch)) {
+      results.push({ row, score: (blockMatch ? 100 : 0) + (jibunMatch ? 50 : 0) + tokenMatches.length * 10 });
     }
   }
 
-  return results;
+  return results
+    .sort((a, b) => b.score - a.score)
+    .filter((item, _index, array) => !array.length || item.score >= Math.max(20, array[0].score - 10))
+    .map((item) => item.row);
+}
+
+function getApartmentAliases(name) {
+  const nameNorm = looseNormalize(name);
+  const aliases = [];
+  for (const [aptName, aptAliases] of Object.entries(APT_ALIAS)) {
+    const aptNorm = looseNormalize(aptName);
+    if (nameNorm.includes(aptNorm) || aptNorm.includes(nameNorm)) {
+      aliases.push(...aptAliases);
+    }
+  }
+  return aliases;
 }
 
 function mergeSchoolResults(primary, secondary) {
@@ -1859,7 +1880,7 @@ function extractBlockCodes(value) {
 }
 
 function hasSharedApartmentBrand(areaNorm, addrNorm) {
-  const brands = ["e편한세상", "우미린", "롯데캐슬", "호반", "자이", "푸르지오", "힐스테이트", "아이파크", "더샵", "트루엘"];
+  const brands = ["e편한세상", "우미린", "롯데캐슬", "반도유보라", "호반", "자이", "푸르지오", "힐스테이트", "아이파크", "더샵", "트루엘"];
   return brands.some((brand) => areaNorm.includes(brand) && addrNorm.includes(brand));
 }
 
