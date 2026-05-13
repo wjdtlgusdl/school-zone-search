@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-2";
+const APP_VERSION = "20260513-3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -10,6 +10,7 @@ const APT_ALIAS = {
   "대방엘리움레이크파크": ["대방엘리움", "대방 엘리움 레이크파크"],
   "동탄파크릭스": ["파크릭스", "동탄파크릭스"],
   "호반써밋동탄": ["호반써밋", "호반써밋동탄"],
+  "동탄역반도유보라아이비파크2.0": ["A13블록", "반도유보라2차", "반도유보라아이비파크2차"],
   "동탄역시범반도유보라아이비파크4.0": ["C15블록", "반도유보라4차", "반도유보라아이비파크4차"],
 };
 
@@ -1340,13 +1341,24 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
 function getApartmentAliases(name) {
   const nameNorm = looseNormalize(name);
   const aliases = [];
+
   for (const [aptName, aptAliases] of Object.entries(APT_ALIAS)) {
     const aptNorm = looseNormalize(aptName);
     if (nameNorm.includes(aptNorm) || aptNorm.includes(nameNorm)) {
       aliases.push(...aptAliases);
     }
   }
-  return aliases;
+
+  // 도로명주소 건물명은 “동탄역반도유보라아이비파크2.0”처럼 들어오지만,
+  // 통학구역 자료는 “A13블록 반도유보라2차”처럼 표기되는 경우가 많다.
+  // 이런 계열명 차이를 자동으로 보완한다.
+  const ivypackMatch = nameNorm.match(/반도유보라아이비파크(\d)(?:0)?/);
+  if (ivypackMatch) {
+    const order = ivypackMatch[1];
+    aliases.push(`반도유보라${order}차`, `반도유보라아이비파크${order}차`);
+  }
+
+  return unique(aliases);
 }
 
 function mergeSchoolResults(primary, secondary) {
