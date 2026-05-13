@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-1";
+const APP_VERSION = "20260513-2";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -56,8 +56,10 @@ function collectElements() {
   els.citySelect = document.querySelector("#citySelect");
   els.eupSelect = document.querySelector("#eupSelect");
   els.addressInput = document.querySelector("#addressInput");
+  els.clearAddressInput = document.querySelector("#clearAddressInput");
   els.addressSuggestions = document.querySelector("#addressSuggestions");
   els.schoolInput = document.querySelector("#schoolInput");
+  els.clearSchoolInput = document.querySelector("#clearSchoolInput");
   els.schoolSuggestions = document.querySelector("#schoolSuggestions");
   els.emptyState = document.querySelector("#emptyState");
   els.loadingState = document.querySelector("#loadingState");
@@ -77,7 +79,10 @@ function bindEvents() {
     await handleAddressSearch(els.addressInput.value);
   });
 
-  els.addressInput.addEventListener("input", handleAddressSuggestionInput);
+  els.addressInput.addEventListener("input", () => {
+    updateClearButtons();
+    handleAddressSuggestionInput();
+  });
   els.addressInput.addEventListener("focus", handleAddressSuggestionInput);
   els.addressInput.addEventListener("keydown", handleAddressSuggestionKeys);
   els.addressInput.addEventListener("blur", () => {
@@ -97,11 +102,28 @@ function bindEvents() {
     await handleSchoolSearch(els.schoolInput.value);
   });
 
-  els.schoolInput.addEventListener("input", handleSchoolSuggestionInput);
+  els.schoolInput.addEventListener("input", () => {
+    updateClearButtons();
+    handleSchoolSuggestionInput();
+  });
   els.schoolInput.addEventListener("focus", handleSchoolSuggestionInput);
   els.schoolInput.addEventListener("keydown", handleSchoolSuggestionKeys);
   els.schoolInput.addEventListener("blur", () => {
     window.setTimeout(hideSchoolSuggestions, 120);
+  });
+
+  els.clearAddressInput?.addEventListener("click", () => {
+    els.addressInput.value = "";
+    hideAddressSuggestions();
+    updateClearButtons();
+    els.addressInput.focus({ preventScroll: true });
+  });
+
+  els.clearSchoolInput?.addEventListener("click", () => {
+    els.schoolInput.value = "";
+    hideSchoolSuggestions();
+    updateClearButtons();
+    els.schoolInput.focus({ preventScroll: true });
   });
 
   els.schoolSuggestions.addEventListener("mousedown", (event) => {
@@ -109,6 +131,15 @@ function bindEvents() {
     const option = event.target.closest("[data-school-suggestion-index]");
     if (!option) return;
     selectSchoolSuggestion(Number(option.dataset.schoolSuggestionIndex));
+  });
+
+  els.results.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-action]")?.dataset.action;
+    if (action === "search-again") {
+      const targetInput = state.activeMode === "school" ? els.schoolInput : els.addressInput;
+      targetInput.focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   });
 
   document.addEventListener("click", (event) => {
@@ -156,6 +187,15 @@ function switchMode(mode) {
 
   const input = isAddress ? els.addressInput : els.schoolInput;
   input.focus({ preventScroll: true });
+}
+
+function updateClearButtons() {
+  if (els.clearAddressInput) {
+    els.clearAddressInput.hidden = !els.addressInput.value;
+  }
+  if (els.clearSchoolInput) {
+    els.clearSchoolInput.hidden = !els.schoolInput.value;
+  }
 }
 
 async function fetchJson(path) {
@@ -390,8 +430,9 @@ function selectAddressSuggestion(index) {
   const item = state.addressSuggestionMatches[index];
   if (!item) return;
   els.addressInput.value = item.value;
+  updateClearButtons();
   hideAddressSuggestions();
-  els.addressInput.focus({ preventScroll: true });
+  handleAddressSearch(item.value);
 }
 
 async function handleSchoolSuggestionInput() {
@@ -489,8 +530,9 @@ function selectSchoolSuggestion(index) {
   const item = state.schoolSuggestionMatches[index];
   if (!item) return;
   els.schoolInput.value = item.value;
+  updateClearButtons();
   hideSchoolSuggestions();
-  els.schoolInput.focus({ preventScroll: true });
+  handleSchoolSearch(item.value);
 }
 
 async function handleAddressSearch(rawQuery) {
@@ -637,9 +679,9 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
             <span>주소 기준 학교 후보</span>
             <strong>${escapeHtml(names.join(", "))}</strong>
           </div>
-          <span class="badge orange">후보 결과</span>
+          <span class="badge orange">세부 확인 필요</span>
         </div>
-        <p class="candidate-guide">정확한 통·반까지 확인되지 않아 가능한 학교 후보를 보여드립니다. 건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하면 정확도가 높아집니다.</p>
+        <p class="candidate-guide">정확한 배정이 아닐 수 있어요. 통·반까지 하나로 좁혀지지 않아 가능한 학교 후보를 보여드립니다. 건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하면 정확도가 높아집니다.</p>
         <div class="detail-grid">
           ${detailItem("매칭 방식", matchMethod || "키워드 매칭")}
           ${detailItem("확인 안내", "입력 주소가 통리반 하나로 직접 좁혀지지 않아 학교 후보만 표시합니다.")}
@@ -1024,7 +1066,17 @@ function showResults(html) {
   els.emptyState.hidden = true;
   els.loadingState.hidden = true;
   els.results.hidden = false;
-  els.results.innerHTML = html;
+  els.results.innerHTML = `${html}${renderResultFooter()}`;
+}
+
+function renderResultFooter() {
+  const dataYear = state.core?.meta?.dataYear || "현재";
+  return `
+    <div class="result-footer">
+      <p>자료 기준: ${escapeHtml(dataYear)}학년도 · 최종 확인은 경기도화성오산교육지원청 학생배치과 안내를 따르세요.</p>
+      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색하기</button>
+    </div>
+  `;
 }
 
 async function searchAddress(address) {

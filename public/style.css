@@ -326,7 +326,7 @@ p {
 .search-box input {
   width: 100%;
   min-height: 54px;
-  padding: 0 16px;
+  padding: 0 46px 0 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
   color: var(--text);
@@ -338,6 +338,29 @@ p {
 .search-box input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.clear-input-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: rgba(127, 127, 127, 0.12);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.clear-input-button:hover,
+.clear-input-button:focus-visible {
+  color: var(--text);
+  background: var(--accent-soft);
+  outline: none;
 }
 
 .suggestion-panel {
@@ -402,6 +425,23 @@ p {
 
 .primary-button:hover {
   background: var(--accent-strong);
+}
+
+.secondary-button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  color: var(--text);
+  background: var(--bg-solid);
+  font-weight: 800;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  outline: none;
 }
 
 .field-hint {
@@ -829,6 +869,15 @@ summary::-webkit-details-marker {
     grid-template-columns: 1fr;
   }
 
+  .result-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .result-footer .secondary-button {
+    width: 100%;
+  }
+
   .card-header,
   .compact-row-title {
     flex-direction: column;
@@ -894,6 +943,24 @@ summary::-webkit-details-marker {
   .school-info-panel {
     grid-template-columns: 1fr;
   }
+}
+
+.result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg-solid);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.result-footer p {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .result-note {
