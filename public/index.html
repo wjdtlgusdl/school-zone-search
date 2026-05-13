@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="화성·오산 초등학교 통학구역과 통리반을 주소 또는 학교명으로 조회합니다.">
     <title>화성·오산 초등학교 통학구역 조회</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css?v=20260513-1">
   </head>
   <body>
     <div class="app-shell">
@@ -61,7 +61,7 @@
             <label class="field-label" for="addressInput">주소, 아파트명, 개발지구명</label>
             <div class="search-box">
               <div class="autocomplete" id="addressAutocomplete">
-                <input id="addressInput" name="address" type="search" inputmode="search" placeholder="예: 동탄반석로 277, 상리 150, 세마e편한세상 101동" aria-describedby="addressHint" aria-autocomplete="list" aria-expanded="false" aria-controls="addressSuggestions">
+                <input id="addressInput" name="address" type="search" inputmode="search" placeholder="도로명, 지번, 아파트명 입력" aria-describedby="addressHint" aria-autocomplete="list" aria-expanded="false" aria-controls="addressSuggestions">
                 <div class="suggestion-panel" id="addressSuggestions" role="listbox" hidden></div>
               </div>
               <button class="primary-button" type="submit">조회</button>
@@ -90,7 +90,8 @@
         <section class="result-panel" aria-live="polite" aria-label="조회 결과">
           <div class="empty-state" id="emptyState">
             <div class="empty-visual" aria-hidden="true"></div>
-            <h2>검색어를 입력해 주세요.</h2>
+            <h2>주소 또는 학교명을 입력해 주세요.</h2>
+            <p>예: 동탄반석로 277, 상리 150, 동탄초등학교</p>
           </div>
 
           <div class="loading-state" id="loadingState" hidden>
@@ -104,6 +105,6 @@
 
     </div>
 
-    <script src="/main.js" defer></script>
+    <script src="/main.js?v=20260513-1" defer></script>
   </body>
 </html>

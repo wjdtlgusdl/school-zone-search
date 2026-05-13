@@ -1,7 +1,9 @@
+const APP_VERSION = "20260513-1";
+
 const DATA_PATHS = {
-  core: "/data/core.json",
-  roads: "/data/roads.json",
-  suggestions: "/data/suggestions.json",
+  core: `/data/core.json?v=${APP_VERSION}`,
+  roads: `/data/roads.json?v=${APP_VERSION}`,
+  suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
 };
 
 const APT_ALIAS = {
@@ -637,6 +639,7 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
           </div>
           <span class="badge orange">후보 결과</span>
         </div>
+        <p class="candidate-guide">정확한 통·반까지 확인되지 않아 가능한 학교 후보를 보여드립니다. 건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하면 정확도가 높아집니다.</p>
         <div class="detail-grid">
           ${detailItem("매칭 방식", matchMethod || "키워드 매칭")}
           ${detailItem("확인 안내", "입력 주소가 통리반 하나로 직접 좁혀지지 않아 학교 후보만 표시합니다.")}
@@ -655,11 +658,9 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
 
   return `
     <div class="result-card primary">
-      <div class="card-header">
-        <div class="card-title">
-          <span>주소 기준 배정 초등학교</span>
-          <strong>${escapeHtml(names.join(", "))}</strong>
-        </div>
+      <div class="assigned-school-highlight">
+        <span>주소 기준 배정 초등학교</span>
+        <strong>${escapeHtml(names.join(", "))}</strong>
       </div>
       ${duplicateNotice}
       <div class="card-list">

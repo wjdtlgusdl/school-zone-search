@@ -531,6 +531,40 @@ p {
   background: linear-gradient(180deg, var(--accent-soft), var(--bg-solid) 68%);
 }
 
+.assigned-school-highlight {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid rgba(0, 122, 255, 0.22);
+  border-radius: 18px;
+  background: var(--bg-elevated);
+}
+
+.assigned-school-highlight span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.assigned-school-highlight strong {
+  color: var(--text);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.candidate-guide {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--orange-soft);
+  border-radius: 14px;
+  background: var(--orange-soft);
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 .card-header {
   display: flex;
   align-items: flex-start;
@@ -864,7 +898,7 @@ summary::-webkit-details-marker {
 
 .result-note {
   margin: 10px 0 14px;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -924,21 +958,21 @@ summary::-webkit-details-marker {
 }
 
 .school-zone-item {
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  background: #fff;
+  background: var(--bg-solid);
   padding: 14px 16px;
 }
 
 .school-zone-item strong {
   display: block;
-  color: #0f172a;
+  color: var(--text);
   font-size: 15px;
   line-height: 1.55;
 }
 
 .zone-note {
   margin: 6px 0 0;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 13px;
 }
