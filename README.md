@@ -6,7 +6,7 @@ Cloudflare Pages 정적 배포용 웹앱입니다. Streamlit/Python 런타임 �
 
 GitHub 저장, Cloudflare Pages 배포, 로컬 테스트, 데이터 갱신은 이 파일 `README.md`만 따라 진행하면 됩니다.
 
-보안성검토 제출자료는 `docs/security-review/` 폴더에 따로 정리되어 있습니다. 배포 방법이 궁금한 경우에는 보안성검토 문서가 아니라 현재 파일을 읽으면 됩니다.
+보안성검토 제출자료는 `security-review/` 폴더에 따로 정리되어 있습니다. 배포 방법이 궁금한 경우에는 보안성검토 문서가 아니라 현재 파일을 읽으면 됩니다.
 
 ## 처음 시작 전 준비
 
