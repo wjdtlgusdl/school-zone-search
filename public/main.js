@@ -432,7 +432,6 @@ function selectAddressSuggestion(index) {
   els.addressInput.value = item.value;
   updateClearButtons();
   hideAddressSuggestions();
-  handleAddressSearch(item.value);
 }
 
 async function handleSchoolSuggestionInput() {
@@ -532,7 +531,6 @@ function selectSchoolSuggestion(index) {
   els.schoolInput.value = item.value;
   updateClearButtons();
   hideSchoolSuggestions();
-  handleSchoolSearch(item.value);
 }
 
 async function handleAddressSearch(rawQuery) {
