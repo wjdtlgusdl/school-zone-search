@@ -1,4 +1,4 @@
-const APP_VERSION = "20260519-map1";
+const APP_VERSION = "20260513-3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -26,8 +26,6 @@ const state = {
   activeSchoolSuggestionIndex: -1,
   activeMode: "address",
   regionMap: {},
-  mapItems: [],
-  selectedMapKey: "",
 };
 
 const els = {};
@@ -44,9 +42,6 @@ async function init() {
     updateDataChip();
     populateRegionFilters();
     populateSchoolSuggestions();
-    buildTongbanMapItems();
-    populateMapFilters();
-    renderTongbanMap();
   } catch (error) {
     renderError("자료를 불러오지 못했습니다.", "새로고침 후에도 같은 문제가 있으면 배포된 data 파일을 확인해 주세요.");
     console.error(error);
@@ -54,19 +49,6 @@ async function init() {
 }
 
 function collectElements() {
-  els.homeNavButton = document.querySelector("#homeNavButton");
-  els.mapNavButton = document.querySelector("#mapNavButton");
-  els.backToSearchButton = document.querySelector("#backToSearchButton");
-  els.workspace = document.querySelector(".workspace");
-  els.mapPage = document.querySelector("#mapPage");
-  els.mapAddressMode = document.querySelector("#mapAddressMode");
-  els.mapAddressInput = document.querySelector("#mapAddressInput");
-  els.mapCitySelect = document.querySelector("#mapCitySelect");
-  els.mapEupSelect = document.querySelector("#mapEupSelect");
-  els.tongbanMapCanvas = document.querySelector("#tongbanMapCanvas");
-  els.mapInfoPanel = document.querySelector("#mapInfoPanel");
-  els.mapTitle = document.querySelector("#mapTitle");
-  els.mapCount = document.querySelector("#mapCount");
   els.themeToggle = document.querySelector("#themeToggle");
   els.dataChip = document.querySelector("#dataChip");
   els.addressTab = document.querySelector("#addressTab");
@@ -87,22 +69,6 @@ function collectElements() {
 }
 
 function bindEvents() {
-  els.homeNavButton?.addEventListener("click", showSearchPage);
-  els.mapNavButton?.addEventListener("click", showMapPage);
-  els.backToSearchButton?.addEventListener("click", showSearchPage);
-  els.mapCitySelect?.addEventListener("change", () => { populateMapEupOptions(); renderTongbanMap(); });
-  els.mapEupSelect?.addEventListener("change", () => renderTongbanMap());
-  els.mapAddressMode?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    await handleMapAddressSearch(els.mapAddressInput.value);
-  });
-  els.tongbanMapCanvas?.addEventListener("click", (event) => {
-    const tile = event.target.closest("[data-map-key]");
-    if (!tile) return;
-    const item = state.mapItems.find((row) => row.mapKey === tile.dataset.mapKey);
-    if (item) selectTongbanMapItem(item);
-  });
-
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
   els.schoolTab.addEventListener("click", () => switchMode("school"));
@@ -174,10 +140,6 @@ function bindEvents() {
     if (action === "search-again") {
       const targetInput = state.activeMode === "school" ? els.schoolInput : els.addressInput;
       targetInput.focus({ preventScroll: true });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    if (action === "open-tongban-map") {
-      showMapPage();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
@@ -295,176 +257,6 @@ function populateRegionFilters() {
   els.citySelect.innerHTML = `<option value="">전체</option>${cities.map((city) => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("")}`;
   if (current && cities.includes(current)) els.citySelect.value = current;
   populateEupOptions();
-}
-
-
-function showSearchPage() {
-  if (els.workspace) els.workspace.hidden = false;
-  if (els.mapPage) els.mapPage.hidden = true;
-  els.homeNavButton?.classList.add("is-active");
-  els.mapNavButton?.classList.remove("is-active");
-}
-
-async function showMapPage() {
-  if (els.workspace) els.workspace.hidden = true;
-  if (els.mapPage) els.mapPage.hidden = false;
-  els.homeNavButton?.classList.remove("is-active");
-  els.mapNavButton?.classList.add("is-active");
-  try {
-    await ensureCore();
-    if (!state.mapItems.length) buildTongbanMapItems();
-    populateMapFilters();
-    renderTongbanMap();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function buildTongbanMapItems() {
-  const rows = groupTongbanRows(state.core?.tongban || []);
-  state.mapItems = rows.map((row, index) => {
-    const schools = findSchoolByTongban([row]);
-    const schoolNames = Array.isArray(schools) ? unique(schools.map((item) => item.school)) : [];
-    const key = [row.sigun, row.eup, row.tongri, row.ban, row.area, index].map((value) => normalizeText(value || "")).join("|");
-    return {
-      ...row,
-      mapKey: key,
-      colorIndex: index % 12,
-      schoolNames,
-      schoolDetails: Array.isArray(schools) ? schools : [],
-    };
-  });
-}
-
-function populateMapFilters() {
-  if (!els.mapCitySelect || !state.core) return;
-  const currentCity = els.mapCitySelect.value;
-  const cities = Object.keys(state.regionMap || {}).sort((a, b) => a.localeCompare(b, "ko"));
-  els.mapCitySelect.innerHTML = `<option value="">전체</option>${cities.map((city) => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("")}`;
-  if (currentCity && cities.includes(currentCity)) els.mapCitySelect.value = currentCity;
-  populateMapEupOptions();
-}
-
-function populateMapEupOptions() {
-  if (!els.mapEupSelect) return;
-  const city = els.mapCitySelect?.value || "";
-  const current = els.mapEupSelect.value;
-  const eups = city ? [...(state.regionMap[city] || [])].sort((a, b) => a.localeCompare(b, "ko")) : [];
-  els.mapEupSelect.innerHTML = `<option value="">전체</option>${eups.map((eup) => `<option value="${escapeHtml(eup)}">${escapeHtml(eup)}</option>`).join("")}`;
-  if (current && eups.includes(current)) els.mapEupSelect.value = current;
-}
-
-function getFilteredMapItems() {
-  const city = els.mapCitySelect?.value || "";
-  const eup = els.mapEupSelect?.value || "";
-  return state.mapItems.filter((item) => {
-    if (city && item.sigun !== city) return false;
-    if (eup && item.eup !== eup) return false;
-    return true;
-  });
-}
-
-function renderTongbanMap(highlightKeys = []) {
-  if (!els.tongbanMapCanvas || !state.mapItems.length) return;
-  const rows = getFilteredMapItems();
-  const highlightSet = new Set(highlightKeys);
-  const maxRows = 900;
-  const visibleRows = rows.slice(0, maxRows);
-  const selectedCity = els.mapCitySelect?.value || "전체";
-  const selectedEup = els.mapEupSelect?.value || "";
-  if (els.mapTitle) els.mapTitle.textContent = `${selectedCity}${selectedEup ? ` ${selectedEup}` : ""} 통리반 지도`;
-  if (els.mapCount) els.mapCount.textContent = `${formatNumber(rows.length)}개 통리반${rows.length > maxRows ? ` · ${formatNumber(maxRows)}개 표시` : ""}`;
-  els.tongbanMapCanvas.innerHTML = visibleRows.map((item) => renderTongbanMapTile(item, highlightSet.has(item.mapKey))).join("");
-}
-
-function renderTongbanMapTile(item, isHighlighted = false) {
-  const label = [item.tongri, item.ban].filter(Boolean).join(" ") || "통리반";
-  const schoolLabel = item.schoolNames.length ? item.schoolNames.join(", ") : "학교 확인 필요";
-  return `
-    <button class="map-tile color-${item.colorIndex}${isHighlighted ? " is-highlighted" : ""}" type="button" data-map-key="${escapeHtml(item.mapKey)}" role="listitem" title="${escapeHtml([item.eup, label, schoolLabel].join(" · "))}">
-      <span>${escapeHtml(label)}</span>
-      <small>${escapeHtml(schoolLabel)}</small>
-    </button>
-  `;
-}
-
-function selectTongbanMapItem(item) {
-  state.selectedMapKey = item.mapKey;
-  const label = [item.sigun, item.eup, item.tongri, item.ban].filter(Boolean).join(" ");
-  const schoolNames = item.schoolNames.length ? item.schoolNames : ["통학구역표에서 학교 확인 필요"];
-  if (els.mapInfoPanel) {
-    els.mapInfoPanel.innerHTML = `
-      <strong>${escapeHtml(label)}</strong>
-      <dl class="map-info-list">
-        <div><dt>관할구역</dt><dd>${escapeHtml(item.area || "관할구역 상세 문구 없음")}</dd></div>
-        <div><dt>배정 초등학교</dt><dd>${escapeHtml(schoolNames.join(", "))}</dd></div>
-      </dl>
-      ${item.schoolDetails.length ? `<div class="map-school-list">${item.schoolDetails.map(renderMapSchoolDetail).join("")}</div>` : ""}
-    `;
-  }
-  renderTongbanMap([item.mapKey]);
-}
-
-function renderMapSchoolDetail(item) {
-  return `
-    <article>
-      <strong>${escapeHtml(item.school)}</strong>
-      ${item.schoolArea ? `<p>통학구역: ${escapeHtml(item.schoolArea)}</p>` : ""}
-      ${item.note ? `<p>비고: ${escapeHtml(item.note)}</p>` : ""}
-    </article>
-  `;
-}
-
-async function handleMapAddressSearch(rawQuery) {
-  const query = cleanText(rawQuery);
-  if (!query) return;
-  await ensureCore();
-  const result = await searchAddress(query);
-  const tongban = Array.isArray(result.tongban) ? groupTongbanRows(result.tongban) : [];
-  const matchKeys = [];
-  for (const row of tongban) {
-    const found = state.mapItems.find((item) => sameTongbanMapItem(item, row));
-    if (found) matchKeys.push(found.mapKey);
-  }
-  showMapPage();
-  renderTongbanMap(matchKeys);
-  renderMapAddressResult(query, result, matchKeys);
-}
-
-function sameTongbanMapItem(a, b) {
-  return normalizeText(a.sigun) === normalizeText(b.sigun)
-    && normalizeText(a.eup) === normalizeText(b.eup)
-    && normalizeText(a.tongri) === normalizeText(b.tongri)
-    && normalizeText(a.ban) === normalizeText(b.ban)
-    && normalizeText(a.area) === normalizeText(b.area);
-}
-
-function renderMapAddressResult(query, result, matchKeys) {
-  const schools = Array.isArray(result.school) ? unique(result.school.map((item) => item.school)) : [];
-  const tongban = Array.isArray(result.tongban) ? groupTongbanRows(result.tongban) : [];
-  if (!els.mapInfoPanel) return;
-  els.mapInfoPanel.innerHTML = `
-    <strong>주소 조회 결과</strong>
-    <p class="map-query">${escapeHtml(query)}</p>
-    <dl class="map-info-list">
-      <div><dt>배정 초등학교</dt><dd>${escapeHtml(schools.length ? schools.join(", ") : "확인 필요")}</dd></div>
-      <div><dt>통리반</dt><dd>${escapeHtml(tongban.length ? tongban.map((item) => [item.eup, item.tongri, item.ban].filter(Boolean).join(" ")).join(" / ") : "확인 필요")}</dd></div>
-      <div><dt>색칠 영역</dt><dd>${escapeHtml(matchKeys.length ? `${formatNumber(matchKeys.length)}개 영역 하이라이트` : "일치하는 지도 영역 없음")}</dd></div>
-    </dl>
-    ${tongban.length ? `<div class="address-map-preview">${tongban.map(renderAddressMapPreview).join("")}</div>` : ""}
-  `;
-}
-
-function renderAddressMapPreview(item) {
-  return `
-    <article class="address-map-card">
-      <div class="mini-map" aria-hidden="true"><span></span></div>
-      <div>
-        <strong>${escapeHtml([item.eup, item.tongri, item.ban].filter(Boolean).join(" "))}</strong>
-        <p>${escapeHtml(item.area || "관할구역 상세 문구 없음")}</p>
-      </div>
-    </article>
-  `;
 }
 
 function populateEupOptions() {
@@ -810,7 +602,6 @@ function renderAddressResult(result) {
   html += renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
-  html += renderAddressInlineMapCard(tongban, schools);
 
   showResults(html);
 }
@@ -942,35 +733,6 @@ function renderAddressTongbanCard(tongban, input = "") {
       <div class="tongban-list">
         ${groups.map(renderAddressTongbanRow).join("")}
       </div>
-    </div>
-  `;
-}
-
-
-function renderAddressInlineMapCard(tongban, schools = []) {
-  if (!Array.isArray(tongban) || !tongban.length) return "";
-  const groups = groupTongbanRows(tongban).slice(0, 6);
-  const schoolNames = unique((schools || []).map((item) => item.school));
-  return `
-    <div class="result-card address-inline-map-card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>통리반지도 미리보기</span>
-          <strong>${escapeHtml(groups.map((item) => [item.tongri, item.ban].filter(Boolean).join(" ")).join(" / "))}</strong>
-        </div>
-        <span class="badge green">참고 지도</span>
-      </div>
-      <div class="inline-map-shell">
-        <div class="inline-map-canvas" aria-hidden="true">
-          ${groups.map((item, index) => `<div class="inline-map-area area-${index % 6}"><span>${escapeHtml([item.tongri, item.ban].filter(Boolean).join(" "))}</span></div>`).join("")}
-        </div>
-        <div class="inline-map-detail">
-          <strong>${escapeHtml(schoolNames.length ? schoolNames.join(", ") : "학교 확인 필요")}</strong>
-          <p>${escapeHtml(groups[0]?.area || "관할구역 상세 문구 없음")}</p>
-          <button class="secondary-button" type="button" data-action="open-tongban-map">통리반지도에서 전체 보기</button>
-        </div>
-      </div>
-      <p class="result-note">현재 파일에는 실제 경계 좌표가 없어 참고용 색상 영역으로 표시합니다. 지적도·건물도형 GeoJSON을 연결하면 이 영역이 실제 지도 폴리곤으로 바뀝니다.</p>
     </div>
   `;
 }
