@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-3";
+const APP_VERSION = "20260519-map-all-tongban-1";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -602,6 +602,7 @@ function renderAddressResult(result) {
   html += renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
+  html += renderTongbanMapPreviewCard(tongban);
 
   showResults(html);
 }
@@ -735,6 +736,64 @@ function renderAddressTongbanCard(tongban, input = "") {
       </div>
     </div>
   `;
+}
+
+
+function renderTongbanMapPreviewCard(tongban) {
+  const groups = groupTongbanRows(Array.isArray(tongban) ? tongban : []);
+  if (!groups.length) return "";
+
+  const visibleGroups = groups.slice(0, 12);
+  const hiddenCount = Math.max(0, groups.length - visibleGroups.length);
+  const primary = visibleGroups[0] || {};
+  const primaryLabel = tongbanDisplayLabel(primary);
+  const regionLabel = [primary.sigun, primary.eup].filter(Boolean).join(" ") || "검색 지역";
+  const countLabel = groups.length === 1 ? "1개 통리반" : `${formatNumber(groups.length)}개 통리반`;
+
+  return `
+    <div class="result-card map-preview-card" aria-label="통리반 참고 영역 표시">
+      <div class="card-header">
+        <div class="card-title">
+          <span>통리반 참고 지도</span>
+          <strong>${escapeHtml(countLabel)} 표시</strong>
+        </div>
+        <span class="badge red">참고용</span>
+      </div>
+      <p class="result-note">검색 결과에 포함된 모든 통리반을 관할구역 문구 기준으로 시각화합니다. 실제 좌표·경계 폴리곤이 포함된 자료가 아니므로, 현재는 정확한 지도 경계가 아닌 참고용 영역 표시입니다.</p>
+      <div class="demo-map generic-tongban-map" role="img" aria-label="${escapeHtml(regionLabel)}의 통리반 관할구역 참고 표시">
+        <div class="demo-road road-top">주변 도로</div>
+        <div class="demo-road road-right">행정구역</div>
+        <div class="demo-road road-bottom">관할구역</div>
+        <div class="demo-park">공원·공공시설</div>
+        <div class="demo-school">학교·기관</div>
+        <div class="demo-complex-label">${escapeHtml(regionLabel)}<br>통리반 참고 영역</div>
+        <div class="tongban-zone-board">
+          ${visibleGroups.map(renderTongbanZoneChip).join("")}
+          ${hiddenCount ? `<div class="tongban-zone-chip muted">+${formatNumber(hiddenCount)}개 더 있음</div>` : ""}
+        </div>
+        <div class="demo-callout"><strong>${escapeHtml(primaryLabel)}</strong><span>${escapeHtml(primary.area || "관할구역 정보")}</span></div>
+        <div class="demo-legend"><span class="legend-swatch"></span>검색된 통리반 관할구역</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderTongbanZoneChip(item, index) {
+  const label = tongbanDisplayLabel(item);
+  const area = String(item.area || "관할구역 정보").trim();
+  const compactArea = area.length > 36 ? `${area.slice(0, 36)}…` : area;
+  return `
+    <div class="tongban-zone-chip ${index === 0 ? "primary" : ""}">
+      <strong>${escapeHtml(label)}</strong>
+      <span>${escapeHtml(compactArea)}</span>
+    </div>
+  `;
+}
+
+function tongbanDisplayLabel(item) {
+  return [item?.eup, item?.tongri, item?.ban].filter(Boolean).join(" ")
+    || [item?.tongri, item?.ban].filter(Boolean).join(" ")
+    || "통리반 정보";
 }
 
 function groupTongbanRows(rows) {
