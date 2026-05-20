@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="화성·오산 초등학교 통학구역과 통리반을 주소 또는 학교명으로 조회합니다.">
     <title>화성·오산 초등학교 통학구역 조회</title>
-    <link rel="stylesheet" href="/style.css?v=20260520-osm-lazy-load">
+    <link rel="stylesheet" href="/style.css?v=20260513-2">
   </head>
   <body>
     <div class="app-shell">
@@ -20,8 +20,6 @@
         </a>
 
         <div class="topbar-actions">
-          <button class="nav-button" type="button" id="homeNavButton">조회</button>
-          <button class="nav-button" type="button" id="mapNavButton">통리반지도</button>
           <span class="data-chip" id="dataChip">자료 로딩 중</span>
           <button class="icon-button" type="button" id="themeToggle" aria-label="다크모드 전환">
             <span class="theme-icon" aria-hidden="true"></span>
@@ -107,76 +105,8 @@
         </section>
       </main>
 
-      <section class="map-page" id="mapPage" hidden aria-label="통리반지도">
-        <div class="map-page-header">
-          <div>
-            <p class="eyebrow">참고용 통리반지도</p>
-            <h1>화성시·오산시 전체 통리반을 색상으로 확인하세요.</h1>
-            <p>주소 조회 또는 시·군 선택 시 필요한 OSM 건물도형만 불러와 표시합니다. 전체 통리반 격자는 보조 참고용입니다.</p>
-          </div>
-          <button class="secondary-button" type="button" id="backToSearchButton">주소 조회로 돌아가기</button>
-        </div>
-
-        <div class="map-search-card">
-          <form id="mapAddressMode" autocomplete="off">
-            <label class="field-label" for="mapAddressInput">주소로 통리반지도 조회</label>
-            <div class="search-box">
-              <input id="mapAddressInput" type="search" inputmode="search" placeholder="예: 경기도 화성시 봉담읍 상리 25-7">
-              <button class="primary-button" type="submit">지도에서 보기</button>
-            </div>
-            <p class="field-hint">조회 결과는 기존 주소 조회와 같은 검색 로직을 사용하며, 결과값은 변경하지 않습니다.</p>
-          </form>
-        </div>
-
-        <div class="tongban-map-layout">
-          <aside class="tongban-map-sidebar">
-            <div class="region-filters" aria-label="지도 지역 선택">
-              <label>
-                <span>시·군</span>
-                <select id="mapCitySelect">
-                  <option value="">전체</option>
-                </select>
-              </label>
-              <label>
-                <span>읍·면·동</span>
-                <select id="mapEupSelect">
-                  <option value="">전체</option>
-                </select>
-              </label>
-            </div>
-            <div class="map-info-panel" id="mapInfoPanel">
-              <strong>통리반을 선택하세요.</strong>
-              <p>지도에서 색칠된 영역을 누르면 통리반, 관할구역, 배정 초등학교가 표시됩니다.</p>
-            </div>
-          </aside>
-          <div class="tongban-map-stage">
-            <div class="real-map-card">
-              <div class="tongban-map-toolbar">
-                <strong>화성·오산 실제 OSM 건물도형 지도 · 빠른 로딩</strong>
-                <span id="osmMapCount">주소 조회 또는 시·군 선택 후 표시</span>
-              </div>
-              <div class="osm-map-layout">
-                <div class="osm-map-canvas" id="osmBuildingMap" role="img" aria-label="OSM 건물도형 기반 통리반 색칠 지도"></div>
-                <aside class="osm-map-info" id="osmMapInfo">
-                  <strong>건물도형을 선택하세요.</strong>
-                  <p>주소를 조회하거나 시·군을 선택하면 해당 지역 건물도형만 불러옵니다. 건물을 클릭하면 매칭 가능한 통리반·학교 정보를 확인할 수 있습니다.</p>
-                </aside>
-              </div>
-              <p class="map-disclaimer">※ 지도 배경과 건물도형 출처: OpenStreetMap contributors. OSM 데이터는 ODbL 기준으로 제공되며, 통리반·학교 연결 결과는 참고용입니다.</p>
-            </div>
-
-            <div class="tongban-map-toolbar">
-              <strong id="mapTitle">전체 통리반 지도</strong>
-              <span id="mapCount">-</span>
-            </div>
-            <div class="tongban-map-canvas" id="tongbanMapCanvas" role="list" aria-label="통리반 색상 지도"></div>
-            <p class="map-disclaimer">※ 아래 색상 격자는 전체 통리반 확인용입니다. 실제 지형 색칠은 위 OSM 건물도형처럼 좌표 데이터가 있는 범위부터 적용됩니다.</p>
-          </div>
-        </div>
-      </section>
-
     </div>
 
-    <script src="/main.js?v=20260520-osm-lazy-load" defer></script>
+    <script src="/main.js?v=20260513-2" defer></script>
   </body>
 </html>

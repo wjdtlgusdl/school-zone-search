@@ -1,13 +1,9 @@
-const APP_VERSION = "20260520-osm-lazy-load";
+const APP_VERSION = "20260513-3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
-  osmBuildings: {
-    "화성시": `/data/hwaseong.geojson?v=${APP_VERSION}`,
-    "오산시": `/data/osan.geojson?v=${APP_VERSION}`,
-  },
 };
 
 const APT_ALIAS = {
@@ -30,16 +26,6 @@ const state = {
   activeSchoolSuggestionIndex: -1,
   activeMode: "address",
   regionMap: {},
-  mapItems: [],
-  selectedMapKey: "",
-  osmBuildings: null,
-  osmBuildingsByCity: {},
-  osmBuildingsPromiseByCity: {},
-  activeOsmCity: "",
-  osmFeatureMatches: [],
-  selectedOsmFeatureIndex: -1,
-  lastAddressMapQuery: "",
-  lastAddressMapResult: null,
 };
 
 const els = {};
@@ -56,10 +42,6 @@ async function init() {
     updateDataChip();
     populateRegionFilters();
     populateSchoolSuggestions();
-    buildTongbanMapItems();
-    populateMapFilters();
-    renderTongbanMap();
-    renderOsmBuildingMap();
   } catch (error) {
     renderError("자료를 불러오지 못했습니다.", "새로고침 후에도 같은 문제가 있으면 배포된 data 파일을 확인해 주세요.");
     console.error(error);
@@ -67,22 +49,6 @@ async function init() {
 }
 
 function collectElements() {
-  els.homeNavButton = document.querySelector("#homeNavButton");
-  els.mapNavButton = document.querySelector("#mapNavButton");
-  els.backToSearchButton = document.querySelector("#backToSearchButton");
-  els.workspace = document.querySelector(".workspace");
-  els.mapPage = document.querySelector("#mapPage");
-  els.mapAddressMode = document.querySelector("#mapAddressMode");
-  els.mapAddressInput = document.querySelector("#mapAddressInput");
-  els.mapCitySelect = document.querySelector("#mapCitySelect");
-  els.mapEupSelect = document.querySelector("#mapEupSelect");
-  els.tongbanMapCanvas = document.querySelector("#tongbanMapCanvas");
-  els.mapInfoPanel = document.querySelector("#mapInfoPanel");
-  els.mapTitle = document.querySelector("#mapTitle");
-  els.mapCount = document.querySelector("#mapCount");
-  els.osmBuildingMap = document.querySelector("#osmBuildingMap");
-  els.osmMapInfo = document.querySelector("#osmMapInfo");
-  els.osmMapCount = document.querySelector("#osmMapCount");
   els.themeToggle = document.querySelector("#themeToggle");
   els.dataChip = document.querySelector("#dataChip");
   els.addressTab = document.querySelector("#addressTab");
@@ -103,32 +69,6 @@ function collectElements() {
 }
 
 function bindEvents() {
-  els.homeNavButton?.addEventListener("click", showSearchPage);
-  els.mapNavButton?.addEventListener("click", showMapPage);
-  els.backToSearchButton?.addEventListener("click", showSearchPage);
-  els.mapCitySelect?.addEventListener("change", () => { populateMapEupOptions(); renderTongbanMap(); renderOsmBuildingMap(); });
-  els.mapEupSelect?.addEventListener("change", () => renderTongbanMap());
-  els.mapAddressMode?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    await handleMapAddressSearch(els.mapAddressInput.value);
-  });
-  els.tongbanMapCanvas?.addEventListener("click", (event) => {
-    const tile = event.target.closest("[data-map-key]");
-    if (!tile) return;
-    const item = state.mapItems.find((row) => row.mapKey === tile.dataset.mapKey);
-    if (item) selectTongbanMapItem(item);
-  });
-  els.osmBuildingMap?.addEventListener("click", async (event) => {
-    const action = event.target.closest("[data-action]")?.dataset.action;
-    if (action === "load-osm-city") {
-      await loadSelectedOsmCity();
-      return;
-    }
-    const shape = event.target.closest("[data-osm-feature]");
-    if (!shape) return;
-    selectOsmFeature(Number(shape.dataset.osmFeature));
-  });
-
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
   els.schoolTab.addEventListener("click", () => switchMode("school"));
@@ -200,14 +140,6 @@ function bindEvents() {
     if (action === "search-again") {
       const targetInput = state.activeMode === "school" ? els.schoolInput : els.addressInput;
       targetInput.focus({ preventScroll: true });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    if (action === "open-tongban-map") {
-      showMapPage().then(() => {
-        if (state.lastAddressMapResult) {
-          highlightAddressOnOsmMap(state.lastAddressMapQuery || state.lastAddressMapResult.input || "", state.lastAddressMapResult, { renderPanel: false });
-        }
-      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
@@ -303,43 +235,6 @@ async function loadSuggestions() {
   return state.suggestions;
 }
 
-async function ensureOsmBuildings(city = "") {
-  const targetCity = normalizedCityName(city || els.mapCitySelect?.value || "");
-  if (!targetCity) {
-    state.osmBuildings = null;
-    state.activeOsmCity = "";
-    state.osmFeatureMatches = [];
-    return null;
-  }
-  if (state.osmBuildingsByCity[targetCity]) {
-    state.osmBuildings = state.osmBuildingsByCity[targetCity];
-    state.activeOsmCity = targetCity;
-    buildOsmFeatureMatches();
-    return state.osmBuildings;
-  }
-  if (!state.osmBuildingsPromiseByCity[targetCity]) {
-    const url = DATA_PATHS.osmBuildings[targetCity];
-    if (!url) return null;
-    state.osmBuildingsPromiseByCity[targetCity] = fetchJson(url).then((data) => {
-      const features = Array.isArray(data.features) ? data.features.map((feature) => ({
-        ...feature,
-        properties: { ...(feature.properties || {}), __sourceCity: targetCity },
-      })) : [];
-      return { type: "FeatureCollection", features };
-    });
-  }
-  state.osmBuildings = await state.osmBuildingsPromiseByCity[targetCity];
-  state.osmBuildingsByCity[targetCity] = state.osmBuildings;
-  state.activeOsmCity = targetCity;
-  buildOsmFeatureMatches();
-  return state.osmBuildings;
-}
-
-function resetOsmSelection() {
-  state.selectedOsmFeatureIndex = -1;
-}
-
-
 function updateDataChip() {
   if (!state.core) return;
   const meta = state.core.meta || {};
@@ -362,518 +257,6 @@ function populateRegionFilters() {
   els.citySelect.innerHTML = `<option value="">전체</option>${cities.map((city) => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("")}`;
   if (current && cities.includes(current)) els.citySelect.value = current;
   populateEupOptions();
-}
-
-
-function showSearchPage() {
-  if (els.workspace) els.workspace.hidden = false;
-  if (els.mapPage) els.mapPage.hidden = true;
-  els.homeNavButton?.classList.add("is-active");
-  els.mapNavButton?.classList.remove("is-active");
-}
-
-async function showMapPage() {
-  if (els.workspace) els.workspace.hidden = true;
-  if (els.mapPage) els.mapPage.hidden = false;
-  els.homeNavButton?.classList.remove("is-active");
-  els.mapNavButton?.classList.add("is-active");
-  try {
-    await ensureCore();
-    if (!state.mapItems.length) buildTongbanMapItems();
-    populateMapFilters();
-    renderTongbanMap();
-    renderOsmBuildingMap();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function buildTongbanMapItems() {
-  const rows = groupTongbanRows(state.core?.tongban || []);
-  state.mapItems = rows.map((row, index) => {
-    const schools = findSchoolByTongban([row]);
-    const schoolNames = Array.isArray(schools) ? unique(schools.map((item) => item.school)) : [];
-    const key = [row.sigun, row.eup, row.tongri, row.ban, row.area, index].map((value) => normalizeText(value || "")).join("|");
-    return {
-      ...row,
-      mapKey: key,
-      colorIndex: index % 12,
-      schoolNames,
-      schoolDetails: Array.isArray(schools) ? schools : [],
-    };
-  });
-}
-
-function populateMapFilters() {
-  if (!els.mapCitySelect || !state.core) return;
-  const currentCity = els.mapCitySelect.value;
-  const cities = Object.keys(state.regionMap || {}).sort((a, b) => a.localeCompare(b, "ko"));
-  els.mapCitySelect.innerHTML = `<option value="">전체</option>${cities.map((city) => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("")}`;
-  if (currentCity && cities.includes(currentCity)) els.mapCitySelect.value = currentCity;
-  populateMapEupOptions();
-}
-
-function populateMapEupOptions() {
-  if (!els.mapEupSelect) return;
-  const city = els.mapCitySelect?.value || "";
-  const current = els.mapEupSelect.value;
-  const eups = city ? [...(state.regionMap[city] || [])].sort((a, b) => a.localeCompare(b, "ko")) : [];
-  els.mapEupSelect.innerHTML = `<option value="">전체</option>${eups.map((eup) => `<option value="${escapeHtml(eup)}">${escapeHtml(eup)}</option>`).join("")}`;
-  if (current && eups.includes(current)) els.mapEupSelect.value = current;
-}
-
-function getFilteredMapItems() {
-  const city = els.mapCitySelect?.value || "";
-  const eup = els.mapEupSelect?.value || "";
-  return state.mapItems.filter((item) => {
-    if (city && item.sigun !== city) return false;
-    if (eup && item.eup !== eup) return false;
-    return true;
-  });
-}
-
-function renderTongbanMap(highlightKeys = []) {
-  if (!els.tongbanMapCanvas || !state.mapItems.length) return;
-  const rows = getFilteredMapItems();
-  const highlightSet = new Set(highlightKeys);
-  const maxRows = 900;
-  const visibleRows = rows.slice(0, maxRows);
-  const selectedCity = els.mapCitySelect?.value || "전체";
-  const selectedEup = els.mapEupSelect?.value || "";
-  if (els.mapTitle) els.mapTitle.textContent = `${selectedCity}${selectedEup ? ` ${selectedEup}` : ""} 통리반 지도`;
-  if (els.mapCount) els.mapCount.textContent = `${formatNumber(rows.length)}개 통리반${rows.length > maxRows ? ` · ${formatNumber(maxRows)}개 표시` : ""}`;
-  els.tongbanMapCanvas.innerHTML = visibleRows.map((item) => renderTongbanMapTile(item, highlightSet.has(item.mapKey))).join("");
-}
-
-function renderTongbanMapTile(item, isHighlighted = false) {
-  const label = [item.tongri, item.ban].filter(Boolean).join(" ") || "통리반";
-  const schoolLabel = item.schoolNames.length ? item.schoolNames.join(", ") : "학교 확인 필요";
-  return `
-    <button class="map-tile color-${item.colorIndex}${isHighlighted ? " is-highlighted" : ""}" type="button" data-map-key="${escapeHtml(item.mapKey)}" role="listitem" title="${escapeHtml([item.eup, label, schoolLabel].join(" · "))}">
-      <span>${escapeHtml(label)}</span>
-      <small>${escapeHtml(schoolLabel)}</small>
-    </button>
-  `;
-}
-
-function selectTongbanMapItem(item) {
-  state.selectedMapKey = item.mapKey;
-  const label = [item.sigun, item.eup, item.tongri, item.ban].filter(Boolean).join(" ");
-  const schoolNames = item.schoolNames.length ? item.schoolNames : ["통학구역표에서 학교 확인 필요"];
-  if (els.mapInfoPanel) {
-    els.mapInfoPanel.innerHTML = `
-      <strong>${escapeHtml(label)}</strong>
-      <dl class="map-info-list">
-        <div><dt>관할구역</dt><dd>${escapeHtml(item.area || "관할구역 상세 문구 없음")}</dd></div>
-        <div><dt>배정 초등학교</dt><dd>${escapeHtml(schoolNames.join(", "))}</dd></div>
-      </dl>
-      ${item.schoolDetails.length ? `<div class="map-school-list">${item.schoolDetails.map(renderMapSchoolDetail).join("")}</div>` : ""}
-    `;
-  }
-  renderTongbanMap([item.mapKey]);
-  selectOsmByMapKeys([item.mapKey]);
-}
-
-function renderMapSchoolDetail(item) {
-  return `
-    <article>
-      <strong>${escapeHtml(item.school)}</strong>
-      ${item.schoolArea ? `<p>통학구역: ${escapeHtml(item.schoolArea)}</p>` : ""}
-      ${item.note ? `<p>비고: ${escapeHtml(item.note)}</p>` : ""}
-    </article>
-  `;
-}
-
-async function loadSelectedOsmCity() {
-  const city = normalizedCityName(els.mapCitySelect?.value || "");
-  if (!city) return;
-  if (els.osmMapCount) els.osmMapCount.textContent = `${city} GeoJSON 불러오는 중`;
-  if (els.osmBuildingMap) {
-    els.osmBuildingMap.innerHTML = `
-      <div class="osm-empty">
-        <strong>${escapeHtml(city)} 건물도형을 불러오는 중입니다.</strong>
-        <p>처음 한 번만 시간이 걸리고, 이후에는 브라우저 캐시를 사용합니다.</p>
-      </div>
-    `;
-  }
-  resetOsmSelection();
-  await ensureOsmBuildings(city);
-  renderOsmBuildingMap();
-}
-
-function buildOsmFeatureMatches() {
-  const features = state.osmBuildings?.features || [];
-  state.osmFeatureMatches = features.map((feature, index) => {
-    const props = feature.properties || {};
-    const buildingName = String(props.name || props["name:ko"] || "").trim();
-    const buildingNo = extractBuildingNo(buildingName);
-    const matches = buildingNo
-      ? state.mapItems.filter((item) => isOsmTongbanMatch(item, entryCityFromFeature(feature), buildingName, buildingNo))
-      : [];
-    return { feature, index, buildingName, buildingNo, matches };
-  });
-}
-
-function extractBuildingNo(value) {
-  const match = String(value || "").match(/(\d{2,4})\s*동/);
-  return match ? `${match[1]}동` : "";
-}
-
-function entryCityFromFeature(feature) {
-  return feature?.properties?.__sourceCity || "";
-}
-
-function isOsmTongbanMatch(item, sourceCity, buildingName, buildingNo) {
-  const area = normalizeSearchKey(item.area || "");
-  const target = normalizeSearchKey(buildingNo);
-  if (!target || !area.includes(target)) return false;
-  if (sourceCity && item.sigun !== sourceCity) return false;
-
-  const nameKey = normalizeSearchKey(buildingName || "");
-  // OSM 건물명이 "101동"처럼 동번호만 있는 경우에는 같은 시 안의 동번호 후보가 너무 많아진다.
-  // 그래서 통리반 자동 매칭은 보수적으로 처리하고, 주소 검색 시에는 별도 점수 로직으로 1개를 자동 선택한다.
-  if (!nameKey || nameKey === target) return false;
-  return area.includes(nameKey) || nameKey.includes(target);
-}
-
-function renderOsmBuildingMap(highlightKeys = []) {
-  if (!els.osmBuildingMap) return;
-  const selectedCity = normalizedCityName(els.mapCitySelect?.value || state.activeOsmCity || "");
-  if (!state.osmBuildings || !state.osmFeatureMatches.length || (selectedCity && state.activeOsmCity !== selectedCity)) {
-    const message = selectedCity
-      ? `${selectedCity} 건물도형은 주소 조회를 하거나 아래 버튼을 눌러 불러올 수 있습니다.`
-      : "전체 건물을 한 번에 불러오지 않도록 변경했습니다. 시·군을 선택하거나 주소를 조회하면 필요한 건물도형만 표시됩니다.";
-    els.osmBuildingMap.innerHTML = `
-      <div class="osm-empty">
-        <strong>빠른 로딩 모드</strong>
-        <p>${escapeHtml(message)}</p>
-        ${selectedCity ? `<button class="secondary-button" type="button" data-action="load-osm-city">${escapeHtml(selectedCity)} 건물도형 불러오기</button>` : ""}
-      </div>
-      <div class="osm-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · 건물도형: OpenStreetMap ODbL, 참고용</div>
-    `;
-    if (els.osmMapCount) els.osmMapCount.textContent = selectedCity ? `${selectedCity} 대기 중` : "주소 조회 또는 시·군 선택 후 표시";
-    return;
-  }
-
-  const allEntries = state.osmFeatureMatches || [];
-  const hasSelectedFeature = Number.isInteger(state.selectedOsmFeatureIndex) && state.selectedOsmFeatureIndex >= 0;
-  const highlightSet = new Set(highlightKeys);
-  let entries = allEntries;
-  let isPartial = false;
-
-  if (hasSelectedFeature) {
-    entries = allEntries.filter((entry) => entry.index === state.selectedOsmFeatureIndex);
-  } else if (highlightKeys.length) {
-    const highlighted = allEntries.filter((entry) => entry.matches.some((item) => highlightSet.has(item.mapKey)));
-    entries = highlighted.length ? highlighted : allEntries.filter((entry) => entry.matches.length).slice(0, 1200);
-    isPartial = entries.length !== allEntries.length;
-  } else {
-    const matched = allEntries.filter((entry) => entry.matches.length);
-    entries = matched.length ? matched.slice(0, 1800) : allEntries.slice(0, 1800);
-    isPartial = entries.length !== allEntries.length;
-  }
-
-  if (!entries.length) {
-    els.osmBuildingMap.innerHTML = `<div class="osm-empty">표시할 건물도형이 없습니다.</div>`;
-    return;
-  }
-
-  const bounds = getOsmBounds(entries.map((entry) => entry.feature));
-  const tileViewport = buildTileViewport(bounds);
-  const tileImages = renderOsmTiles(tileViewport);
-  const paths = entries.map((entry) => renderOsmPath(entry, tileViewport, highlightKeys)).join("");
-  els.osmBuildingMap.innerHTML = `
-    <svg class="osm-svg" viewBox="${tileViewport.viewBox}" aria-hidden="false" role="img" aria-label="OpenStreetMap 배경 위 건물도형 통리반 지도">
-      <rect class="osm-map-bg" x="${tileViewport.minX}" y="${tileViewport.minY}" width="${tileViewport.width}" height="${tileViewport.height}" rx="0"></rect>
-      ${tileImages}
-      <g class="osm-building-layer">${paths}</g>
-    </svg>
-    <div class="osm-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · 건물도형: OpenStreetMap ODbL, 참고용</div>
-  `;
-  const matchedCount = allEntries.filter((entry) => entry.matches.length).length;
-  if (els.osmMapCount) {
-    els.osmMapCount.textContent = `${escapeHtml(state.activeOsmCity || "선택 지역")} · ${formatNumber(entries.length)}개 표시 / ${formatNumber(allEntries.length)}개 건물 · ${formatNumber(matchedCount)}개 자동 매칭${isPartial ? " · 빠른 표시" : ""}`;
-  }
-}
-
-
-function renderOsmTiles(viewport) {
-  const tiles = [];
-  for (let x = viewport.tileMinX; x <= viewport.tileMaxX; x += 1) {
-    for (let y = viewport.tileMinY; y <= viewport.tileMaxY; y += 1) {
-      const href = `https://tile.openstreetmap.org/${viewport.zoom}/${x}/${y}.png`;
-      tiles.push(`<image class="osm-tile" href="${href}" x="${x * 256}" y="${y * 256}" width="256" height="256" preserveAspectRatio="none"></image>`);
-    }
-  }
-  return tiles.join("");
-}
-
-function renderOsmPath(entry, viewport, highlightKeys = []) {
-  const d = featureToSvgPath(entry.feature, viewport.zoom);
-  if (!d) return "";
-  const matchKeys = entry.matches.map((item) => item.mapKey);
-  const isMatched = entry.matches.length > 0;
-  const hasSelectedFeature = Number.isInteger(state.selectedOsmFeatureIndex) && state.selectedOsmFeatureIndex >= 0;
-  const isHighlighted = hasSelectedFeature
-    ? entry.index === state.selectedOsmFeatureIndex
-    : highlightKeys.length
-      ? matchKeys.some((key) => highlightKeys.includes(key))
-      : false;
-  const classes = ["osm-building", isMatched ? "is-matched" : "", isHighlighted ? "is-highlighted" : ""].filter(Boolean).join(" ");
-  const label = entry.buildingName || entry.feature.properties?.["@id"] || `건물 ${entry.index + 1}`;
-  return `<path class="${classes}" d="${d}" data-osm-feature="${entry.index}" tabindex="0"><title>${escapeHtml(label)}</title></path>`;
-}
-
-function getOsmBounds(features) {
-  const points = [];
-  for (const feature of features) {
-    points.push(...getFeaturePoints(feature));
-  }
-  const lons = points.map((point) => point[0]);
-  const lats = points.map((point) => point[1]);
-  return {
-    minLon: Math.min(...lons),
-    maxLon: Math.max(...lons),
-    minLat: Math.min(...lats),
-    maxLat: Math.max(...lats),
-  };
-}
-
-function getFeaturePoints(feature) {
-  const geometry = feature?.geometry || {};
-  if (geometry.type === "Polygon") return geometry.coordinates.flat(1);
-  if (geometry.type === "MultiPolygon") return geometry.coordinates.flat(2);
-  return [];
-}
-
-function buildTileViewport(bounds) {
-  const zoom = chooseTileZoom(bounds);
-  const nw = lonLatToWorld(bounds.minLon, bounds.maxLat, zoom);
-  const se = lonLatToWorld(bounds.maxLon, bounds.minLat, zoom);
-  const pad = 256;
-  const minX = Math.floor(Math.min(nw.x, se.x) - pad);
-  const maxX = Math.ceil(Math.max(nw.x, se.x) + pad);
-  const minY = Math.floor(Math.min(nw.y, se.y) - pad);
-  const maxY = Math.ceil(Math.max(nw.y, se.y) + pad);
-  return {
-    zoom,
-    minX,
-    minY,
-    maxX,
-    maxY,
-    width: maxX - minX,
-    height: maxY - minY,
-    viewBox: `${minX} ${minY} ${maxX - minX} ${maxY - minY}`,
-    tileMinX: Math.floor(minX / 256),
-    tileMaxX: Math.floor(maxX / 256),
-    tileMinY: Math.floor(minY / 256),
-    tileMaxY: Math.floor(maxY / 256),
-  };
-}
-
-function chooseTileZoom(bounds) {
-  for (let zoom = 15; zoom >= 10; zoom -= 1) {
-    const nw = lonLatToWorld(bounds.minLon, bounds.maxLat, zoom);
-    const se = lonLatToWorld(bounds.maxLon, bounds.minLat, zoom);
-    const tileCols = Math.ceil(Math.abs(se.x - nw.x) / 256) + 2;
-    const tileRows = Math.ceil(Math.abs(se.y - nw.y) / 256) + 2;
-    if (tileCols * tileRows <= 80) return zoom;
-  }
-  return 10;
-}
-
-function lonLatToWorld(lon, lat, zoom) {
-  const sinLat = Math.sin((Math.max(Math.min(lat, 85.05112878), -85.05112878) * Math.PI) / 180);
-  const scale = 256 * 2 ** zoom;
-  return {
-    x: ((lon + 180) / 360) * scale,
-    y: (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * scale,
-  };
-}
-
-function featureToSvgPath(feature, zoom) {
-  const geometry = feature?.geometry || {};
-  const polygons = geometry.type === "Polygon" ? [geometry.coordinates] : geometry.type === "MultiPolygon" ? geometry.coordinates : [];
-  return polygons.map((polygon) => polygon.map((ring) => ringToSvgPath(ring, zoom)).join(" ")).join(" ");
-}
-
-function ringToSvgPath(ring, zoom) {
-  const points = ring.map(([lon, lat]) => lonLatToWorld(lon, lat, zoom));
-  if (!points.length) return "";
-  return `M ${points.map((point) => `${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" L ")} Z`;
-}
-
-function selectOsmFeature(index, options = {}) {
-  const entry = state.osmFeatureMatches?.[index];
-  if (!entry) return;
-  state.selectedOsmFeatureIndex = index;
-  const label = entry.buildingName || entry.feature.properties?.["@id"] || `건물 ${index + 1}`;
-  const matched = entry.matches || [];
-  const schoolNames = unique(matched.flatMap((item) => item.schoolNames || []));
-  const shouldRenderPanel = options.renderPanel !== false;
-  if (els.osmMapInfo && shouldRenderPanel) {
-    els.osmMapInfo.innerHTML = `
-      <strong>${escapeHtml(label)}${options.source === "address" ? " · 주소검색 자동 선택" : ""}</strong>
-      ${matched.length ? `
-        <dl class="map-info-list">
-          <div><dt>매칭 통리반</dt><dd>${escapeHtml(matched.map((item) => [item.tongri, item.ban].filter(Boolean).join(" ")).join(" / "))}</dd></div>
-          <div><dt>배정 초등학교</dt><dd>${escapeHtml(schoolNames.length ? schoolNames.join(", ") : "학교 확인 필요")}</dd></div>
-          <div><dt>관할구역</dt><dd>${escapeHtml(matched.map((item) => item.area).filter(Boolean).join(" / "))}</dd></div>
-        </dl>
-      ` : `
-        <p>이 건물은 현재 테스트 매칭 규칙에서 통리반 데이터와 연결되지 않았습니다.</p>
-        <p class="result-note">건물명·동번호·지번 매칭 규칙을 확대하면 연결 범위를 늘릴 수 있습니다.</p>
-      `}
-    `;
-  }
-  // 클릭/검색 선택에서는 같은 통리반 후보 전체가 아니라 이 feature 하나만 다시 칠한다.
-  renderOsmBuildingMap();
-}
-
-function selectOsmByMapKeys(mapKeys) {
-  if (!mapKeys.length || !state.osmFeatureMatches?.length) return null;
-  const index = state.osmFeatureMatches.findIndex((entry) => entry.matches.some((item) => mapKeys.includes(item.mapKey)));
-  if (index >= 0) {
-    selectOsmFeature(index);
-    return state.osmFeatureMatches[index];
-  }
-  renderOsmBuildingMap(mapKeys);
-  return null;
-}
-
-async function highlightAddressOnOsmMap(query, result, options = {}) {
-  const targetCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || normalizedCityName(query);
-  await ensureOsmBuildings(targetCity);
-  const mapKeys = getMapKeysFromTongban(result?.tongban);
-  const best = findBestOsmFeatureForAddress(query, result, mapKeys);
-  if (best) {
-    selectOsmFeature(best.index, {
-      source: "address",
-      query,
-      renderPanel: options.renderPanel !== false,
-    });
-    return best;
-  }
-  state.selectedOsmFeatureIndex = -1;
-  renderOsmBuildingMap(mapKeys);
-  return null;
-}
-
-function inferCityFromTongban(tongbanRows) {
-  const rows = Array.isArray(tongbanRows) ? tongbanRows : [];
-  const city = rows.map((row) => row.sigun).find(Boolean);
-  return city || "";
-}
-
-function normalizedCityName(value) {
-  const text = String(value || "");
-  if (text.includes("오산")) return "오산시";
-  if (text.includes("화성")) return "화성시";
-  return "";
-}
-
-function findBestOsmFeatureForAddress(query, result, mapKeys = []) {
-  const entries = state.osmFeatureMatches || [];
-  if (!entries.length) return null;
-  const haystack = [
-    query,
-    result?.input,
-    result?.road,
-    result?.jibun,
-    result?.building,
-    result?.admin,
-    result?.legal,
-    ...(Array.isArray(result?.tongban) ? result.tongban.map((item) => item.area || "") : []),
-  ].filter(Boolean).join(" ");
-  const requestedBuildingNo = extractBuildingNo(haystack);
-  const requestedCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || (normalizedCityName(haystack));
-  const normalizedHaystack = normalizeSearchKey(haystack);
-  let best = null;
-  let bestScore = 0;
-  for (const entry of entries) {
-    let score = 0;
-    const entryName = normalizeSearchKey(entry.buildingName || "");
-    const sourceCity = entryCityFromFeature(entry.feature);
-    if (requestedCity && sourceCity && requestedCity !== sourceCity) continue;
-    const entryNo = normalizeSearchKey(entry.buildingNo || "");
-    const entryMapKeys = entry.matches.map((item) => item.mapKey);
-    if (mapKeys.length && entryMapKeys.some((key) => mapKeys.includes(key))) score += 100;
-    if (requestedBuildingNo && entry.buildingNo && normalizeSearchKey(requestedBuildingNo) === entryNo) score += 80;
-    if (entryName && normalizedHaystack.includes(entryName)) score += 30;
-    if (entryNo && normalizedHaystack.includes(entryNo)) score += 30;
-    if (entry.matches.length) score += 5;
-    if (score > bestScore) {
-      best = entry;
-      bestScore = score;
-    }
-  }
-  return bestScore >= 80 ? best : null;
-}
-
-
-async function handleMapAddressSearch(rawQuery) {
-  const query = cleanText(rawQuery);
-  if (!query) return;
-  await ensureCore();
-  const result = await searchAddress(query);
-  state.lastAddressMapQuery = query;
-  state.lastAddressMapResult = result;
-  const matchKeys = getMapKeysFromTongban(result.tongban);
-  const resultCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || normalizedCityName(query);
-  if (resultCity && els.mapCitySelect) {
-    els.mapCitySelect.value = resultCity;
-    populateMapEupOptions();
-  }
-  await showMapPage();
-  renderTongbanMap(matchKeys);
-  const selectedEntry = await highlightAddressOnOsmMap(query, result, { renderPanel: true });
-  renderMapAddressResult(query, result, matchKeys, selectedEntry);
-}
-
-function getMapKeysFromTongban(tongbanRows) {
-  const tongban = Array.isArray(tongbanRows) ? groupTongbanRows(tongbanRows) : [];
-  const matchKeys = [];
-  for (const row of tongban) {
-    const found = state.mapItems.find((item) => sameTongbanMapItem(item, row));
-    if (found) matchKeys.push(found.mapKey);
-  }
-  return unique(matchKeys);
-}
-
-function sameTongbanMapItem(a, b) {
-  return normalizeText(a.sigun) === normalizeText(b.sigun)
-    && normalizeText(a.eup) === normalizeText(b.eup)
-    && normalizeText(a.tongri) === normalizeText(b.tongri)
-    && normalizeText(a.ban) === normalizeText(b.ban)
-    && normalizeText(a.area) === normalizeText(b.area);
-}
-
-function renderMapAddressResult(query, result, matchKeys, selectedEntry = null) {
-  const schools = Array.isArray(result.school) ? unique(result.school.map((item) => item.school)) : [];
-  const tongban = Array.isArray(result.tongban) ? groupTongbanRows(result.tongban) : [];
-  if (!els.mapInfoPanel) return;
-  els.mapInfoPanel.innerHTML = `
-    <strong>주소 조회 결과</strong>
-    <p class="map-query">${escapeHtml(query)}</p>
-    <dl class="map-info-list">
-      <div><dt>배정 초등학교</dt><dd>${escapeHtml(schools.length ? schools.join(", ") : "확인 필요")}</dd></div>
-      <div><dt>통리반</dt><dd>${escapeHtml(tongban.length ? tongban.map((item) => [item.eup, item.tongri, item.ban].filter(Boolean).join(" ")).join(" / ") : "확인 필요")}</dd></div>
-      <div><dt>색칠 영역</dt><dd>${escapeHtml(selectedEntry ? `${selectedEntry.buildingName || `건물 ${selectedEntry.index + 1}`} 자동 선택` : (matchKeys.length ? `${formatNumber(matchKeys.length)}개 후보 영역` : "일치하는 지도 영역 없음"))}</dd></div>
-    </dl>
-    ${tongban.length ? `<div class="address-map-preview">${tongban.map(renderAddressMapPreview).join("")}</div>` : ""}
-  `;
-}
-
-function renderAddressMapPreview(item) {
-  return `
-    <article class="address-map-card">
-      <div class="mini-map" aria-hidden="true"><span></span></div>
-      <div>
-        <strong>${escapeHtml([item.eup, item.tongri, item.ban].filter(Boolean).join(" "))}</strong>
-        <p>${escapeHtml(item.area || "관할구역 상세 문구 없음")}</p>
-      </div>
-    </article>
-  `;
 }
 
 function populateEupOptions() {
@@ -1163,8 +546,6 @@ async function handleAddressSearch(rawQuery) {
   try {
     await ensureCore();
     const result = await searchAddress(query);
-    state.lastAddressMapQuery = query;
-    state.lastAddressMapResult = result;
     renderAddressResult(result);
   } catch (error) {
     renderError("주소 조회 중 문제가 발생했습니다.", "자료 파일이나 브라우저 콘솔의 오류 내용을 확인해 주세요.");
@@ -1221,7 +602,6 @@ function renderAddressResult(result) {
   html += renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
-  html += renderAddressInlineMapCard(tongban, schools);
 
   showResults(html);
 }
@@ -1353,35 +733,6 @@ function renderAddressTongbanCard(tongban, input = "") {
       <div class="tongban-list">
         ${groups.map(renderAddressTongbanRow).join("")}
       </div>
-    </div>
-  `;
-}
-
-
-function renderAddressInlineMapCard(tongban, schools = []) {
-  if (!Array.isArray(tongban) || !tongban.length) return "";
-  const groups = groupTongbanRows(tongban).slice(0, 6);
-  const schoolNames = unique((schools || []).map((item) => item.school));
-  return `
-    <div class="result-card address-inline-map-card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>통리반지도 미리보기</span>
-          <strong>${escapeHtml(groups.map((item) => [item.tongri, item.ban].filter(Boolean).join(" ")).join(" / "))}</strong>
-        </div>
-        <span class="badge green">참고 지도</span>
-      </div>
-      <div class="inline-map-shell">
-        <div class="inline-map-canvas" aria-hidden="true">
-          ${groups.map((item, index) => `<div class="inline-map-area area-${index % 6}"><span>${escapeHtml([item.tongri, item.ban].filter(Boolean).join(" "))}</span></div>`).join("")}
-        </div>
-        <div class="inline-map-detail">
-          <strong>${escapeHtml(schoolNames.length ? schoolNames.join(", ") : "학교 확인 필요")}</strong>
-          <p>${escapeHtml(groups[0]?.area || "관할구역 상세 문구 없음")}</p>
-          <button class="secondary-button" type="button" data-action="open-tongban-map">통리반지도에서 전체 보기</button>
-        </div>
-      </div>
-      <p class="result-note">통리반지도 섹션에서 업로드한 OSM 건물도형 기반 실제 좌표 색칠 테스트를 확인할 수 있습니다.</p>
     </div>
   `;
 }
