@@ -1,10 +1,13 @@
-const APP_VERSION = "20260520-osm-hwaseong-osan";
+const APP_VERSION = "20260520-osm-lazy-load";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
-  osmBuildings: [`/data/hwaseong.geojson?v=${APP_VERSION}`, `/data/osan.geojson?v=${APP_VERSION}`],
+  osmBuildings: {
+    "화성시": `/data/hwaseong.geojson?v=${APP_VERSION}`,
+    "오산시": `/data/osan.geojson?v=${APP_VERSION}`,
+  },
 };
 
 const APT_ALIAS = {
@@ -30,7 +33,9 @@ const state = {
   mapItems: [],
   selectedMapKey: "",
   osmBuildings: null,
-  osmBuildingsPromise: null,
+  osmBuildingsByCity: {},
+  osmBuildingsPromiseByCity: {},
+  activeOsmCity: "",
   osmFeatureMatches: [],
   selectedOsmFeatureIndex: -1,
   lastAddressMapQuery: "",
@@ -54,7 +59,6 @@ async function init() {
     buildTongbanMapItems();
     populateMapFilters();
     renderTongbanMap();
-    await ensureOsmBuildings();
     renderOsmBuildingMap();
   } catch (error) {
     renderError("자료를 불러오지 못했습니다.", "새로고침 후에도 같은 문제가 있으면 배포된 data 파일을 확인해 주세요.");
@@ -102,7 +106,7 @@ function bindEvents() {
   els.homeNavButton?.addEventListener("click", showSearchPage);
   els.mapNavButton?.addEventListener("click", showMapPage);
   els.backToSearchButton?.addEventListener("click", showSearchPage);
-  els.mapCitySelect?.addEventListener("change", () => { populateMapEupOptions(); renderTongbanMap(); });
+  els.mapCitySelect?.addEventListener("change", () => { populateMapEupOptions(); renderTongbanMap(); renderOsmBuildingMap(); });
   els.mapEupSelect?.addEventListener("change", () => renderTongbanMap());
   els.mapAddressMode?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -114,7 +118,12 @@ function bindEvents() {
     const item = state.mapItems.find((row) => row.mapKey === tile.dataset.mapKey);
     if (item) selectTongbanMapItem(item);
   });
-  els.osmBuildingMap?.addEventListener("click", (event) => {
+  els.osmBuildingMap?.addEventListener("click", async (event) => {
+    const action = event.target.closest("[data-action]")?.dataset.action;
+    if (action === "load-osm-city") {
+      await loadSelectedOsmCity();
+      return;
+    }
     const shape = event.target.closest("[data-osm-feature]");
     if (!shape) return;
     selectOsmFeature(Number(shape.dataset.osmFeature));
@@ -294,22 +303,40 @@ async function loadSuggestions() {
   return state.suggestions;
 }
 
-async function ensureOsmBuildings() {
-  if (state.osmBuildings) return state.osmBuildings;
-  if (!state.osmBuildingsPromise) {
-    state.osmBuildingsPromise = Promise.all(DATA_PATHS.osmBuildings.map(async (url) => {
-      const data = await fetchJson(url);
-      const sourceCity = url.includes("osan") ? "오산시" : url.includes("hwaseong") ? "화성시" : "";
+async function ensureOsmBuildings(city = "") {
+  const targetCity = normalizedCityName(city || els.mapCitySelect?.value || "");
+  if (!targetCity) {
+    state.osmBuildings = null;
+    state.activeOsmCity = "";
+    state.osmFeatureMatches = [];
+    return null;
+  }
+  if (state.osmBuildingsByCity[targetCity]) {
+    state.osmBuildings = state.osmBuildingsByCity[targetCity];
+    state.activeOsmCity = targetCity;
+    buildOsmFeatureMatches();
+    return state.osmBuildings;
+  }
+  if (!state.osmBuildingsPromiseByCity[targetCity]) {
+    const url = DATA_PATHS.osmBuildings[targetCity];
+    if (!url) return null;
+    state.osmBuildingsPromiseByCity[targetCity] = fetchJson(url).then((data) => {
       const features = Array.isArray(data.features) ? data.features.map((feature) => ({
         ...feature,
-        properties: { ...(feature.properties || {}), __sourceCity: sourceCity },
+        properties: { ...(feature.properties || {}), __sourceCity: targetCity },
       })) : [];
-      return features;
-    })).then((featureGroups) => ({ type: "FeatureCollection", features: featureGroups.flat() }));
+      return { type: "FeatureCollection", features };
+    });
   }
-  state.osmBuildings = await state.osmBuildingsPromise;
+  state.osmBuildings = await state.osmBuildingsPromiseByCity[targetCity];
+  state.osmBuildingsByCity[targetCity] = state.osmBuildings;
+  state.activeOsmCity = targetCity;
   buildOsmFeatureMatches();
   return state.osmBuildings;
+}
+
+function resetOsmSelection() {
+  state.selectedOsmFeatureIndex = -1;
 }
 
 
@@ -355,7 +382,6 @@ async function showMapPage() {
     if (!state.mapItems.length) buildTongbanMapItems();
     populateMapFilters();
     renderTongbanMap();
-    await ensureOsmBuildings();
     renderOsmBuildingMap();
   } catch (error) {
     console.error(error);
@@ -458,6 +484,23 @@ function renderMapSchoolDetail(item) {
   `;
 }
 
+async function loadSelectedOsmCity() {
+  const city = normalizedCityName(els.mapCitySelect?.value || "");
+  if (!city) return;
+  if (els.osmMapCount) els.osmMapCount.textContent = `${city} GeoJSON 불러오는 중`;
+  if (els.osmBuildingMap) {
+    els.osmBuildingMap.innerHTML = `
+      <div class="osm-empty">
+        <strong>${escapeHtml(city)} 건물도형을 불러오는 중입니다.</strong>
+        <p>처음 한 번만 시간이 걸리고, 이후에는 브라우저 캐시를 사용합니다.</p>
+      </div>
+    `;
+  }
+  resetOsmSelection();
+  await ensureOsmBuildings(city);
+  renderOsmBuildingMap();
+}
+
 function buildOsmFeatureMatches() {
   const features = state.osmBuildings?.features || [];
   state.osmFeatureMatches = features.map((feature, index) => {
@@ -495,11 +538,46 @@ function isOsmTongbanMatch(item, sourceCity, buildingName, buildingNo) {
 
 function renderOsmBuildingMap(highlightKeys = []) {
   if (!els.osmBuildingMap) return;
-  const entries = state.osmFeatureMatches || [];
-  if (!entries.length) {
-    els.osmBuildingMap.innerHTML = `<div class="osm-empty">OSM 건물도형 GeoJSON을 불러오지 못했습니다.</div>`;
+  const selectedCity = normalizedCityName(els.mapCitySelect?.value || state.activeOsmCity || "");
+  if (!state.osmBuildings || !state.osmFeatureMatches.length || (selectedCity && state.activeOsmCity !== selectedCity)) {
+    const message = selectedCity
+      ? `${selectedCity} 건물도형은 주소 조회를 하거나 아래 버튼을 눌러 불러올 수 있습니다.`
+      : "전체 건물을 한 번에 불러오지 않도록 변경했습니다. 시·군을 선택하거나 주소를 조회하면 필요한 건물도형만 표시됩니다.";
+    els.osmBuildingMap.innerHTML = `
+      <div class="osm-empty">
+        <strong>빠른 로딩 모드</strong>
+        <p>${escapeHtml(message)}</p>
+        ${selectedCity ? `<button class="secondary-button" type="button" data-action="load-osm-city">${escapeHtml(selectedCity)} 건물도형 불러오기</button>` : ""}
+      </div>
+      <div class="osm-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · 건물도형: OpenStreetMap ODbL, 참고용</div>
+    `;
+    if (els.osmMapCount) els.osmMapCount.textContent = selectedCity ? `${selectedCity} 대기 중` : "주소 조회 또는 시·군 선택 후 표시";
     return;
   }
+
+  const allEntries = state.osmFeatureMatches || [];
+  const hasSelectedFeature = Number.isInteger(state.selectedOsmFeatureIndex) && state.selectedOsmFeatureIndex >= 0;
+  const highlightSet = new Set(highlightKeys);
+  let entries = allEntries;
+  let isPartial = false;
+
+  if (hasSelectedFeature) {
+    entries = allEntries.filter((entry) => entry.index === state.selectedOsmFeatureIndex);
+  } else if (highlightKeys.length) {
+    const highlighted = allEntries.filter((entry) => entry.matches.some((item) => highlightSet.has(item.mapKey)));
+    entries = highlighted.length ? highlighted : allEntries.filter((entry) => entry.matches.length).slice(0, 1200);
+    isPartial = entries.length !== allEntries.length;
+  } else {
+    const matched = allEntries.filter((entry) => entry.matches.length);
+    entries = matched.length ? matched.slice(0, 1800) : allEntries.slice(0, 1800);
+    isPartial = entries.length !== allEntries.length;
+  }
+
+  if (!entries.length) {
+    els.osmBuildingMap.innerHTML = `<div class="osm-empty">표시할 건물도형이 없습니다.</div>`;
+    return;
+  }
+
   const bounds = getOsmBounds(entries.map((entry) => entry.feature));
   const tileViewport = buildTileViewport(bounds);
   const tileImages = renderOsmTiles(tileViewport);
@@ -512,9 +590,12 @@ function renderOsmBuildingMap(highlightKeys = []) {
     </svg>
     <div class="osm-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · 건물도형: OpenStreetMap ODbL, 참고용</div>
   `;
-  const matchedCount = entries.filter((entry) => entry.matches.length).length;
-  if (els.osmMapCount) els.osmMapCount.textContent = `${formatNumber(entries.length)}개 건물 · ${formatNumber(matchedCount)}개 자동 매칭`;
+  const matchedCount = allEntries.filter((entry) => entry.matches.length).length;
+  if (els.osmMapCount) {
+    els.osmMapCount.textContent = `${escapeHtml(state.activeOsmCity || "선택 지역")} · ${formatNumber(entries.length)}개 표시 / ${formatNumber(allEntries.length)}개 건물 · ${formatNumber(matchedCount)}개 자동 매칭${isPartial ? " · 빠른 표시" : ""}`;
+  }
 }
+
 
 function renderOsmTiles(viewport) {
   const tiles = [];
@@ -661,7 +742,8 @@ function selectOsmByMapKeys(mapKeys) {
 }
 
 async function highlightAddressOnOsmMap(query, result, options = {}) {
-  await ensureOsmBuildings();
+  const targetCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || normalizedCityName(query);
+  await ensureOsmBuildings(targetCity);
   const mapKeys = getMapKeysFromTongban(result?.tongban);
   const best = findBestOsmFeatureForAddress(query, result, mapKeys);
   if (best) {
@@ -737,6 +819,11 @@ async function handleMapAddressSearch(rawQuery) {
   state.lastAddressMapQuery = query;
   state.lastAddressMapResult = result;
   const matchKeys = getMapKeysFromTongban(result.tongban);
+  const resultCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || normalizedCityName(query);
+  if (resultCity && els.mapCitySelect) {
+    els.mapCitySelect.value = resultCity;
+    populateMapEupOptions();
+  }
   await showMapPage();
   renderTongbanMap(matchKeys);
   const selectedEntry = await highlightAddressOnOsmMap(query, result, { renderPanel: true });

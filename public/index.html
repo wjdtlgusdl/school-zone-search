@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="화성·오산 초등학교 통학구역과 통리반을 주소 또는 학교명으로 조회합니다.">
     <title>화성·오산 초등학교 통학구역 조회</title>
-    <link rel="stylesheet" href="/style.css?v=20260519-osm2">
+    <link rel="stylesheet" href="/style.css?v=20260520-osm-lazy-load">
   </head>
   <body>
     <div class="app-shell">
@@ -112,7 +112,7 @@
           <div>
             <p class="eyebrow">참고용 통리반지도</p>
             <h1>화성시·오산시 전체 통리반을 색상으로 확인하세요.</h1>
-            <p>현재 보유한 통리반·통학구역 데이터를 기준으로 만든 색상 지도입니다. 실제 지적 경계 좌표가 없는 항목은 균등 격자 영역으로 표시됩니다.</p>
+            <p>주소 조회 또는 시·군 선택 시 필요한 OSM 건물도형만 불러와 표시합니다. 전체 통리반 격자는 보조 참고용입니다.</p>
           </div>
           <button class="secondary-button" type="button" id="backToSearchButton">주소 조회로 돌아가기</button>
         </div>
@@ -152,14 +152,14 @@
           <div class="tongban-map-stage">
             <div class="real-map-card">
               <div class="tongban-map-toolbar">
-                <strong>화성·오산 실제 OSM 건물도형 지도</strong>
-                <span id="osmMapCount">화성·오산 GeoJSON 로딩 중</span>
+                <strong>화성·오산 실제 OSM 건물도형 지도 · 빠른 로딩</strong>
+                <span id="osmMapCount">주소 조회 또는 시·군 선택 후 표시</span>
               </div>
               <div class="osm-map-layout">
                 <div class="osm-map-canvas" id="osmBuildingMap" role="img" aria-label="OSM 건물도형 기반 통리반 색칠 지도"></div>
                 <aside class="osm-map-info" id="osmMapInfo">
                   <strong>건물도형을 선택하세요.</strong>
-                  <p>화성시·오산시 OSM 건물도형을 실제 OpenStreetMap 배경 위에 표시합니다. 건물을 클릭하면 매칭 가능한 통리반·학교 정보를 확인할 수 있습니다.</p>
+                  <p>주소를 조회하거나 시·군을 선택하면 해당 지역 건물도형만 불러옵니다. 건물을 클릭하면 매칭 가능한 통리반·학교 정보를 확인할 수 있습니다.</p>
                 </aside>
               </div>
               <p class="map-disclaimer">※ 지도 배경과 건물도형 출처: OpenStreetMap contributors. OSM 데이터는 ODbL 기준으로 제공되며, 통리반·학교 연결 결과는 참고용입니다.</p>
@@ -177,6 +177,6 @@
 
     </div>
 
-    <script src="/main.js?v=20260520-osm-hwaseong-osan" defer></script>
+    <script src="/main.js?v=20260520-osm-lazy-load" defer></script>
   </body>
 </html>
