@@ -1,4 +1,4 @@
-const APP_VERSION = "20260519-osm2";
+const APP_VERSION = "20260519-osm3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -33,6 +33,8 @@ const state = {
   osmBuildingsPromise: null,
   osmFeatureMatches: [],
   selectedOsmFeatureIndex: -1,
+  lastAddressMapQuery: "",
+  lastAddressMapResult: null,
 };
 
 const els = {};
@@ -192,7 +194,11 @@ function bindEvents() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     if (action === "open-tongban-map") {
-      showMapPage();
+      showMapPage().then(() => {
+        if (state.lastAddressMapResult) {
+          highlightAddressOnOsmMap(state.lastAddressMapQuery || state.lastAddressMapResult.input || "", state.lastAddressMapResult, { renderPanel: false });
+        }
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
@@ -552,16 +558,17 @@ function projectOsmPoint(lon, lat, bounds) {
   return [x, y];
 }
 
-function selectOsmFeature(index) {
+function selectOsmFeature(index, options = {}) {
   const entry = state.osmFeatureMatches?.[index];
   if (!entry) return;
   state.selectedOsmFeatureIndex = index;
   const label = entry.buildingName || entry.feature.properties?.["@id"] || `건물 ${index + 1}`;
   const matched = entry.matches || [];
   const schoolNames = unique(matched.flatMap((item) => item.schoolNames || []));
-  if (els.osmMapInfo) {
+  const shouldRenderPanel = options.renderPanel !== false;
+  if (els.osmMapInfo && shouldRenderPanel) {
     els.osmMapInfo.innerHTML = `
-      <strong>${escapeHtml(label)}</strong>
+      <strong>${escapeHtml(label)}${options.source === "address" ? " · 주소검색 자동 선택" : ""}</strong>
       ${matched.length ? `
         <dl class="map-info-list">
           <div><dt>매칭 통리반</dt><dd>${escapeHtml(matched.map((item) => [item.tongri, item.ban].filter(Boolean).join(" ")).join(" / "))}</dd></div>
@@ -574,18 +581,71 @@ function selectOsmFeature(index) {
       `}
     `;
   }
-  // 클릭 선택에서는 같은 통리반 후보 전체가 아니라 이 feature 하나만 다시 칠한다.
+  // 클릭/검색 선택에서는 같은 통리반 후보 전체가 아니라 이 feature 하나만 다시 칠한다.
   renderOsmBuildingMap();
 }
 
 function selectOsmByMapKeys(mapKeys) {
-  if (!mapKeys.length || !state.osmFeatureMatches?.length) return;
+  if (!mapKeys.length || !state.osmFeatureMatches?.length) return null;
   const index = state.osmFeatureMatches.findIndex((entry) => entry.matches.some((item) => mapKeys.includes(item.mapKey)));
   if (index >= 0) {
     selectOsmFeature(index);
-  } else {
-    renderOsmBuildingMap(mapKeys);
+    return state.osmFeatureMatches[index];
   }
+  renderOsmBuildingMap(mapKeys);
+  return null;
+}
+
+async function highlightAddressOnOsmMap(query, result, options = {}) {
+  await ensureOsmBuildings();
+  const mapKeys = getMapKeysFromTongban(result?.tongban);
+  const best = findBestOsmFeatureForAddress(query, result, mapKeys);
+  if (best) {
+    selectOsmFeature(best.index, {
+      source: "address",
+      query,
+      renderPanel: options.renderPanel !== false,
+    });
+    return best;
+  }
+  state.selectedOsmFeatureIndex = -1;
+  renderOsmBuildingMap(mapKeys);
+  return null;
+}
+
+function findBestOsmFeatureForAddress(query, result, mapKeys = []) {
+  const entries = state.osmFeatureMatches || [];
+  if (!entries.length) return null;
+  const haystack = [
+    query,
+    result?.input,
+    result?.road,
+    result?.jibun,
+    result?.building,
+    result?.admin,
+    result?.legal,
+    ...(Array.isArray(result?.tongban) ? result.tongban.map((item) => item.area || "") : []),
+  ].filter(Boolean).join(" ");
+  const requestedBuildingNo = extractBuildingNo(haystack);
+  const normalizedHaystack = normalizeSearchKey(haystack);
+  let best = null;
+  let bestScore = 0;
+  for (const entry of entries) {
+    let score = 0;
+    const entryName = normalizeSearchKey(entry.buildingName || "");
+    const entryNo = normalizeSearchKey(entry.buildingNo || "");
+    const entryMapKeys = entry.matches.map((item) => item.mapKey);
+    if (mapKeys.length && entryMapKeys.some((key) => mapKeys.includes(key))) score += 100;
+    if (requestedBuildingNo && entry.buildingNo && normalizeSearchKey(requestedBuildingNo) === entryNo) score += 80;
+    if (entryName && normalizedHaystack.includes(entryName)) score += 30;
+    if (entryNo && normalizedHaystack.includes(entryNo)) score += 30;
+    if (entry.matches.length) score += 5;
+    if (score > bestScore) {
+      best = entry;
+      bestScore = score;
+    }
+  }
+  return bestScore >= 80 ? best : null;
 }
 
 
@@ -594,15 +654,23 @@ async function handleMapAddressSearch(rawQuery) {
   if (!query) return;
   await ensureCore();
   const result = await searchAddress(query);
-  const tongban = Array.isArray(result.tongban) ? groupTongbanRows(result.tongban) : [];
+  state.lastAddressMapQuery = query;
+  state.lastAddressMapResult = result;
+  const matchKeys = getMapKeysFromTongban(result.tongban);
+  await showMapPage();
+  renderTongbanMap(matchKeys);
+  const selectedEntry = await highlightAddressOnOsmMap(query, result, { renderPanel: true });
+  renderMapAddressResult(query, result, matchKeys, selectedEntry);
+}
+
+function getMapKeysFromTongban(tongbanRows) {
+  const tongban = Array.isArray(tongbanRows) ? groupTongbanRows(tongbanRows) : [];
   const matchKeys = [];
   for (const row of tongban) {
     const found = state.mapItems.find((item) => sameTongbanMapItem(item, row));
     if (found) matchKeys.push(found.mapKey);
   }
-  showMapPage();
-  renderTongbanMap(matchKeys);
-  renderMapAddressResult(query, result, matchKeys);
+  return unique(matchKeys);
 }
 
 function sameTongbanMapItem(a, b) {
@@ -613,7 +681,7 @@ function sameTongbanMapItem(a, b) {
     && normalizeText(a.area) === normalizeText(b.area);
 }
 
-function renderMapAddressResult(query, result, matchKeys) {
+function renderMapAddressResult(query, result, matchKeys, selectedEntry = null) {
   const schools = Array.isArray(result.school) ? unique(result.school.map((item) => item.school)) : [];
   const tongban = Array.isArray(result.tongban) ? groupTongbanRows(result.tongban) : [];
   if (!els.mapInfoPanel) return;
@@ -623,7 +691,7 @@ function renderMapAddressResult(query, result, matchKeys) {
     <dl class="map-info-list">
       <div><dt>배정 초등학교</dt><dd>${escapeHtml(schools.length ? schools.join(", ") : "확인 필요")}</dd></div>
       <div><dt>통리반</dt><dd>${escapeHtml(tongban.length ? tongban.map((item) => [item.eup, item.tongri, item.ban].filter(Boolean).join(" ")).join(" / ") : "확인 필요")}</dd></div>
-      <div><dt>색칠 영역</dt><dd>${escapeHtml(matchKeys.length ? `${formatNumber(matchKeys.length)}개 영역 하이라이트` : "일치하는 지도 영역 없음")}</dd></div>
+      <div><dt>색칠 영역</dt><dd>${escapeHtml(selectedEntry ? `${selectedEntry.buildingName || `건물 ${selectedEntry.index + 1}`} 자동 선택` : (matchKeys.length ? `${formatNumber(matchKeys.length)}개 후보 영역` : "일치하는 지도 영역 없음"))}</dd></div>
     </dl>
     ${tongban.length ? `<div class="address-map-preview">${tongban.map(renderAddressMapPreview).join("")}</div>` : ""}
   `;
@@ -928,6 +996,8 @@ async function handleAddressSearch(rawQuery) {
   try {
     await ensureCore();
     const result = await searchAddress(query);
+    state.lastAddressMapQuery = query;
+    state.lastAddressMapResult = result;
     renderAddressResult(result);
   } catch (error) {
     renderError("주소 조회 중 문제가 발생했습니다.", "자료 파일이나 브라우저 콘솔의 오류 내용을 확인해 주세요.");
