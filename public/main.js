@@ -1,4 +1,4 @@
-const APP_VERSION = "20260519-osm1";
+const APP_VERSION = "20260519-osm2";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -494,9 +494,14 @@ function renderOsmPath(entry, bounds, highlightKeys = []) {
   if (!d) return "";
   const matchKeys = entry.matches.map((item) => item.mapKey);
   const isMatched = entry.matches.length > 0;
-  const isHighlighted = highlightKeys.length
-    ? matchKeys.some((key) => highlightKeys.includes(key)) || entry.index === state.selectedOsmFeatureIndex
-    : entry.index === state.selectedOsmFeatureIndex;
+  // 사용자가 건물도형을 직접 클릭한 경우에는 클릭한 polygon 1개만 강조한다.
+  // 통리반 매칭 후보 전체가 함께 선택되어 보이는 것을 막기 위한 우선순위 처리다.
+  const hasSelectedFeature = Number.isInteger(state.selectedOsmFeatureIndex) && state.selectedOsmFeatureIndex >= 0;
+  const isHighlighted = hasSelectedFeature
+    ? entry.index === state.selectedOsmFeatureIndex
+    : highlightKeys.length
+      ? matchKeys.some((key) => highlightKeys.includes(key))
+      : false;
   const classes = ["osm-building", isMatched ? "is-matched" : "", isHighlighted ? "is-highlighted" : ""].filter(Boolean).join(" ");
   const label = entry.buildingName || entry.feature.properties?.["@id"] || `건물 ${entry.index + 1}`;
   return `<path class="${classes}" d="${d}" data-osm-feature="${entry.index}" tabindex="0"><title>${escapeHtml(label)}</title></path>`;
@@ -569,7 +574,8 @@ function selectOsmFeature(index) {
       `}
     `;
   }
-  renderOsmBuildingMap(matched.map((item) => item.mapKey));
+  // 클릭 선택에서는 같은 통리반 후보 전체가 아니라 이 feature 하나만 다시 칠한다.
+  renderOsmBuildingMap();
 }
 
 function selectOsmByMapKeys(mapKeys) {
