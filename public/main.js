@@ -1,10 +1,10 @@
-const APP_VERSION = "20260519-osm3";
+const APP_VERSION = "20260520-osm-hwaseong-osan";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
-  osmBuildings: `/data/osm_buildings_bongdam.geojson?v=${APP_VERSION}`,
+  osmBuildings: [`/data/hwaseong.geojson?v=${APP_VERSION}`, `/data/osan.geojson?v=${APP_VERSION}`],
 };
 
 const APT_ALIAS = {
@@ -297,7 +297,15 @@ async function loadSuggestions() {
 async function ensureOsmBuildings() {
   if (state.osmBuildings) return state.osmBuildings;
   if (!state.osmBuildingsPromise) {
-    state.osmBuildingsPromise = fetchJson(DATA_PATHS.osmBuildings);
+    state.osmBuildingsPromise = Promise.all(DATA_PATHS.osmBuildings.map(async (url) => {
+      const data = await fetchJson(url);
+      const sourceCity = url.includes("osan") ? "오산시" : url.includes("hwaseong") ? "화성시" : "";
+      const features = Array.isArray(data.features) ? data.features.map((feature) => ({
+        ...feature,
+        properties: { ...(feature.properties || {}), __sourceCity: sourceCity },
+      })) : [];
+      return features;
+    })).then((featureGroups) => ({ type: "FeatureCollection", features: featureGroups.flat() }));
   }
   state.osmBuildings = await state.osmBuildingsPromise;
   buildOsmFeatureMatches();
@@ -457,7 +465,7 @@ function buildOsmFeatureMatches() {
     const buildingName = String(props.name || props["name:ko"] || "").trim();
     const buildingNo = extractBuildingNo(buildingName);
     const matches = buildingNo
-      ? state.mapItems.filter((item) => isOsmTongbanMatch(item, buildingNo))
+      ? state.mapItems.filter((item) => isOsmTongbanMatch(item, entryCityFromFeature(feature), buildingName, buildingNo))
       : [];
     return { feature, index, buildingName, buildingNo, matches };
   });
@@ -468,12 +476,21 @@ function extractBuildingNo(value) {
   return match ? `${match[1]}동` : "";
 }
 
-function isOsmTongbanMatch(item, buildingNo) {
+function entryCityFromFeature(feature) {
+  return feature?.properties?.__sourceCity || "";
+}
+
+function isOsmTongbanMatch(item, sourceCity, buildingName, buildingNo) {
   const area = normalizeSearchKey(item.area || "");
   const target = normalizeSearchKey(buildingNo);
   if (!target || !area.includes(target)) return false;
-  const isBongdamTestArea = area.includes(normalizeSearchKey("상리 25-7")) || area.includes(normalizeSearchKey("신안인스빌"));
-  return item.sigun === "화성시" && item.eup === "봉담읍" && isBongdamTestArea;
+  if (sourceCity && item.sigun !== sourceCity) return false;
+
+  const nameKey = normalizeSearchKey(buildingName || "");
+  // OSM 건물명이 "101동"처럼 동번호만 있는 경우에는 같은 시 안의 동번호 후보가 너무 많아진다.
+  // 그래서 통리반 자동 매칭은 보수적으로 처리하고, 주소 검색 시에는 별도 점수 로직으로 1개를 자동 선택한다.
+  if (!nameKey || nameKey === target) return false;
+  return area.includes(nameKey) || nameKey.includes(target);
 }
 
 function renderOsmBuildingMap(highlightKeys = []) {
@@ -484,24 +501,37 @@ function renderOsmBuildingMap(highlightKeys = []) {
     return;
   }
   const bounds = getOsmBounds(entries.map((entry) => entry.feature));
-  const paths = entries.map((entry) => renderOsmPath(entry, bounds, highlightKeys)).join("");
+  const tileViewport = buildTileViewport(bounds);
+  const tileImages = renderOsmTiles(tileViewport);
+  const paths = entries.map((entry) => renderOsmPath(entry, tileViewport, highlightKeys)).join("");
   els.osmBuildingMap.innerHTML = `
-    <svg class="osm-svg" viewBox="0 0 1000 720" aria-hidden="false">
-      <rect class="osm-map-bg" x="0" y="0" width="1000" height="720" rx="24"></rect>
-      ${paths}
+    <svg class="osm-svg" viewBox="${tileViewport.viewBox}" aria-hidden="false" role="img" aria-label="OpenStreetMap 배경 위 건물도형 통리반 지도">
+      <rect class="osm-map-bg" x="${tileViewport.minX}" y="${tileViewport.minY}" width="${tileViewport.width}" height="${tileViewport.height}" rx="0"></rect>
+      ${tileImages}
+      <g class="osm-building-layer">${paths}</g>
     </svg>
+    <div class="osm-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · 건물도형: OpenStreetMap ODbL, 참고용</div>
   `;
   const matchedCount = entries.filter((entry) => entry.matches.length).length;
-  if (els.osmMapCount) els.osmMapCount.textContent = `${formatNumber(entries.length)}개 건물 · ${formatNumber(matchedCount)}개 통리반 매칭`;
+  if (els.osmMapCount) els.osmMapCount.textContent = `${formatNumber(entries.length)}개 건물 · ${formatNumber(matchedCount)}개 자동 매칭`;
 }
 
-function renderOsmPath(entry, bounds, highlightKeys = []) {
-  const d = featureToSvgPath(entry.feature, bounds);
+function renderOsmTiles(viewport) {
+  const tiles = [];
+  for (let x = viewport.tileMinX; x <= viewport.tileMaxX; x += 1) {
+    for (let y = viewport.tileMinY; y <= viewport.tileMaxY; y += 1) {
+      const href = `https://tile.openstreetmap.org/${viewport.zoom}/${x}/${y}.png`;
+      tiles.push(`<image class="osm-tile" href="${href}" x="${x * 256}" y="${y * 256}" width="256" height="256" preserveAspectRatio="none"></image>`);
+    }
+  }
+  return tiles.join("");
+}
+
+function renderOsmPath(entry, viewport, highlightKeys = []) {
+  const d = featureToSvgPath(entry.feature, viewport.zoom);
   if (!d) return "";
   const matchKeys = entry.matches.map((item) => item.mapKey);
   const isMatched = entry.matches.length > 0;
-  // 사용자가 건물도형을 직접 클릭한 경우에는 클릭한 polygon 1개만 강조한다.
-  // 통리반 매칭 후보 전체가 함께 선택되어 보이는 것을 막기 위한 우선순위 처리다.
   const hasSelectedFeature = Number.isInteger(state.selectedOsmFeatureIndex) && state.selectedOsmFeatureIndex >= 0;
   const isHighlighted = hasSelectedFeature
     ? entry.index === state.selectedOsmFeatureIndex
@@ -535,27 +565,61 @@ function getFeaturePoints(feature) {
   return [];
 }
 
-function featureToSvgPath(feature, bounds) {
+function buildTileViewport(bounds) {
+  const zoom = chooseTileZoom(bounds);
+  const nw = lonLatToWorld(bounds.minLon, bounds.maxLat, zoom);
+  const se = lonLatToWorld(bounds.maxLon, bounds.minLat, zoom);
+  const pad = 256;
+  const minX = Math.floor(Math.min(nw.x, se.x) - pad);
+  const maxX = Math.ceil(Math.max(nw.x, se.x) + pad);
+  const minY = Math.floor(Math.min(nw.y, se.y) - pad);
+  const maxY = Math.ceil(Math.max(nw.y, se.y) + pad);
+  return {
+    zoom,
+    minX,
+    minY,
+    maxX,
+    maxY,
+    width: maxX - minX,
+    height: maxY - minY,
+    viewBox: `${minX} ${minY} ${maxX - minX} ${maxY - minY}`,
+    tileMinX: Math.floor(minX / 256),
+    tileMaxX: Math.floor(maxX / 256),
+    tileMinY: Math.floor(minY / 256),
+    tileMaxY: Math.floor(maxY / 256),
+  };
+}
+
+function chooseTileZoom(bounds) {
+  for (let zoom = 15; zoom >= 10; zoom -= 1) {
+    const nw = lonLatToWorld(bounds.minLon, bounds.maxLat, zoom);
+    const se = lonLatToWorld(bounds.maxLon, bounds.minLat, zoom);
+    const tileCols = Math.ceil(Math.abs(se.x - nw.x) / 256) + 2;
+    const tileRows = Math.ceil(Math.abs(se.y - nw.y) / 256) + 2;
+    if (tileCols * tileRows <= 80) return zoom;
+  }
+  return 10;
+}
+
+function lonLatToWorld(lon, lat, zoom) {
+  const sinLat = Math.sin((Math.max(Math.min(lat, 85.05112878), -85.05112878) * Math.PI) / 180);
+  const scale = 256 * 2 ** zoom;
+  return {
+    x: ((lon + 180) / 360) * scale,
+    y: (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * scale,
+  };
+}
+
+function featureToSvgPath(feature, zoom) {
   const geometry = feature?.geometry || {};
-  const polygons = geometry.type === "Polygon" ? [geometry.coordinates] : geometry.type === "MultiPolygon" ? geometry.coordinates.flat(0) : [];
-  return polygons.map((polygon) => polygon.map((ring) => ringToSvgPath(ring, bounds)).join(" ")).join(" ");
+  const polygons = geometry.type === "Polygon" ? [geometry.coordinates] : geometry.type === "MultiPolygon" ? geometry.coordinates : [];
+  return polygons.map((polygon) => polygon.map((ring) => ringToSvgPath(ring, zoom)).join(" ")).join(" ");
 }
 
-function ringToSvgPath(ring, bounds) {
-  const points = ring.map(([lon, lat]) => projectOsmPoint(lon, lat, bounds));
+function ringToSvgPath(ring, zoom) {
+  const points = ring.map(([lon, lat]) => lonLatToWorld(lon, lat, zoom));
   if (!points.length) return "";
-  return `M ${points.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(" L ")} Z`;
-}
-
-function projectOsmPoint(lon, lat, bounds) {
-  const pad = 36;
-  const width = 1000 - pad * 2;
-  const height = 720 - pad * 2;
-  const lonRange = Math.max(bounds.maxLon - bounds.minLon, 0.000001);
-  const latRange = Math.max(bounds.maxLat - bounds.minLat, 0.000001);
-  const x = pad + ((lon - bounds.minLon) / lonRange) * width;
-  const y = pad + ((bounds.maxLat - lat) / latRange) * height;
-  return [x, y];
+  return `M ${points.map((point) => `${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" L ")} Z`;
 }
 
 function selectOsmFeature(index, options = {}) {
@@ -613,6 +677,19 @@ async function highlightAddressOnOsmMap(query, result, options = {}) {
   return null;
 }
 
+function inferCityFromTongban(tongbanRows) {
+  const rows = Array.isArray(tongbanRows) ? tongbanRows : [];
+  const city = rows.map((row) => row.sigun).find(Boolean);
+  return city || "";
+}
+
+function normalizedCityName(value) {
+  const text = String(value || "");
+  if (text.includes("오산")) return "오산시";
+  if (text.includes("화성")) return "화성시";
+  return "";
+}
+
 function findBestOsmFeatureForAddress(query, result, mapKeys = []) {
   const entries = state.osmFeatureMatches || [];
   if (!entries.length) return null;
@@ -627,12 +704,15 @@ function findBestOsmFeatureForAddress(query, result, mapKeys = []) {
     ...(Array.isArray(result?.tongban) ? result.tongban.map((item) => item.area || "") : []),
   ].filter(Boolean).join(" ");
   const requestedBuildingNo = extractBuildingNo(haystack);
+  const requestedCity = result?.sigun || result?.city || inferCityFromTongban(result?.tongban) || (normalizedCityName(haystack));
   const normalizedHaystack = normalizeSearchKey(haystack);
   let best = null;
   let bestScore = 0;
   for (const entry of entries) {
     let score = 0;
     const entryName = normalizeSearchKey(entry.buildingName || "");
+    const sourceCity = entryCityFromFeature(entry.feature);
+    if (requestedCity && sourceCity && requestedCity !== sourceCity) continue;
     const entryNo = normalizeSearchKey(entry.buildingNo || "");
     const entryMapKeys = entry.matches.map((item) => item.mapKey);
     if (mapKeys.length && entryMapKeys.some((key) => mapKeys.includes(key))) score += 100;

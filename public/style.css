@@ -1534,3 +1534,35 @@ summary::-webkit-details-marker {
     min-height: 430px;
   }
 }
+
+.osm-tile {
+  opacity: 0.92;
+}
+
+.osm-building-layer {
+  pointer-events: auto;
+}
+
+.osm-attribution {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  z-index: 2;
+  max-width: calc(100% - 28px);
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #334155;
+  font-size: 11px;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.osm-attribution a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.osm-map-canvas {
+  position: relative;
+}
