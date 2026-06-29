@@ -600,6 +600,7 @@ function renderAddressResult(result) {
   `;
 
   html += renderMatchedAddressCard(result);
+  html += renderLocationGuideCard(result, schools);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
@@ -653,6 +654,99 @@ function renderMatchedAddressCard(result) {
       <div class="detail-grid">${details}</div>
     </div>
   `;
+}
+
+
+function renderLocationGuideCard(result, schools = []) {
+  const addressQuery = getAddressMapQuery(result);
+  const groupedSchools = groupAddressSchools(Array.isArray(schools) ? schools : []);
+  const schoolItems = groupedSchools
+    .map((item) => {
+      const info = getSchoolInfo(item.school);
+      return {
+        school: item.school,
+        address: info?.address || "",
+        phone: stripHtmlBreaks(info?.phone || ""),
+      };
+    })
+    .filter((item) => item.school);
+
+  if (!addressQuery && !schoolItems.length) return "";
+
+  const primarySchool = schoolItems.length === 1 ? schoolItems[0] : null;
+  const schoolQuery = primarySchool ? [primarySchool.school, primarySchool.address].filter(Boolean).join(" ") : "";
+
+  return `
+    <div class="result-card location-guide-card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>지도 위치 확인</span>
+          <strong>주소와 배정학교를 지도에서 확인하세요</strong>
+        </div>
+        <span class="badge green">Google 지도</span>
+      </div>
+      <p class="result-note">실제 통리반 경계가 아닌 위치 확인용 지도입니다. 지도 서비스에서 검색한 위치가 다르게 표시될 수 있으니 주소와 학교명을 함께 확인해 주세요.</p>
+      <div class="location-map-grid">
+        ${addressQuery ? renderMapPreview("검색 주소", addressQuery, result.road || result.jibun || result.input || "입력 주소") : ""}
+        ${schoolQuery ? renderMapPreview("배정학교", schoolQuery, `${primarySchool.school}${primarySchool.address ? ` · ${primarySchool.address}` : ""}`) : renderSchoolMapLinks(schoolItems)}
+      </div>
+    </div>
+  `;
+}
+
+function getAddressMapQuery(result) {
+  const candidates = [
+    result?.road,
+    result?.jibun,
+    [result?.regionLabel, result?.input].filter(Boolean).join(" "),
+    result?.input,
+  ];
+  return candidates.find((value) => cleanText(value)) || "";
+}
+
+function renderMapPreview(label, query, description) {
+  const mapUrl = googleMapsSearchUrl(query);
+  const embedUrl = googleMapsEmbedUrl(query);
+  return `
+    <section class="map-preview" aria-label="${escapeHtml(label)} 지도">
+      <div class="map-preview-header">
+        <span>${escapeHtml(label)}</span>
+        <a href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener noreferrer">큰 지도 보기</a>
+      </div>
+      <iframe class="map-frame" title="${escapeHtml(label)} 위치 지도" src="${escapeHtml(embedUrl)}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+      <p>${escapeHtml(description || query)}</p>
+    </section>
+  `;
+}
+
+function renderSchoolMapLinks(items) {
+  if (!items.length) return "";
+  return `
+    <section class="map-preview school-link-panel" aria-label="배정학교 지도 링크">
+      <div class="map-preview-header">
+        <span>배정학교</span>
+      </div>
+      <div class="school-map-link-list">
+        ${items.map((item) => {
+          const query = [item.school, item.address].filter(Boolean).join(" ");
+          return `
+            <a class="map-link-button" href="${escapeHtml(googleMapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer">
+              <strong>${escapeHtml(item.school)}</strong>
+              <span>${escapeHtml(item.address || "Google 지도에서 위치 확인")}</span>
+            </a>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function googleMapsSearchUrl(query) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query || "")}`;
+}
+
+function googleMapsEmbedUrl(query) {
+  return `https://www.google.com/maps?q=${encodeURIComponent(query || "")}&output=embed`;
 }
 
 function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
