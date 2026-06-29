@@ -2075,7 +2075,10 @@ async function geocodeAddress(query) {
 }
 
 async function initLocationGuideMaps() {
-  if (!window.L) return;
+  if (!window.L) {
+    window.setTimeout(initLocationGuideMaps, 300);
+    return;
+  }
 
   const mapEls = document.querySelectorAll(".leaflet-preview-map[data-map-query]");
   for (const mapEl of mapEls) {
