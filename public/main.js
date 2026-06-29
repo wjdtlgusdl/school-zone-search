@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-3";
+const APP_VERSION = "20260513-4";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -605,6 +605,7 @@ function renderAddressResult(result) {
   html += renderAddressTongbanCard(tongban, result.input);
 
   showResults(html);
+  window.setTimeout(initLocationGuideMaps, 0);
 }
 
 function renderSchoolAreaResult(query, result) {
@@ -706,14 +707,16 @@ function getAddressMapQuery(result) {
 
 function renderMapPreview(label, query, description) {
   const mapUrl = googleMapsSearchUrl(query);
-  const embedUrl = googleMapsEmbedUrl(query);
+  const mapId = `map-${Math.random().toString(36).slice(2)}`;
   return `
     <section class="map-preview" aria-label="${escapeHtml(label)} 지도">
       <div class="map-preview-header">
         <span>${escapeHtml(label)}</span>
         <a href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener noreferrer">큰 지도 보기</a>
       </div>
-      <iframe class="map-frame" title="${escapeHtml(label)} 위치 지도" src="${escapeHtml(embedUrl)}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+      <div id="${escapeHtml(mapId)}" class="leaflet-preview-map" data-map-query="${escapeHtml(query)}" data-map-label="${escapeHtml(label)}">
+        지도를 불러오는 중입니다.
+      </div>
       <p>${escapeHtml(description || query)}</p>
     </section>
   `;
@@ -2050,4 +2053,57 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+
+const geocodeCache = new Map();
+
+async function geocodeAddress(query) {
+  const key = cleanText(query);
+  if (!key) return null;
+  if (geocodeCache.has(key)) return geocodeCache.get(key);
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=kr&q=${encodeURIComponent(key)}`;
+  const response = await fetch(url, { headers: { Accept: "application/json" } });
+  if (!response.ok) return null;
+
+  const data = await response.json();
+  const first = Array.isArray(data) ? data[0] : null;
+  const result = first ? { lat: Number(first.lat), lon: Number(first.lon) } : null;
+  geocodeCache.set(key, result);
+  return result;
+}
+
+async function initLocationGuideMaps() {
+  if (!window.L) return;
+
+  const mapEls = document.querySelectorAll(".leaflet-preview-map[data-map-query]");
+  for (const mapEl of mapEls) {
+    if (mapEl.dataset.loaded === "true") continue;
+    mapEl.dataset.loaded = "true";
+
+    const query = mapEl.dataset.mapQuery || "";
+    const label = mapEl.dataset.mapLabel || "위치";
+
+    try {
+      const point = await geocodeAddress(query);
+      if (!point || Number.isNaN(point.lat) || Number.isNaN(point.lon)) {
+        mapEl.textContent = "지도 위치를 찾지 못했습니다. 큰 지도 보기로 확인해 주세요.";
+        return;
+      }
+
+      mapEl.textContent = "";
+      const map = L.map(mapEl, { zoomControl: true, attributionControl: true }).setView([point.lat, point.lon], 16);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
+      }).addTo(map);
+
+      L.marker([point.lat, point.lon]).addTo(map).bindPopup(escapeHtml(label)).openPopup();
+      window.setTimeout(() => map.invalidateSize(), 100);
+    } catch (error) {
+      console.warn("map preview failed", error);
+      mapEl.textContent = "지도를 불러오지 못했습니다. 큰 지도 보기로 확인해 주세요.";
+    }
+  }
 }

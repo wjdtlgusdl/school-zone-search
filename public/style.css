@@ -1146,3 +1146,20 @@ summary::-webkit-details-marker {
     min-height: 220px;
   }
 }
+
+
+.leaflet-preview-map {
+  height: 240px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-muted, #f3f4f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #666);
+  font-weight: 600;
+}
+
+.leaflet-preview-map .leaflet-control-attribution {
+  font-size: 10px;
+}
