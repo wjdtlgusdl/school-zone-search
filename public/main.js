@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-4";
+const APP_VERSION = "20260513-3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -600,12 +600,10 @@ function renderAddressResult(result) {
   `;
 
   html += renderMatchedAddressCard(result);
-  html += renderLocationGuideCard(result, schools);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
   showResults(html);
-  window.setTimeout(initLocationGuideMaps, 0);
 }
 
 function renderSchoolAreaResult(query, result) {
@@ -655,101 +653,6 @@ function renderMatchedAddressCard(result) {
       <div class="detail-grid">${details}</div>
     </div>
   `;
-}
-
-
-function renderLocationGuideCard(result, schools = []) {
-  const addressQuery = getAddressMapQuery(result);
-  const groupedSchools = groupAddressSchools(Array.isArray(schools) ? schools : []);
-  const schoolItems = groupedSchools
-    .map((item) => {
-      const info = getSchoolInfo(item.school);
-      return {
-        school: item.school,
-        address: info?.address || "",
-        phone: stripHtmlBreaks(info?.phone || ""),
-      };
-    })
-    .filter((item) => item.school);
-
-  if (!addressQuery && !schoolItems.length) return "";
-
-  const primarySchool = schoolItems.length === 1 ? schoolItems[0] : null;
-  const schoolQuery = primarySchool ? [primarySchool.school, primarySchool.address].filter(Boolean).join(" ") : "";
-
-  return `
-    <div class="result-card location-guide-card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>지도 위치 확인</span>
-          <strong>주소와 배정학교를 지도에서 확인하세요</strong>
-        </div>
-        <span class="badge green">Google 지도</span>
-      </div>
-      <p class="result-note">실제 통리반 경계가 아닌 위치 확인용 지도입니다. 지도 서비스에서 검색한 위치가 다르게 표시될 수 있으니 주소와 학교명을 함께 확인해 주세요.</p>
-      <div class="location-map-grid">
-        ${addressQuery ? renderMapPreview("검색 주소", addressQuery, result.road || result.jibun || result.input || "입력 주소") : ""}
-        ${schoolQuery ? renderMapPreview("배정학교", schoolQuery, `${primarySchool.school}${primarySchool.address ? ` · ${primarySchool.address}` : ""}`) : renderSchoolMapLinks(schoolItems)}
-      </div>
-    </div>
-  `;
-}
-
-function getAddressMapQuery(result) {
-  const candidates = [
-    result?.road,
-    result?.jibun,
-    [result?.regionLabel, result?.input].filter(Boolean).join(" "),
-    result?.input,
-  ];
-  return candidates.find((value) => cleanText(value)) || "";
-}
-
-function renderMapPreview(label, query, description) {
-  const mapUrl = googleMapsSearchUrl(query);
-  const mapId = `map-${Math.random().toString(36).slice(2)}`;
-  return `
-    <section class="map-preview" aria-label="${escapeHtml(label)} 지도">
-      <div class="map-preview-header">
-        <span>${escapeHtml(label)}</span>
-        <a href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener noreferrer">큰 지도 보기</a>
-      </div>
-      <div id="${escapeHtml(mapId)}" class="leaflet-preview-map" data-map-query="${escapeHtml(query)}" data-map-label="${escapeHtml(label)}">
-        지도를 불러오는 중입니다.
-      </div>
-      <p>${escapeHtml(description || query)}</p>
-    </section>
-  `;
-}
-
-function renderSchoolMapLinks(items) {
-  if (!items.length) return "";
-  return `
-    <section class="map-preview school-link-panel" aria-label="배정학교 지도 링크">
-      <div class="map-preview-header">
-        <span>배정학교</span>
-      </div>
-      <div class="school-map-link-list">
-        ${items.map((item) => {
-          const query = [item.school, item.address].filter(Boolean).join(" ");
-          return `
-            <a class="map-link-button" href="${escapeHtml(googleMapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer">
-              <strong>${escapeHtml(item.school)}</strong>
-              <span>${escapeHtml(item.address || "Google 지도에서 위치 확인")}</span>
-            </a>
-          `;
-        }).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function googleMapsSearchUrl(query) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query || "")}`;
-}
-
-function googleMapsEmbedUrl(query) {
-  return `https://www.google.com/maps?q=${encodeURIComponent(query || "")}&output=embed`;
 }
 
 function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
@@ -2053,60 +1956,4 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-
-const geocodeCache = new Map();
-
-async function geocodeAddress(query) {
-  const key = cleanText(query);
-  if (!key) return null;
-  if (geocodeCache.has(key)) return geocodeCache.get(key);
-
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=kr&q=${encodeURIComponent(key)}`;
-  const response = await fetch(url, { headers: { Accept: "application/json" } });
-  if (!response.ok) return null;
-
-  const data = await response.json();
-  const first = Array.isArray(data) ? data[0] : null;
-  const result = first ? { lat: Number(first.lat), lon: Number(first.lon) } : null;
-  geocodeCache.set(key, result);
-  return result;
-}
-
-async function initLocationGuideMaps() {
-  if (!window.L) {
-    window.setTimeout(initLocationGuideMaps, 300);
-    return;
-  }
-
-  const mapEls = document.querySelectorAll(".leaflet-preview-map[data-map-query]");
-  for (const mapEl of mapEls) {
-    if (mapEl.dataset.loaded === "true") continue;
-    mapEl.dataset.loaded = "true";
-
-    const query = mapEl.dataset.mapQuery || "";
-    const label = mapEl.dataset.mapLabel || "위치";
-
-    try {
-      const point = await geocodeAddress(query);
-      if (!point || Number.isNaN(point.lat) || Number.isNaN(point.lon)) {
-        mapEl.textContent = "지도 위치를 찾지 못했습니다. 큰 지도 보기로 확인해 주세요.";
-        return;
-      }
-
-      mapEl.textContent = "";
-      const map = L.map(mapEl, { zoomControl: true, attributionControl: true }).setView([point.lat, point.lon], 16);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
-      }).addTo(map);
-
-      L.marker([point.lat, point.lon]).addTo(map).bindPopup(escapeHtml(label)).openPopup();
-      window.setTimeout(() => map.invalidateSize(), 100);
-    } catch (error) {
-      console.warn("map preview failed", error);
-      mapEl.textContent = "지도를 불러오지 못했습니다. 큰 지도 보기로 확인해 주세요.";
-    }
-  }
 }
