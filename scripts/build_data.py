@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_DATA = ROOT / "public" / "data"
 
 TONGBAN_FILE = ROOT / "source_data" / "tongban.csv"
+TONGBAN_WITH_SEARCH_KEYS_FILE = ROOT / "source_data" / "tongban_with_search_keys.csv"
 SCHOOL_FILE = ROOT / "source_data" / "school_zones_2026.xlsx"
 ROAD_FILE = ROOT / "source_data" / "road_osan_hwaseong.csv"
 SCHOOL_INFO_FILE = ROOT / "school 2026.csv"
@@ -37,6 +38,23 @@ def normalize_text(value):
 
 def normalize_search_key(value):
     return clean_text(value).lower().replace(" ", "").replace("경기도", "")
+
+
+def split_search_keys(value):
+    text = clean_text(value)
+    if not text:
+        return []
+    keys = []
+    seen = set()
+    for part in re.split(r"[;；\n|]", text):
+        key = clean_text(part)
+        if len(normalize_text(key)) < 2:
+            continue
+        norm = normalize_search_key(key)
+        if norm not in seen:
+            seen.add(norm)
+            keys.append(key)
+    return keys
 
 
 def normalize_num(value):
@@ -100,10 +118,11 @@ def read_school_info_rows():
 def read_tongban_rows():
     encodings = ("utf-8-sig", "cp949")
     last_error = None
+    tongban_file = TONGBAN_WITH_SEARCH_KEYS_FILE if TONGBAN_WITH_SEARCH_KEYS_FILE.exists() else TONGBAN_FILE
 
     for encoding in encodings:
         try:
-            with TONGBAN_FILE.open("r", encoding=encoding, newline="") as source:
+            with tongban_file.open("r", encoding=encoding, newline="") as source:
                 reader = csv.DictReader(source)
                 rows = []
                 for row in reader:
@@ -114,6 +133,9 @@ def read_tongban_rows():
                         "ban": clean_text(row.get("반")),
                         "area": clean_text(row.get("관할구역")),
                     }
+                    search_keys = split_search_keys(row.get("검색키") or row.get("search_key") or row.get("searchKeys"))
+                    if search_keys:
+                        item["searchKeys"] = search_keys
                     if item["eup"] == "읍면동" or item["tongri"] == "통리":
                         continue
                     if item["eup"] and item["tongri"]:
@@ -307,7 +329,7 @@ def main():
             "title": "화성·오산 초등학교 통학구역 조회",
             "dataYear": "2026",
             "generatedFrom": [
-                TONGBAN_FILE.name,
+                (TONGBAN_WITH_SEARCH_KEYS_FILE.name if TONGBAN_WITH_SEARCH_KEYS_FILE.exists() else TONGBAN_FILE.name),
                 SCHOOL_FILE.name,
                 ROAD_FILE.name,
                 SCHOOL_INFO_FILE.name,
