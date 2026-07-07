@@ -1434,45 +1434,86 @@ function findSchoolByTongban(tongbanResult) {
 
   const finalResults = [];
   for (const item of tongbanResult) {
-    const eup = normalizeText(item.eup);
-    const tongri = normalizeText(item.tongri);
-    const ban = normalizeText(item.ban);
-    let matchedForItem = false;
+    const matchedRows = findSchoolRowsForTongbanItem(item);
 
-    for (const row of state.core.schools) {
-      if (row.eupKey === eup && row.tongriKey === tongri && banMatches(row.ban, ban)) {
-        matchedForItem = true;
+    if (matchedRows.length) {
+      for (const match of matchedRows) {
         finalResults.push({
-          school: row.school,
+          school: match.row.school,
           sigun: item.sigun || "",
           eup: item.eup,
           tongri: item.tongri,
           ban: item.ban,
           tongbanArea: item.area,
-          schoolArea: row.area,
-          note: row.note,
-          match: "통리반",
+          schoolArea: match.row.area,
+          note: match.row.note,
+          match: match.label,
         });
       }
+      continue;
     }
 
     // 통리·반이 비어 있거나 "미정"인 행은 통학구역표와 직접 연결되지 않을 수 있다.
     // 이때는 같은 읍면동 안에서 관할구역 설명(블록명, 단지명, 행복주택 등)을
     // 통학구역표의 관할구역/비고와 다시 비교해 후보 학교를 보완한다.
-    if (!matchedForItem) {
-      const areaOnlySchools = findSchoolsByTongbanAreaKeyword(item);
-      for (const areaOnly of areaOnlySchools) {
-        finalResults.push(areaOnly);
-      }
+    const areaOnlySchools = findSchoolsByTongbanAreaKeyword(item);
+    for (const areaOnly of areaOnlySchools) {
+      finalResults.push(areaOnly);
+    }
 
-      const specialSchools = findSpecialSchoolsForTongban(item);
-      for (const special of specialSchools) {
-        finalResults.push(special);
-      }
+    const specialSchools = findSpecialSchoolsForTongban(item);
+    for (const special of specialSchools) {
+      finalResults.push(special);
     }
   }
 
   return finalResults.length ? mergeSchoolResults([], finalResults) : "통리반은 찾았지만, 통학구역 자료에서 학교를 찾지 못했습니다.";
+}
+
+function findSchoolRowsForTongbanItem(item) {
+  const eup = normalizeText(item.eup);
+  const tongri = normalizeText(item.tongri);
+  const ban = normalizeText(item.ban);
+  if (!eup) return [];
+
+  const schools = state.core.schools || [];
+
+  // 1순위: 통·반이 모두 정확히 지정된 통학구역.
+  // 예: 반월2통 1반 → school_zones의 반월2통 1반
+  const exactBanRows = schools.filter((row) => {
+    const schoolBan = normalizeBan(row.ban);
+    return row.eupKey === eup
+      && row.tongriKey === tongri
+      && Boolean(schoolBan)
+      && banMatches(row.ban, ban);
+  });
+  if (exactBanRows.length) {
+    return exactBanRows.map((row) => ({ row, label: "통리반 정확 매칭" }));
+  }
+
+  // 2순위: school_zones에서 반이 비어 있는 경우는 해당 통 전체로 본다.
+  // 예: tongban은 반월2통 1반, school_zones는 반월2통 전체 공동학구.
+  const wholeTongRows = schools.filter((row) => {
+    return row.eupKey === eup
+      && row.tongriKey === tongri
+      && !normalizeBan(row.ban);
+  });
+  if (wholeTongRows.length) {
+    return wholeTongRows.map((row) => ({ row, label: "통 전체 매칭" }));
+  }
+
+  // 3순위: school_zones에서 통·반이 모두 비어 있으면 읍면동 전체로 본다.
+  // 데이터가 행정동 전체 학구로 관리되는 경우를 위한 안전장치다.
+  const wholeEupRows = schools.filter((row) => {
+    return row.eupKey === eup
+      && !normalizeText(row.tongri)
+      && !normalizeBan(row.ban);
+  });
+  if (wholeEupRows.length) {
+    return wholeEupRows.map((row) => ({ row, label: "읍면동 전체 매칭" }));
+  }
+
+  return [];
 }
 
 function findSchoolsByTongbanAreaKeyword(item) {
