@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-3";
+const APP_VERSION = "20260707-precision-1";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1322,7 +1322,8 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
       ? containsJibun(area, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
       : false;
 
-    const blockMatch = blockCodes.length ? blockCodes.some((code) => areaNorm.includes(looseNormalize(code))) : false;
+    const areaBlockCodes = extractBlockCodes(area);
+    const blockMatch = blockCodes.length ? blockCodes.some((code) => areaBlockCodes.includes(code)) : false;
     const tokenMatches = buildingTokens.filter((token) => areaNorm.includes(token));
     const buildingMatch = tokenMatches.length >= 2 || blockMatch || hasSharedApartmentBrand(areaNorm, buildingNorm);
     const dongMatch = originalDong ? normalizeForApartment(area).includes(originalDong) : true;
@@ -1520,6 +1521,8 @@ function findSpecialSchoolsForTongban(item) {
 
 function findSchoolByKeyword(keyword) {
   const keywordNorm = looseNormalize(keyword);
+  const queryDong = extractBuildingDong(keyword);
+  const queryBlocks = extractBlockCodes(keyword);
   let keywordTokens = splitMeaningfulKeywords(keyword);
 
   for (const [aptName, aliases] of Object.entries(APT_ALIAS)) {
@@ -1532,7 +1535,7 @@ function findSchoolByKeyword(keyword) {
   }
 
   keywordTokens = unique(keywordTokens);
-  if (!keywordNorm && !keywordTokens.length) {
+  if (!keywordNorm && !keywordTokens.length && !queryDong && !queryBlocks.length) {
     return "통학구역 자료에서 검색할 키워드가 없습니다.";
   }
 
@@ -1541,11 +1544,33 @@ function findSchoolByKeyword(keyword) {
     if (!rowMatchesSelectedRegion(row)) continue;
     const searchText = [row.school, row.eup, row.tongri, row.ban, row.area, row.note].join(" ");
     const searchNorm = looseNormalize(searchText);
+    const searchAptNorm = normalizeForApartment(searchText).toUpperCase();
+    const rowBlocks = extractBlockCodes(searchText);
+
+    // A4-1블록처럼 하위 블록이 명시된 검색은 A4블록과 섞지 않는다.
+    if (queryBlocks.length && !queryBlocks.some((block) => rowBlocks.includes(block))) {
+      continue;
+    }
+
+    // 1451동처럼 동번호가 명시된 검색은 같은 동번호가 있는 행을 우선한다.
+    // 단, 학교 자료에 동번호가 아예 없는 행도 있으므로 아래에서 정확 후보가 있을 때만 최종 필터링한다.
+    const hasExactDong = queryDong ? searchAptNorm.includes(queryDong) : false;
+
     let score = 0;
     const matchedTokens = [];
 
     if (keywordNorm && searchNorm.includes(keywordNorm)) {
       score += 100;
+    }
+
+    if (queryBlocks.length) {
+      score += 120 * queryBlocks.filter((block) => rowBlocks.includes(block)).length;
+      matchedTokens.push(...queryBlocks.filter((block) => rowBlocks.includes(block)));
+    }
+
+    if (queryDong && hasExactDong) {
+      score += 150;
+      matchedTokens.push(queryDong);
     }
 
     for (const token of keywordTokens) {
@@ -1556,14 +1581,15 @@ function findSchoolByKeyword(keyword) {
     }
 
     const sim = similarity(keywordNorm, searchNorm);
-    if (sim >= 0.15) {
+    if (!queryBlocks.length && sim >= 0.15) {
       score += sim * 30;
     }
 
     if (score >= 25) {
       results.push({
         score: Math.round(score * 100) / 100,
-        tokens: matchedTokens.join(", "),
+        tokens: unique(matchedTokens).join(", "),
+        hasExactDong,
         school: row.school,
         sigun: "",
         eup: row.eup,
@@ -1581,7 +1607,15 @@ function findSchoolByKeyword(keyword) {
     return "통학구역 자료에서 키워드로도 찾지 못했습니다.";
   }
 
-  return results.sort((a, b) => b.score - a.score).slice(0, 10);
+  let filtered = results;
+  if (queryDong && results.some((item) => item.hasExactDong)) {
+    filtered = results.filter((item) => item.hasExactDong);
+  }
+
+  return filtered
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 10)
+    .map(({ hasExactDong, ...item }) => item);
 }
 
 function searchSchoolArea(schoolName) {
@@ -1702,20 +1736,20 @@ function containsApartmentDong(areaText, address) {
 }
 
 function containsBlock(areaText, address) {
-  const blockCode = extractBlockCode(address);
-  if (!blockCode) return false;
-  return extractBlockCodes(areaText).includes(blockCode);
+  const blockCodes = extractBlockCodes(address);
+  if (!blockCodes.length) return false;
+  const areaCodes = extractBlockCodes(areaText);
+  return blockCodes.some((code) => areaCodes.includes(code));
 }
 
 function containsBlockFlexible(areaText, address) {
-  const blockCode = extractBlockCode(address);
-  if (!blockCode) return false;
-  return extractBlockCodes(areaText).includes(blockCode);
+  // A4-1블록과 A4블록이 섞이는 문제를 막기 위해 하위 블록도 정확히 비교한다.
+  return containsBlock(areaText, address);
 }
 
 function hasPreciseApartmentIdentifier(address) {
   const addrNorm = normalizeForApartment(address).toUpperCase();
-  return /LH\d{1,2}/.test(addrNorm) || /[A-Z]\d{1,2}블록/.test(addrNorm) || /\d{1,2}단지/.test(addrNorm) || Boolean(extractBuildingDong(address));
+  return /LH\d{1,2}/.test(addrNorm) || extractBlockCodes(address).length > 0 || /\d{1,2}단지/.test(addrNorm) || Boolean(extractBuildingDong(address));
 }
 
 function containsPreciseApartmentKeyword(areaText, address) {
@@ -1723,9 +1757,12 @@ function containsPreciseApartmentKeyword(areaText, address) {
   const addrNorm = normalizeForApartment(address).toUpperCase();
   const tokens = [];
 
+  const addressBlocks = extractBlockCodes(address);
+  const areaBlocks = extractBlockCodes(areaText);
+  if (addressBlocks.some((block) => areaBlocks.includes(block))) return true;
+
   const patterns = [
     /LH\d{1,2}/g,
-    /[A-Z]\d{1,2}블록/g,
     /\d{1,2}단지/g,
   ];
 
@@ -1879,15 +1916,19 @@ function extractBlockCode(value) {
 function extractBlockCodes(value) {
   const text = normalizeForApartment(value).toUpperCase().replaceAll("블럭", "블록");
   const codes = [];
-  const patterns = [
-    /([A-Z])[-\s]?(\d{1,2})\s*(?:블록|BL)?/g,
-  ];
-  for (const pattern of patterns) {
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      codes.push(`${match[1]}${Number(match[2])}블록`);
-    }
+
+  // A4, A4블록, A4-1, A4-1블록, A55BL 등을 인식한다.
+  // LH18 같은 문자열 내부의 H18은 블록으로 오인하지 않도록 앞 글자가 영문/숫자인 경우는 제외한다.
+  const pattern = /(^|[^A-Z0-9])([A-Z])[-\s]?(\d{1,2})(?:[-\s]?(\d{1,2}))?\s*(?:블록|BL)?/g;
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    const letter = match[2];
+    const main = Number(match[3]);
+    const sub = match[4] ? Number(match[4]) : null;
+    if (!letter || !Number.isFinite(main)) continue;
+    codes.push(sub !== null ? `${letter}${main}-${sub}블록` : `${letter}${main}블록`);
   }
+
   return unique(codes);
 }
 
