@@ -538,7 +538,7 @@ function selectSchoolSuggestion(index) {
 async function handleAddressSearch(rawQuery) {
   const query = cleanText(rawQuery);
   if (!query) {
-    renderWarning("주소를 입력해 주세요.", ["도로명주소, 지번주소, 아파트명 중 하나로 검색할 수 있습니다."]);
+    renderWarning("도로명주소를 입력해 주세요.", ["예: 동탄반석로 277", "같은 도로명주소 안에서 통학구역이 나뉘는 경우 동·호수 등 상세 주소를 함께 입력해 주세요."]);
     return;
   }
 
@@ -664,8 +664,8 @@ function renderMatchedAddressCard(result) {
 function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
   if (!schools.length) {
     return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.", [
-      "주소에 읍면동 또는 아파트명을 함께 입력해 보세요.",
-      "검색 결과는 자료 기준에 따라 달라질 수 있습니다.",
+      "도로명주소와 건물번호를 다시 확인해 주세요.",
+      "동·호수에 따라 통학구역이 달라지는 주소는 상세 주소를 함께 입력해 주세요.",
     ]);
   }
 
@@ -687,13 +687,13 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
           </div>
           <span class="badge orange">세부 확인 필요</span>
         </div>
-        <p class="candidate-guide">정확한 배정이 아닐 수 있어요. 통·반까지 하나로 좁혀지지 않아 가능한 학교 후보를 보여드립니다. 건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하면 정확도가 높아집니다.</p>
+        <p class="candidate-guide">정확한 배정이 아닐 수 있어요. 통·반까지 하나로 좁혀지지 않아 가능한 학교 후보를 보여드립니다. 같은 도로명주소 안에서 통학구역이 나뉘는 경우 동·호수 등 상세 주소를 입력하면 정확도가 높아집니다.</p>
         <div class="detail-grid">
           ${detailItem("매칭 방식", matchMethod || "키워드 매칭")}
           ${detailItem("확인 안내", "입력 주소가 통리반 하나로 직접 좁혀지지 않아 학교 후보만 표시합니다.")}
           <div class="detail-item wide">
             <span>다음 검색 방법</span>
-            <p>건물번호, 동 이름, 아파트명, 블록명을 더 구체적으로 입력하거나 학교명 조회에서 해당 학교의 전체 통리반 정보를 확인해 주세요.</p>
+            <p>도로명주소 뒤에 동·호수 등 상세 주소를 추가하거나 학교명 조회에서 해당 학교의 전체 통리반 정보를 확인해 주세요.</p>
           </div>
         </div>
         ${duplicateNotice}
@@ -775,8 +775,8 @@ function renderAddressTongbanRow(item) {
 function renderTongbanCard(tongban, message) {
   if (!tongban.length) {
     return alertCard("warning", typeof message === "string" ? message : "통리반 검색 결과가 없습니다.", [
-      "도로명주소로 입력했다면 건물번호까지 입력해 보세요.",
-      "아파트명은 단지명 또는 블록명을 함께 입력하면 매칭률이 올라갑니다.",
+      "도로명주소와 건물번호를 입력해 주세요.",
+      "동·호수에 따라 통학구역이 달라지는 주소는 상세 주소를 함께 입력해 주세요.",
     ]);
   }
 
