@@ -1272,6 +1272,12 @@ function parseAddress(address) {
   };
 }
 
+function getTongbanSearchText(row) {
+  if (!row) return "";
+  const searchKeys = Array.isArray(row.searchKeys) ? row.searchKeys.join(" ") : "";
+  return [row.area || "", searchKeys].filter(Boolean).join(" ");
+}
+
 function findTongban(address) {
   const parsed = parseAddress(address);
   let rows = applySelectedRegionToTongban(state.core.tongban || []);
@@ -1287,13 +1293,14 @@ function findTongban(address) {
   const explicitBlock = extractBlockCode(address);
   const results = [];
   for (const row of rows) {
+    const searchText = getTongbanSearchText(row);
     const jibunMatch = parsed.legalArea && parsed.mainNo !== null
-      ? containsJibun(row.area, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
+      ? containsJibun(searchText, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
       : false;
 
-    const blockMatch = containsBlock(row.area, address) || containsBlockFlexible(row.area, address);
-    const apartmentDongMatch = containsApartmentDong(row.area, address);
-    const preciseApartmentMatch = containsPreciseApartmentKeyword(row.area, address);
+    const blockMatch = containsBlock(searchText, address) || containsBlockFlexible(searchText, address);
+    const apartmentDongMatch = containsApartmentDong(searchText, address);
+    const preciseApartmentMatch = containsPreciseApartmentKeyword(searchText, address);
     const broadMatchAllowed = !explicitBlock && !extractBuildingDong(address) && !hasPreciseApartmentIdentifier(address);
 
     if (
@@ -1301,7 +1308,7 @@ function findTongban(address) {
       apartmentDongMatch ||
       blockMatch ||
       preciseApartmentMatch ||
-      (broadMatchAllowed && (containsDistrictName(row.area, address) || containsAreaKeyword(row.area, address)))
+      (broadMatchAllowed && (containsDistrictName(searchText, address) || containsAreaKeyword(searchText, address)))
     ) {
       results.push(row);
     }
@@ -1337,7 +1344,7 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
   const results = [];
 
   for (const row of rows) {
-    const area = row.area || "";
+    const area = getTongbanSearchText(row);
     const areaNorm = looseNormalize(area);
     const areaApartmentNorm = normalizeForApartment(area);
 
@@ -1470,7 +1477,7 @@ function findSchoolByTongban(tongbanResult) {
 
 function findSchoolsByTongbanAreaKeyword(item) {
   const eup = normalizeText(item.eup || "");
-  const area = cleanText(item.area || "");
+  const area = cleanText(getTongbanSearchText(item));
   if (!eup || !area) return [];
 
   const areaNorm = looseNormalize(area);
