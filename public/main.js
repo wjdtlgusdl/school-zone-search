@@ -1115,6 +1115,9 @@ async function searchAddress(address) {
     : original;
 
   let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
+  if (Array.isArray(tongban) && roadInfo) {
+    tongban = filterTongbanByRoadContext(tongban, roadInfo);
+  }
   if (typeof tongban === "string") {
     tongban = findTongban(searchQuery);
   }
@@ -1312,6 +1315,30 @@ function makeSearchIndexCandidates(value) {
   parts.forEach((item) => candidates.add(item));
 
   return Array.from(candidates);
+}
+
+
+function filterTongbanByRoadContext(rows, roadInfo) {
+  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
+
+  const admin = normalizeText(roadInfo.admin || "");
+  const legal = cleanText(roadInfo.legal || "");
+  const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
+
+  // 도로명주소 DB의 행정동이 통리반 읍면동과 정확히 맞으면 그 후보를 최우선으로 사용한다.
+  // 예: 성산새싹길 26-4 → 행정동 남촌동. search_index에 중앙동 후보가 같이 걸려도 남촌동만 남긴다.
+  if (admin) {
+    const byAdmin = rows.filter((row) => normalizeText(row.eup || "") === admin);
+    if (byAdmin.length) return byAdmin;
+  }
+
+  // 행정동으로 좁히지 못한 경우에는 실제 지번이 관할구역 문구에 들어있는 후보를 우선한다.
+  if (parsed.legalArea && parsed.mainNo !== null) {
+    const byJibun = rows.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
+    if (byJibun.length) return byJibun;
+  }
+
+  return rows;
 }
 
 function findTongban(address) {
