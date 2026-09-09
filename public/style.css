@@ -1043,3 +1043,35 @@ summary::-webkit-details-marker {
   color: var(--text-muted);
   font-size: 13px;
 }
+
+
+/* 2026 지도 테스트 */
+.map-result-card { margin-top: 14px; }
+.result-map {
+  width: 100%;
+  height: 360px;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.08);
+}
+.map-status {
+  margin: 10px 2px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.map-label {
+  min-width: 74px;
+  padding: 7px 9px;
+  color: #111;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .result-map { height: 300px; }
+}

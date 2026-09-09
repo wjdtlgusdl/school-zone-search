@@ -615,7 +615,116 @@ function renderAddressResult(result) {
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
+  const canShowMap = schoolNames.length === 1 && Boolean(result.road || result.input);
+  if (canShowMap) html += renderMapCard();
+
   showResults(html);
+
+  if (canShowMap) {
+    const info = getSchoolInfo(schoolNames[0]);
+    window.setTimeout(() => initResultMap(result.road || result.input, schoolNames[0], info?.address || ""), 0);
+  }
+}
+
+function renderMapCard() {
+  return `
+    <div class="result-card map-result-card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>위치 확인</span>
+          <strong>검색 주소와 배정학교</strong>
+        </div>
+        <span class="badge">지도 테스트</span>
+      </div>
+      <p class="result-note">지도는 조회 결과를 보기 위한 보조 정보입니다. 통학구역 경계를 표시하는 지도는 아닙니다.</p>
+      <div id="resultMap" class="result-map" aria-label="검색 주소와 배정학교 위치 지도"></div>
+      <p id="mapStatus" class="map-status">지도를 불러오는 중입니다.</p>
+    </div>
+  `;
+}
+
+function cleanGeocodeAddress(value) {
+  return cleanText(String(value || "")
+    .replace(/^\(\d{5}\)\s*/, "")
+    .replace(/\([^)]*\)\s*$/, "")
+    .replace(/[.]/g, " "));
+}
+
+function loadKakaoMapSdk() {
+  if (window.kakao?.maps?.services) return Promise.resolve();
+  if (window.__kakaoMapSdkPromise) return window.__kakaoMapSdkPromise;
+
+  const key = String(window.MAP_CONFIG?.kakaoJavaScriptKey || "").trim();
+  if (!key || key === "여기에_JAVASCRIPT_키를_붙여넣으세요") {
+    return Promise.reject(new Error("KAKAO_KEY_MISSING"));
+  }
+
+  window.__kakaoMapSdkPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(key)}&libraries=services&autoload=false`;
+    script.onload = () => {
+      if (!window.kakao?.maps) return reject(new Error("KAKAO_SDK_LOAD_FAILED"));
+      window.kakao.maps.load(() => resolve());
+    };
+    script.onerror = () => reject(new Error("KAKAO_SDK_LOAD_FAILED"));
+    document.head.appendChild(script);
+  });
+  return window.__kakaoMapSdkPromise;
+}
+
+function geocodeAddress(geocoder, address) {
+  return new Promise((resolve, reject) => {
+    geocoder.addressSearch(address, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK && result?.length) {
+        resolve(new window.kakao.maps.LatLng(Number(result[0].y), Number(result[0].x)));
+      } else {
+        reject(new Error(`GEOCODE_FAILED:${address}`));
+      }
+    });
+  });
+}
+
+async function initResultMap(homeAddress, schoolName, schoolAddress) {
+  const mapEl = document.querySelector("#resultMap");
+  const statusEl = document.querySelector("#mapStatus");
+  if (!mapEl || !statusEl) return;
+
+  if (!schoolAddress) {
+    statusEl.textContent = "학교 주소 정보가 없어 지도를 표시하지 못했습니다.";
+    mapEl.hidden = true;
+    return;
+  }
+
+  try {
+    await loadKakaoMapSdk();
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const homeQuery = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
+    const schoolQuery = cleanGeocodeAddress(schoolAddress);
+    const [homePos, schoolPos] = await Promise.all([
+      geocodeAddress(geocoder, homeQuery),
+      geocodeAddress(geocoder, schoolQuery),
+    ]);
+
+    const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
+    const homeMarker = new window.kakao.maps.Marker({ map, position: homePos });
+    const schoolMarker = new window.kakao.maps.Marker({ map, position: schoolPos });
+    const bounds = new window.kakao.maps.LatLngBounds();
+    bounds.extend(homePos);
+    bounds.extend(schoolPos);
+    map.setBounds(bounds, 70, 70, 70, 70);
+
+    const homeInfo = new window.kakao.maps.InfoWindow({ content: '<div class="map-label">검색 주소</div>' });
+    const schoolInfo = new window.kakao.maps.InfoWindow({ content: `<div class="map-label">${escapeHtml(schoolName)}</div>` });
+    homeInfo.open(map, homeMarker);
+    schoolInfo.open(map, schoolMarker);
+    statusEl.textContent = "검색 주소와 배정학교의 위치를 표시했습니다.";
+  } catch (error) {
+    console.warn("map load failed", error);
+    mapEl.hidden = true;
+    statusEl.textContent = error?.message === "KAKAO_KEY_MISSING"
+      ? "지도 테스트용 JavaScript 키가 아직 입력되지 않았습니다."
+      : "지도 정보를 불러오지 못했습니다. 통학구역 조회 결과에는 영향이 없습니다.";
+  }
 }
 
 function renderSchoolAreaResult(query, result) {
