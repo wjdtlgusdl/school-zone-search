@@ -713,18 +713,33 @@ async function initResultMap(homeAddress, schoolName, schoolAddress) {
     ]);
 
     const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
-    const homeMarker = new window.kakao.maps.Marker({ map, position: homePos });
-    const schoolMarker = new window.kakao.maps.Marker({ map, position: schoolPos });
+
+    // 기본 핀 대신 검색 주소(파랑)와 배정학교(초록)를 명확히 구분한 커스텀 마커를 사용합니다.
+    const homeOverlay = new window.kakao.maps.CustomOverlay({
+      map,
+      position: homePos,
+      yAnchor: 1,
+      content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
+    });
+    const schoolOverlay = new window.kakao.maps.CustomOverlay({
+      map,
+      position: schoolPos,
+      yAnchor: 1,
+      content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(schoolName)}</span></div>`,
+    });
+
     const bounds = new window.kakao.maps.LatLngBounds();
     bounds.extend(homePos);
     bounds.extend(schoolPos);
-    map.setBounds(bounds, 70, 70, 70, 70);
+    map.setBounds(bounds, 80, 80, 80, 80);
 
-    const homeInfo = new window.kakao.maps.InfoWindow({ content: '<div class="map-label">검색 주소</div>' });
-    const schoolInfo = new window.kakao.maps.InfoWindow({ content: `<div class="map-label">${escapeHtml(schoolName)}</div>` });
-    homeInfo.open(map, homeMarker);
-    schoolInfo.open(map, schoolMarker);
-    statusEl.textContent = "검색 주소와 배정학교의 위치를 표시했습니다.";
+    // 컨테이너 크기 확정 뒤 한 번 더 재배치해 두 위치가 안정적으로 한 화면에 들어오게 합니다.
+    window.setTimeout(() => {
+      map.relayout();
+      map.setBounds(bounds, 80, 80, 80, 80);
+    }, 0);
+
+    statusEl.textContent = "파란 마커는 검색 주소, 초록 마커는 배정학교입니다.";
   } catch (error) {
     console.warn("map load failed", error);
     mapEl.hidden = true;
