@@ -689,6 +689,13 @@ async function initResultMap(homeAddress, schoolName, schoolAddress) {
   const statusEl = document.querySelector("#mapStatus");
   if (!mapEl || !statusEl) return;
 
+  // CSS가 이전 버전으로 캐시되어도 지도 영역의 크기가 0이 되지 않도록 보장합니다.
+  mapEl.hidden = false;
+  mapEl.style.display = "block";
+  mapEl.style.width = "100%";
+  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "300px" : "360px";
+  mapEl.style.minHeight = "300px";
+
   if (!schoolAddress) {
     statusEl.textContent = "학교 주소 정보가 없어 지도를 표시하지 못했습니다.";
     mapEl.hidden = true;
