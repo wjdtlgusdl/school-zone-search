@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="화성·오산 초등학교 통학구역과 통리반을 도로명주소 또는 학교명으로 조회합니다.">
     <title>화성·오산 초등학교 통학구역 조회</title>
-    <link rel="stylesheet" href="/style.css?v=20260909-mapmarkers1">
+    <link rel="stylesheet" href="/style.css?v=20260917-integrated1">
   </head>
   <body>
     <div class="app-shell">
@@ -58,6 +58,13 @@
                 </select>
               </label>
             </div>
+            <label class="field-label" for="currentSchoolInput">현재 재학 중인 초등학교</label>
+            <div class="search-box school-compare-box">
+              <input id="currentSchoolInput" name="currentSchool" type="search" inputmode="search" list="currentSchoolList" placeholder="예: 운암초" autocomplete="off">
+              <datalist id="currentSchoolList"></datalist>
+            </div>
+            <p class="field-hint">주소상 통학구역과 재학학교를 비교한 뒤, 재학학교 기준 중입배정 범위를 함께 안내합니다.</p>
+
             <label class="field-label" for="addressInput">도로명주소</label>
             <div class="search-box">
               <div class="autocomplete" id="addressAutocomplete">
@@ -107,7 +114,8 @@
 
     </div>
 
+    <script src="/middle-data.js?v=20260917-integrated1" defer></script>
     <script src="/map-config.js?v=20260909-mapmarkers1" defer></script>
-    <script src="/main.js?v=20260909-mapmarkers1" defer></script>
+    <script src="/main.js?v=20260917-integrated1" defer></script>
   </body>
 </html>

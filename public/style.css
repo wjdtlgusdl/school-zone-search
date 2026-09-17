@@ -1123,3 +1123,22 @@ summary::-webkit-details-marker {
 .zone-map-marker--home .zone-map-marker__icon { background: #2563eb; }
 .zone-map-marker--school { color: #16a34a; }
 .zone-map-marker--school .zone-map-marker__icon { background: #16a34a; }
+
+/* 2026 초등 통학구역 + 중입배정 통합 조회 */
+.school-compare-box { margin-bottom: 0; }
+.integrated-card { margin-top: 18px; }
+.integrated-compare { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:14px 0; }
+.integrated-compare > div { padding:14px 16px; border:1px solid var(--border, #dfe5ec); border-radius:14px; background:var(--surface-soft, rgba(127,127,127,.05)); }
+.integrated-compare small { display:block; margin-bottom:6px; opacity:.68; }
+.integrated-compare strong { display:block; line-height:1.45; }
+.integrated-alert { display:flex; flex-direction:column; gap:4px; padding:14px 16px; border-radius:14px; margin:12px 0; border:1px solid transparent; }
+.integrated-ok { background:rgba(27,153,105,.10); border-color:rgba(27,153,105,.25); }
+.integrated-warn { background:rgba(220,151,36,.11); border-color:rgba(220,151,36,.28); }
+.integrated-alert span { line-height:1.55; opacity:.82; }
+.integrated-heading { margin:22px 0 10px; font-size:1rem; }
+.integrated-middle-group { padding:14px 0; border-top:1px solid var(--border, #dfe5ec); }
+.integrated-middle-group > span { margin-left:8px; font-size:.84rem; opacity:.65; }
+.integrated-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.integrated-tags em { font-style:normal; padding:6px 9px; border-radius:999px; background:rgba(55,117,255,.10); font-size:.88rem; }
+.integrated-note,.integrated-footnote { line-height:1.55; opacity:.72; font-size:.88rem; }
+@media (max-width:700px){ .integrated-compare{grid-template-columns:1fr;} }

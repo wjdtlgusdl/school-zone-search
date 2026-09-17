@@ -2180,3 +2180,91 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+// ===== 2026 초등 통학구역 + 중입배정 통합 조회 =====
+function normalizeIntegratedSchool(value) {
+  return String(value || "").replace(/\s/g, "").replace(/초등학교$/, "초");
+}
+
+function populateCurrentSchoolList() {
+  const list = document.querySelector("#currentSchoolList");
+  if (!list || typeof GROUPS === "undefined") return;
+  const names = [...new Set(GROUPS.flatMap((g) => g[3] || []))].sort((a,b)=>a.localeCompare(b,"ko"));
+  list.innerHTML = names.map((s) => `<option value="${escapeHtml(String(s).replace(/초등학교$/, "초"))}"></option>`).join("");
+}
+
+document.addEventListener("DOMContentLoaded", () => window.setTimeout(populateCurrentSchoolList, 0));
+
+function canonicalIntegratedSchool(value) {
+  if (typeof GROUPS === "undefined") return "";
+  const all = [...new Set(GROUPS.flatMap((g) => g[3] || []))];
+  const q = normalizeIntegratedSchool(value);
+  return all.find((s) => normalizeIntegratedSchool(s) === q) || "";
+}
+
+function middleGroupsForSchool(school) {
+  if (typeof GROUPS === "undefined") return [];
+  const q = normalizeIntegratedSchool(school);
+  return GROUPS.filter((g) => (g[3] || []).some((s) => normalizeIntegratedSchool(s) === q));
+}
+
+function integratedAreaRule(school) {
+  if (typeof AREA_RULES === "undefined") return null;
+  const key = Object.keys(AREA_RULES).find((k) => normalizeIntegratedSchool(k) === normalizeIntegratedSchool(school));
+  return key ? AREA_RULES[key] : null;
+}
+
+function renderMiddleAssignmentForIntegrated(school) {
+  const groups = middleGroupsForSchool(school);
+  const rule = integratedAreaRule(school);
+  if (!groups.length) {
+    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2026 중입배정 V7 원자료를 확인해 주세요.</span></div>`;
+  }
+
+  if (rule?.type === "fixed") {
+    const allowed = new Set(rule.schools || []);
+    const blocks = groups.filter(g => (g[2] || []).some(m => allowed.has(m))).map(g => {
+      const schools = (g[2] || []).filter(m => allowed.has(m));
+      return `<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${schools.map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div></div>`;
+    }).join("");
+    return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(String(school).replace(/초등학교$/, "초"))} 혼합지원 규칙</strong><span>${escapeHtml(rule.text || "혼합지원")}</span></div>${blocks}${rule.deny?.length?`<p class="integrated-note">지원 제한: ${escapeHtml(rule.deny.join(", "))}</p>`:""}`;
+  }
+
+  if (groups.length === 1) {
+    const g = groups[0];
+    return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])} 기준</span></div><div class="integrated-middle-group"><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`;
+  }
+
+  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, V7 기준으로 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
+}
+
+function renderEnrollmentComparison(addressSchoolNames) {
+  const input = document.querySelector("#currentSchoolInput");
+  if (!input) return "";
+  const entered = input.value.trim();
+  if (!entered) {
+    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>현재 재학 중인 초등학교를 입력해 주세요.</strong></div></div><p class="result-note">재학학교를 입력하면 주소상 통학구역과 비교하고 중입배정 범위를 이어서 확인합니다.</p></div>`;
+  }
+  const current = canonicalIntegratedSchool(entered);
+  if (!current) {
+    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>등록된 초등학교명을 확인해 주세요.</strong></div></div><div class="integrated-alert integrated-warn"><strong>${escapeHtml(entered)}</strong><span>2026 중입배정 V7 학교 목록에서 정확히 일치하는 학교를 찾지 못했습니다.</span></div></div>`;
+  }
+  const addressSet = new Set((addressSchoolNames || []).map(normalizeIntegratedSchool));
+  const matched = addressSet.has(normalizeIntegratedSchool(current));
+  const addressText = addressSchoolNames.length ? addressSchoolNames.map(s=>String(s).replace(/초등학교$/, "초")).join(", ") : "확인 필요";
+  const compare = matched
+    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함됩니다. 자료상 학구위반 불일치가 확인되지 않습니다.</span></div>`
+    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함되지 않습니다. 공동학구·전학·적용 예외 등은 별도 확인이 필요합니다.</span></div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div><span class="badge">2026 중입 V7</span></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<p class="integrated-footnote">※ 중학군은 실제 배정학교를 예측하는 기능이 아닙니다. 2026학년도 중입배정 V7에 정리된 지원 가능 범위이며, 최종 판단은 시행계획과 교육지원청 안내를 따릅니다.</p></div>`;
+}
+
+// 기존 주소 결과 렌더링을 감싸 통합 비교 카드를 추가한다.
+const originalRenderAddressResultIntegrated = renderAddressResult;
+renderAddressResult = function(result) {
+  const schools = Array.isArray(result.school) ? result.school : [];
+  const schoolNames = unique(schools.map((item) => item.school));
+  originalRenderAddressResultIntegrated(result);
+  if (els.results && !els.results.hidden) {
+    els.results.insertAdjacentHTML("beforeend", renderEnrollmentComparison(schoolNames));
+  }
+};
