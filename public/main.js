@@ -1267,6 +1267,18 @@ async function searchAddress(address) {
   let school = findSchoolByTongban(tongban);
   let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
 
+  // 같은 통·반 안에서 통학구역이 다시 나뉘는 경우에는 실제 주소의 지번/동 정보를
+  // 통학구역표의 관할구역과 한 번 더 비교한다.
+  // 예: 동탄2동 4통 1반은 쌍용예가 441동(솔빛초)과 반송동 219~221(반송초)이 함께 있으므로
+  //     반송동 219 주소는 통·반만으로 후보를 남기지 않고 반송초로 좁힌다.
+  if (Array.isArray(school) && unique(school.map((item) => item.school)).length > 1) {
+    const refinedSchool = refineSchoolsByExactAddress(school, roadInfo, original);
+    if (refinedSchool.length && unique(refinedSchool.map((item) => item.school)).length < unique(school.map((item) => item.school)).length) {
+      school = refinedSchool;
+      matchMethod = "통리반·세부주소 매칭";
+    }
+  }
+
   // A21처럼 같은 블록명이 여러 지역/자료 행에 동시에 존재하는 경우,
   // 통리반 매칭이 먼저 성공하면 기존 로직은 키워드 매칭 결과를 더 보지 않아
   // 통학구역표에만 있는 향남읍 A21 같은 항목이 누락될 수 있다.
@@ -1605,6 +1617,79 @@ function mergeSchoolResults(primary, secondary) {
   }
 
   return merged;
+}
+
+function refineSchoolsByExactAddress(schools, roadInfo, originalInput = "") {
+  if (!Array.isArray(schools) || schools.length <= 1) return schools || [];
+
+  const parsed = parseAddress([roadInfo?.jibun || "", roadInfo?.legal || ""].filter(Boolean).join(" "));
+
+  // 1순위: 통학구역 관할구역에 실제 지번이 명시되어 있으면 가장 강한 근거로 사용한다.
+  // "반송동 219~221"처럼 범위로 적힌 경우도 containsJibun이 처리한다.
+  if (parsed.legalArea && parsed.mainNo !== null) {
+    const jibunMatched = schools.filter((item) =>
+      containsJibun(item.schoolArea || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
+    );
+    if (jibunMatched.length) return mergeSchoolResults([], jibunMatched);
+  }
+
+  // 2순위: 매칭된 통리반 관할구역에 아파트 동이 명시되어 있으면 그 동을
+  // 통학구역의 세부 동 범위와 대조한다.
+  // 예: 동탄반석로 71 -> 반송동 135 -> 4통 1반 관할구역의 441동
+  //     -> 솔빛초 관할구역의 441~448동과 일치 -> 솔빛초.
+  const tongbanDongMatched = schools.filter((item) => {
+    const dongs = extractExplicitBuildingDongs(item.tongbanArea || "");
+    return dongs.some((dong) => schoolAreaContainsBuildingDong(item.schoolArea || "", dong));
+  });
+  if (tongbanDongMatched.length) return mergeSchoolResults([], tongbanDongMatched);
+
+  // 3순위: 사용자가 아파트 동까지 직접 입력했거나 도로명주소 건물명에 동 정보가 있는 경우
+  // 통학구역의 "441~448동" 같은 세부 동 조건과 비교한다.
+  const detailText = [originalInput, roadInfo?.building || ""].filter(Boolean).join(" ");
+  const buildingDong = extractBuildingDong(detailText);
+  if (buildingDong) {
+    const dongMatched = schools.filter((item) => schoolAreaContainsBuildingDong(item.schoolArea || "", buildingDong));
+    if (dongMatched.length) return mergeSchoolResults([], dongMatched);
+  }
+
+  return schools;
+}
+
+function extractExplicitBuildingDongs(text) {
+  const value = cleanText(text || "");
+  const found = [];
+
+  // 지번 숫자를 아파트 동으로 오인하지 않도록 반드시 '동'이 붙은 숫자만 사용한다.
+  for (const match of value.matchAll(/(\d{2,4})\s*동/g)) {
+    found.push(Number(match[1]));
+  }
+
+  // "441~448동"처럼 범위가 통리반 관할구역에 직접 적힌 경우도 펼쳐서 사용한다.
+  for (const match of value.matchAll(/(\d{2,4})\s*(?:~|∼|〜|－|–|—)\s*(\d{2,4})\s*동/g)) {
+    const start = Number(match[1]);
+    const end = Number(match[2]);
+    if (start > 0 && end >= start && end - start <= 200) {
+      for (let dong = start; dong <= end; dong += 1) found.push(dong);
+    }
+  }
+
+  return unique(found.filter(Boolean));
+}
+
+function schoolAreaContainsBuildingDong(areaText, buildingDong) {
+  const target = Number(String(buildingDong).replace(/[^0-9]/g, ""));
+  if (!target) return false;
+
+  const text = cleanText(areaText || "");
+  const rangePattern = /(\d{2,4})\s*(?:~|∼|〜|－|–|—)\s*(\d{2,4})\s*동/g;
+  for (const match of text.matchAll(rangePattern)) {
+    const start = Number(match[1]);
+    const end = Number(match[2]);
+    if (start <= target && target <= end) return true;
+  }
+
+  const singleDongs = [...text.matchAll(/(\d{2,4})\s*동/g)].map((match) => Number(match[1]));
+  return singleDongs.includes(target);
 }
 
 function findSchoolByTongban(tongbanResult) {
