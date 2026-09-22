@@ -1261,10 +1261,22 @@ async function searchAddress(address) {
   // 여러 동이 있는 아파트는 기존 키워드 매칭만으로 누락될 수 있다.
   // 도로명 DB가 지번/건물명을 알려주면, 해당 지번과 건물명 기준으로
   // 통리반 자료를 한 번 더 찾아 대표 후보를 보여준다.
-  if (typeof tongban === "string" && roadInfo) {
+  if (roadInfo) {
     const roadTongban = findTongbanByRoadInfo(roadInfo, original);
     if (Array.isArray(roadTongban) && roadTongban.length) {
-      tongban = roadTongban;
+      // 도로명 DB에서 지번/행정동까지 확인된 결과는 통리반 카드에도 반드시 사용한다.
+      // 기존 검색 결과가 없으면 그대로 사용하고, 있으면 중복 없이 병합한다.
+      if (!Array.isArray(tongban) || !tongban.length) {
+        tongban = roadTongban;
+      } else {
+        const merged = [...tongban];
+        const seen = new Set(merged.map((row) => [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|")));
+        for (const row of roadTongban) {
+          const key = [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|");
+          if (!seen.has(key)) { seen.add(key); merged.push(row); }
+        }
+        tongban = filterTongbanByRoadContext(merged, roadInfo);
+      }
     }
   }
 
