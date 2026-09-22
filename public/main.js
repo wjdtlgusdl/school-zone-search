@@ -808,7 +808,11 @@ function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
 
   const groupedSchools = groupAddressSchools(schools);
   const names = groupedSchools.map((group) => group.school);
-  const isCandidate = schools.some((item) => item.score) || String(matchMethod || "").includes("유사");
+  // 여러 세부주소/통리반이 매칭되더라도 최종 배정학교가 하나뿐이면
+  // 정상 확정 결과로 처리한다. "유사 매칭" 플래그는 복수 학교 후보가
+  // 실제로 남아 있을 때만 세부 확인 필요로 표시한다.
+  const isCandidate = groupedSchools.length > 1 &&
+    (schools.some((item) => item.score) || String(matchMethod || "").includes("유사"));
   const matchedCount = Array.isArray(tongban) ? tongban.length : 0;
   const duplicateNotice = matchedCount > groupedSchools.length
     ? `<p class="result-note">같은 학교로 배정되는 여러 동·통리반 결과를 하나로 묶어 표시했습니다.${matchedCount ? ` 원자료 기준 ${formatNumber(matchedCount)}건이 확인되었습니다.` : ""}</p>`
