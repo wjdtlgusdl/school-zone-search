@@ -622,7 +622,7 @@ function renderAddressResult(result) {
 
   if (canShowMap) {
     const info = getSchoolInfo(schoolNames[0]);
-    window.setTimeout(() => initResultMap(result.road || result.input, schoolNames[0], info?.address || ""), 0);
+    window.setTimeout(() => initResultMap(result.road || result.input, result.jibun || "", schoolNames[0], info?.address || ""), 0);
   }
 }
 
@@ -684,7 +684,7 @@ function geocodeAddress(geocoder, address) {
   });
 }
 
-async function initResultMap(homeAddress, schoolName, schoolAddress) {
+async function initResultMap(homeAddress, homeJibun, schoolName, schoolAddress) {
   const mapEl = document.querySelector("#resultMap");
   const statusEl = document.querySelector("#mapStatus");
   if (!mapEl || !statusEl) return;
@@ -706,11 +706,24 @@ async function initResultMap(homeAddress, schoolName, schoolAddress) {
     await loadKakaoMapSdk();
     const geocoder = new window.kakao.maps.services.Geocoder();
     const homeQuery = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
+    const jibunQuery = cleanGeocodeAddress(homeJibun);
     const schoolQuery = cleanGeocodeAddress(schoolAddress);
-    const [homePos, schoolPos] = await Promise.all([
-      geocodeAddress(geocoder, homeQuery),
-      geocodeAddress(geocoder, schoolQuery),
-    ]);
+
+    // 일부 도로명주소가 Kakao 주소검색에서 실패하는 경우 roads.json의 지번으로 재시도한다.
+    // 통학구역 판정에는 영향을 주지 않고 지도 좌표를 얻는 용도로만 사용한다.
+    let homePos;
+    try {
+      homePos = await geocodeAddress(geocoder, homeQuery);
+    } catch (roadError) {
+      if (!jibunQuery || normalizeText(jibunQuery) === normalizeText(homeQuery)) throw roadError;
+      const regionPrefix = homeAddress.includes("오산시") ? "경기도 오산시 " : "경기도 화성시 ";
+      const fallbackQuery = /^(?:경기도\s*)?(?:화성시|오산시)\s/.test(jibunQuery)
+        ? jibunQuery.replace(/^(화성시|오산시)\s/, "경기도 $1 ")
+        : `${regionPrefix}${jibunQuery}`;
+      console.info("road geocode failed; retrying with jibun", { homeQuery, fallbackQuery });
+      homePos = await geocodeAddress(geocoder, fallbackQuery);
+    }
+    const schoolPos = await geocodeAddress(geocoder, schoolQuery);
 
     const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
 
@@ -1261,22 +1274,10 @@ async function searchAddress(address) {
   // 여러 동이 있는 아파트는 기존 키워드 매칭만으로 누락될 수 있다.
   // 도로명 DB가 지번/건물명을 알려주면, 해당 지번과 건물명 기준으로
   // 통리반 자료를 한 번 더 찾아 대표 후보를 보여준다.
-  if (roadInfo) {
+  if (typeof tongban === "string" && roadInfo) {
     const roadTongban = findTongbanByRoadInfo(roadInfo, original);
     if (Array.isArray(roadTongban) && roadTongban.length) {
-      // 도로명 DB에서 지번/행정동까지 확인된 결과는 통리반 카드에도 반드시 사용한다.
-      // 기존 검색 결과가 없으면 그대로 사용하고, 있으면 중복 없이 병합한다.
-      if (!Array.isArray(tongban) || !tongban.length) {
-        tongban = roadTongban;
-      } else {
-        const merged = [...tongban];
-        const seen = new Set(merged.map((row) => [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|")));
-        for (const row of roadTongban) {
-          const key = [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|");
-          if (!seen.has(key)) { seen.add(key); merged.push(row); }
-        }
-        tongban = filterTongbanByRoadContext(merged, roadInfo);
-      }
+      tongban = roadTongban;
     }
   }
 
@@ -1484,20 +1485,20 @@ function filterTongbanByRoadContext(rows, roadInfo) {
   const legal = cleanText(roadInfo.legal || "");
   const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
 
-  // 도로명주소 DB의 행정동이 통리반 읍면동과 정확히 맞으면 그 후보를 최우선으로 사용한다.
-  // 예: 성산새싹길 26-4 → 행정동 남촌동. search_index에 중앙동 후보가 같이 걸려도 남촌동만 남긴다.
+  // 먼저 행정동 후보를 만들되, 여기서 바로 반환하지 않는다.
+  // 같은 행정동 안에 여러 통·반 후보가 있을 수 있으므로 실제 지번으로 한 번 더 좁힌다.
+  let candidates = rows;
   if (admin) {
-    const byAdmin = rows.filter((row) => normalizeText(row.eup || "") === admin);
-    if (byAdmin.length) return byAdmin;
+    const byAdmin = candidates.filter((row) => normalizeText(row.eup || "") === admin);
+    if (byAdmin.length) candidates = byAdmin;
   }
 
-  // 행정동으로 좁히지 못한 경우에는 실제 지번이 관할구역 문구에 들어있는 후보를 우선한다.
   if (parsed.legalArea && parsed.mainNo !== null) {
-    const byJibun = rows.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
+    const byJibun = candidates.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
     if (byJibun.length) return byJibun;
   }
 
-  return rows;
+  return candidates;
 }
 
 function findTongban(address) {
