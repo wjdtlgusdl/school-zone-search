@@ -75,8 +75,8 @@ function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
   els.schoolTab.addEventListener("click", () => switchMode("school"));
-  els.citySelect?.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
-  els.eupSelect?.addEventListener("change", () => handleAddressSuggestionInput());
+  els.citySelect.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
+  els.eupSelect.addEventListener("change", () => handleAddressSuggestionInput());
 
   els.addressMode.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -603,7 +603,15 @@ function renderAddressResult(result) {
   const primarySchool = schoolNames.length === 1 ? schoolNames[0] : `${schoolNames.length || 0}개 후보`;
   const matchLabel = result.road ? "도로명주소 매칭" : "입력값 기반 검색";
 
-  let html = renderMatchedAddressCard(result);
+  let html = `
+    <div class="summary-grid">
+      ${summaryTile("배정 초등학교", schoolNames.length ? primarySchool : "확인 필요", schoolNames.length > 1 ? "복수 후보가 있어 상세 확인이 필요합니다." : "")}
+      ${summaryTile("매칭 방식", matchLabel, result.road ? result.road : result.input)}
+      ${summaryTile("검색 지역", result.regionLabel || "전체 지역", "선택 필터 기준")}
+    </div>
+  `;
+
+  html += renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
@@ -626,9 +634,9 @@ function renderMapCard() {
           <span>위치 확인</span>
           <strong>검색 주소와 배정학교</strong>
         </div>
-        <span class="badge">지도</span>
+        <span class="badge">지도 테스트</span>
       </div>
-      <p class="result-note">카카오맵 활용한 지도입니다.</p>
+      <p class="result-note">지도는 조회 결과를 보기 위한 보조 정보입니다. 통학구역 경계를 표시하는 지도는 아닙니다.</p>
       <div id="resultMap" class="result-map" aria-label="검색 주소와 배정학교 위치 지도"></div>
       <p id="mapStatus" class="map-status">지도를 불러오는 중입니다.</p>
     </div>
@@ -1243,7 +1251,7 @@ async function searchAddress(address) {
 
   let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
   if (Array.isArray(tongban) && roadInfo) {
-    tongban = filterTongbanByRoadContext(tongban, roadInfo);
+    tongban = filterTongbanByRoadContext(tongban, roadInfo, { requireExactEvidence: true });
   }
   if (typeof tongban === "string") {
     tongban = findTongban(searchQuery);
@@ -1469,27 +1477,34 @@ function makeSearchIndexCandidates(value) {
 }
 
 
-function filterTongbanByRoadContext(rows, roadInfo) {
-  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
+function filterTongbanByRoadContext(rows, roadInfo, options = {}) {
+  if (!Array.isArray(rows) || !rows.length || !roadInfo) return rows;
 
+  const requireExactEvidence = Boolean(options.requireExactEvidence);
   const admin = normalizeText(roadInfo.admin || "");
   const legal = cleanText(roadInfo.legal || "");
   const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
 
-  // 도로명주소 DB의 행정동이 통리반 읍면동과 정확히 맞으면 그 후보를 최우선으로 사용한다.
-  // 예: 성산새싹길 26-4 → 행정동 남촌동. search_index에 중앙동 후보가 같이 걸려도 남촌동만 남긴다.
+  // 행정동은 후보 범위를 좁히는 용도로만 사용한다.
+  // 행정동이 같다는 이유만으로 통·반을 확정하면, 정확 지번이 원자료에 없는 주소가
+  // 같은 행정동의 엉뚱한 통·반으로 떨어질 수 있다.
+  let candidates = rows;
   if (admin) {
-    const byAdmin = rows.filter((row) => normalizeText(row.eup || "") === admin);
-    if (byAdmin.length) return byAdmin;
+    const byAdmin = candidates.filter((row) => normalizeText(row.eup || "") === admin);
+    if (byAdmin.length) candidates = byAdmin;
   }
 
-  // 행정동으로 좁히지 못한 경우에는 실제 지번이 관할구역 문구에 들어있는 후보를 우선한다.
+  // 도로명 DB에서 정확한 지번을 얻은 경우 실제 관할구역에 그 지번이 포함되는지를
+  // 먼저 확인한다. 정확 근거가 없으면 search_index 후보를 임의 확정하지 않는다.
   if (parsed.legalArea && parsed.mainNo !== null) {
-    const byJibun = rows.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
+    const byJibun = candidates.filter((row) =>
+      containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
+    );
     if (byJibun.length) return byJibun;
+    if (requireExactEvidence) return [];
   }
 
-  return rows;
+  return candidates;
 }
 
 function findTongban(address) {
@@ -2311,7 +2326,7 @@ function renderMiddleAssignmentForIntegrated(school) {
   const groups = middleGroupsForSchool(school);
   const rule = integratedAreaRule(school);
   if (!groups.length) {
-    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2026 중입배정 원자료를 확인해 주세요.</span></div>`;
+    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2026 중입배정 V7 원자료를 확인해 주세요.</span></div>`;
   }
 
   if (rule?.type === "fixed") {
@@ -2328,7 +2343,7 @@ function renderMiddleAssignmentForIntegrated(school) {
     return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])} 기준</span></div><div class="integrated-middle-group"><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`;
   }
 
-  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
+  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, V7 기준으로 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
 }
 
 function renderEnrollmentComparison(addressSchoolNames) {
@@ -2346,9 +2361,9 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const matched = addressSet.has(normalizeIntegratedSchool(current));
   const addressText = addressSchoolNames.length ? addressSchoolNames.map(s=>String(s).replace(/초등학교$/, "초")).join(", ") : "확인 필요";
   const compare = matched
-    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
-    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}</div>`;
+    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함됩니다. 자료상 학구위반 불일치가 확인되지 않습니다.</span></div>`
+    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함되지 않습니다. 공동학구·전학·적용 예외 등은 별도 확인이 필요합니다.</span></div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div><span class="badge">2026 중입 V7</span></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<p class="integrated-footnote">※ 중학군은 실제 배정학교를 예측하는 기능이 아닙니다. 2026학년도 중입배정 V7에 정리된 지원 가능 범위이며, 최종 판단은 시행계획과 교육지원청 안내를 따릅니다.</p></div>`;
 }
 
 // 기존 주소 결과 렌더링을 감싸 통합 비교 카드를 추가한다.
