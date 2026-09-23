@@ -1476,20 +1476,22 @@ function filterTongbanByRoadContext(rows, roadInfo) {
   const legal = cleanText(roadInfo.legal || "");
   const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
 
-  // 도로명주소 DB의 행정동이 통리반 읍면동과 정확히 맞으면 그 후보를 최우선으로 사용한다.
-  // 예: 성산새싹길 26-4 → 행정동 남촌동. search_index에 중앙동 후보가 같이 걸려도 남촌동만 남긴다.
+  // 행정동은 후보를 좁히는 용도로만 사용하고, 도로명 DB에서 지번까지 확인된 경우에는
+  // 실제 지번이 관할구역에 포함되는지까지 확인해야 통리반으로 확정한다.
+  let candidates = rows;
   if (admin) {
-    const byAdmin = rows.filter((row) => normalizeText(row.eup || "") === admin);
-    if (byAdmin.length) return byAdmin;
+    const byAdmin = candidates.filter((row) => normalizeText(row.eup || "") === admin);
+    if (byAdmin.length) candidates = byAdmin;
   }
 
-  // 행정동으로 좁히지 못한 경우에는 실제 지번이 관할구역 문구에 들어있는 후보를 우선한다.
   if (parsed.legalArea && parsed.mainNo !== null) {
-    const byJibun = rows.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
-    if (byJibun.length) return byJibun;
+    const byJibun = candidates.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
+    // 지번이 확인됐는데 후보 관할구역 어디에도 그 지번이 없으면 행정동만 같은 후보를
+    // 확정 결과로 사용하지 않는다. (엉뚱한 통·반 fallback 방지)
+    return byJibun;
   }
 
-  return rows;
+  return candidates;
 }
 
 function findTongban(address) {
