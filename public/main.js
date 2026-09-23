@@ -75,8 +75,8 @@ function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
   els.schoolTab.addEventListener("click", () => switchMode("school"));
-  els.citySelect.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
-  els.eupSelect.addEventListener("change", () => handleAddressSuggestionInput());
+  els.citySelect?.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
+  els.eupSelect?.addEventListener("change", () => handleAddressSuggestionInput());
 
   els.addressMode.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -603,15 +603,7 @@ function renderAddressResult(result) {
   const primarySchool = schoolNames.length === 1 ? schoolNames[0] : `${schoolNames.length || 0}개 후보`;
   const matchLabel = result.road ? "도로명주소 매칭" : "입력값 기반 검색";
 
-  let html = `
-    <div class="summary-grid">
-      ${summaryTile("배정 초등학교", schoolNames.length ? primarySchool : "확인 필요", schoolNames.length > 1 ? "복수 후보가 있어 상세 확인이 필요합니다." : "")}
-      ${summaryTile("매칭 방식", matchLabel, result.road ? result.road : result.input)}
-      ${summaryTile("검색 지역", result.regionLabel || "전체 지역", "선택 필터 기준")}
-    </div>
-  `;
-
-  html += renderMatchedAddressCard(result);
+  let html = renderMatchedAddressCard(result);
   html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
@@ -1251,7 +1243,7 @@ async function searchAddress(address) {
 
   let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
   if (Array.isArray(tongban) && roadInfo) {
-    tongban = filterTongbanByRoadContext(tongban, roadInfo, { requireExactEvidence: true });
+    tongban = filterTongbanByRoadContext(tongban, roadInfo);
   }
   if (typeof tongban === "string") {
     tongban = findTongban(searchQuery);
@@ -1477,34 +1469,27 @@ function makeSearchIndexCandidates(value) {
 }
 
 
-function filterTongbanByRoadContext(rows, roadInfo, options = {}) {
-  if (!Array.isArray(rows) || !rows.length || !roadInfo) return rows;
+function filterTongbanByRoadContext(rows, roadInfo) {
+  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
 
-  const requireExactEvidence = Boolean(options.requireExactEvidence);
   const admin = normalizeText(roadInfo.admin || "");
   const legal = cleanText(roadInfo.legal || "");
   const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
 
-  // 행정동은 후보 범위를 좁히는 용도로만 사용한다.
-  // 행정동이 같다는 이유만으로 통·반을 확정하면, 정확 지번이 원자료에 없는 주소가
-  // 같은 행정동의 엉뚱한 통·반으로 떨어질 수 있다.
-  let candidates = rows;
+  // 도로명주소 DB의 행정동이 통리반 읍면동과 정확히 맞으면 그 후보를 최우선으로 사용한다.
+  // 예: 성산새싹길 26-4 → 행정동 남촌동. search_index에 중앙동 후보가 같이 걸려도 남촌동만 남긴다.
   if (admin) {
-    const byAdmin = candidates.filter((row) => normalizeText(row.eup || "") === admin);
-    if (byAdmin.length) candidates = byAdmin;
+    const byAdmin = rows.filter((row) => normalizeText(row.eup || "") === admin);
+    if (byAdmin.length) return byAdmin;
   }
 
-  // 도로명 DB에서 정확한 지번을 얻은 경우 실제 관할구역에 그 지번이 포함되는지를
-  // 먼저 확인한다. 정확 근거가 없으면 search_index 후보를 임의 확정하지 않는다.
+  // 행정동으로 좁히지 못한 경우에는 실제 지번이 관할구역 문구에 들어있는 후보를 우선한다.
   if (parsed.legalArea && parsed.mainNo !== null) {
-    const byJibun = candidates.filter((row) =>
-      containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
-    );
+    const byJibun = rows.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
     if (byJibun.length) return byJibun;
-    if (requireExactEvidence) return [];
   }
 
-  return candidates;
+  return rows;
 }
 
 function findTongban(address) {
@@ -2363,7 +2348,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const compare = matched
     ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함됩니다. 자료상 학구위반 불일치가 확인되지 않습니다.</span></div>`
     : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함되지 않습니다. 공동학구·전학·적용 예외 등은 별도 확인이 필요합니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div><span class="badge">2026 중입 V7</span></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<p class="integrated-footnote">※ 중학군은 실제 배정학교를 예측하는 기능이 아닙니다. 2026학년도 중입배정 V7에 정리된 지원 가능 범위이며, 최종 판단은 시행계획과 교육지원청 안내를 따릅니다.</p></div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}</div>`;
 }
 
 // 기존 주소 결과 렌더링을 감싸 통합 비교 카드를 추가한다.
