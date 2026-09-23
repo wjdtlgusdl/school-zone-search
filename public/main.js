@@ -628,7 +628,7 @@ function renderMapCard() {
         </div>
         <span class="badge">지도 테스트</span>
       </div>
-      <p class="result-note">지도는 조회 결과를 보기 위한 보조 정보입니다. 통학구역 경계를 표시하는 지도는 아닙니다.</p>
+      <p class="result-note">카카오맵을 활용한 지도입니다.</p>
       <div id="resultMap" class="result-map" aria-label="검색 주소와 배정학교 위치 지도"></div>
       <p id="mapStatus" class="map-status">지도를 불러오는 중입니다.</p>
     </div>
@@ -2346,8 +2346,8 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const matched = addressSet.has(normalizeIntegratedSchool(current));
   const addressText = addressSchoolNames.length ? addressSchoolNames.map(s=>String(s).replace(/초등학교$/, "초")).join(", ") : "확인 필요";
   const compare = matched
-    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함됩니다. 자료상 학구위반 불일치가 확인되지 않습니다.</span></div>`
-    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>주소상 통학구역 후보에 현재 재학학교가 포함되지 않습니다. 공동학구·전학·적용 예외 등은 별도 확인이 필요합니다.</span></div>`;
+    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
+    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
   return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}</div>`;
 }
 
