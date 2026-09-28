@@ -1155,7 +1155,7 @@ summary::-webkit-details-marker {
 .schoolzone-map-info span { opacity:.68; }
 
 /* 통학구역지도 전용 탭 */
-.segmented-control { grid-template-columns: repeat(3, 1fr); }
+.segmented-control { grid-template-columns: repeat(2, 1fr); }
 .map-mode-copy { margin-bottom: 10px; }
 .workspace.is-map-mode { grid-template-columns: 1fr; }
 .workspace.is-map-mode .search-panel { position: static; padding-bottom: 0; }
@@ -1176,7 +1176,7 @@ summary::-webkit-details-marker {
 .full-map-count { margin-left:auto; }
 .full-schoolzone-map { width:100%; height:clamp(560px,72vh,860px); min-height:560px; border:1px solid var(--border); border-radius:18px; overflow:hidden; background:rgba(127,127,127,.08); }
 @media (max-width:720px) {
-  .segmented-control { grid-template-columns:repeat(3,1fr); }
+  .segmented-control { grid-template-columns:repeat(2,1fr); }
   .segment { font-size:13px; padding:0 6px; }
   .full-map-toolbar { align-items:stretch; flex-direction:column; }
   .full-map-search { justify-content:stretch; }
