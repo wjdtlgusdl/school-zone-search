@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-daol-v3";
+const APP_VERSION = "20260928-daol-v5";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1831,22 +1831,67 @@ async function searchAddress(address) {
     }
   }
 
-  // 최신 부서자료 주소 보정: 다올초 개교 후 신동 874(동탄신리천로 618)는 다올초 관할.
-  // 지번만 입력해도 2026-03-20 공공 GIS의 과거 학교로 되돌아가지 않도록 한다.
+  // 2026년 다올초 개교 후 최신 부서자료 전체 보정.
+  // 2026-03-20 공공 GIS는 개교 전 자료이므로 아래 5개 단지는
+  // 도로명/지번 어느 형식으로 입력해도 최신 부서자료를 우선한다.
   const daolAddressKey = normalizeText([original, road, jibun].filter(Boolean).join(" "));
-  if (/신동874/.test(daolAddressKey) || /동탄신리천로618/.test(daolAddressKey)) {
+
+  const daolSingleRules = [
+    // A57-1 행복주택(동탄2 LH40단지) : 신동 818 / 동탄신리천로8길 15
+    { re: /(?:신동818|동탄신리천로8길15)/, tongri: "신3통", area: "A57-1블록 행복주택" },
+    // A60 제일풍경채 퍼스티어 : 신동 874 / 동탄신리천로 618
+    { re: /(?:신동874|동탄신리천로618)/, tongri: "신10통", area: "A60블록 제일풍경채 퍼스티어" },
+    // A57-2 금강펜테리움7차 센트럴파크 : 신동 820 / 동탄신리천로8길 17
+    { re: /(?:신동820|동탄신리천로8길17)/, tongri: "", area: "A57-2블록 금강펜테리움7차 센트럴파크" },
+    // A59 금강펜테리움6차 센트럴파크 : 신동 822 / 동탄신리천로8길 46
+    { re: /(?:신동822|동탄신리천로8길46)/, tongri: "신19통", area: "A59블록 금강펜테리움6차 센트럴파크" },
+  ];
+
+  const daolSingleRule = daolSingleRules.find((rule) => rule.re.test(daolAddressKey));
+  if (daolSingleRule) {
     school = [{
       school: "다올초",
       sigun: "화성시",
       eup: "동탄9동",
-      tongri: "",
+      tongri: daolSingleRule.tongri,
       ban: "",
-      tongbanArea: "",
-      schoolArea: "신동 874 / 동탄신리천로 618",
+      tongbanArea: daolSingleRule.area,
+      schoolArea: daolSingleRule.area,
       note: "2026.8.20 다올초 조기 개교 반영",
       match: "최신 부서자료",
     }];
     matchMethod = "최신 부서자료 다올초 보정";
+    hasLatestDepartmentOverride = true;
+  }
+
+  // A61 힐스테이트 동탄포레 공동학구 :
+  // 신동 880 / 동탄신리천로4길 47 → 다올초 + 화성신동초
+  if (/(?:신동880|동탄신리천로4길47)/.test(daolAddressKey)) {
+    school = [
+      {
+        school: "다올초",
+        sigun: "화성시",
+        eup: "동탄9동",
+        tongri: "신9통",
+        ban: "",
+        tongbanArea: "A61블록 힐스테이트 동탄포레",
+        schoolArea: "A61블록 힐스테이트 동탄포레",
+        note: "화성신동초 공동학구",
+        match: "최신 부서자료",
+      },
+      {
+        school: "화성신동초",
+        sigun: "화성시",
+        eup: "동탄9동",
+        tongri: "신9통",
+        ban: "",
+        tongbanArea: "A61블록 힐스테이트 동탄포레",
+        schoolArea: "A61블록 힐스테이트 동탄포레",
+        note: "다올초 공동학구",
+        match: "최신 부서자료",
+      },
+    ];
+    matchMethod = "최신 부서자료 공동학구 보정";
     hasLatestDepartmentOverride = true;
   }
 
