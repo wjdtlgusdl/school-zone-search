@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-building-gis-v29";
+const APP_VERSION = "20260928-address-only-v30";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -2124,6 +2124,27 @@ function renderResultFooter() {
 
 async function searchAddress(address) {
   const original = cleanText(address);
+
+  // 통학구역 판정은 도로명주소 또는 지번주소만 허용한다.
+  // 건물명-only 입력은 과거 문자열/fuzzy 매칭으로 잘못된 학교가 반환될 수 있으므로
+  // 주소 판정 로직에 진입시키지 않는다.
+  const normalizedInput = normalizeSearchKey(original);
+  const hasAddressNumber = /\d/.test(normalizedInput);
+  if (!hasAddressNumber) {
+    return {
+      input: original,
+      regionLabel: selectedRegionLabel(),
+      road: "",
+      jibun: original,
+      building: "",
+      admin: "",
+      legal: "",
+      tongban: [],
+      school: "도로명주소 또는 지번주소를 입력해 주세요.",
+      matchMethod: "",
+    };
+  }
+
   await loadSearchIndex();
   let roadInfo = null;
 
