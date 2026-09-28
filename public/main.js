@@ -2165,6 +2165,18 @@ async function searchAddress(address) {
     }
   }
 
+  // 최종 안전장치: 도로명 DB에서 정확한 지번을 확인한 경우에는 학교 판정 직전에
+  // 통리반 후보가 그 지번을 실제 관할구역에 포함하는지 다시 검증한다.
+  // 검색 인덱스/건물명 후보가 잘못 연결되어도 다른 학교로 확정되는 것을 막는다.
+  if (roadInfo && Array.isArray(tongban)) {
+    const exactParsed = parseAddress([roadInfo.legal || "", roadInfo.jibun || ""].filter(Boolean).join(" "));
+    if (exactParsed.legalArea && exactParsed.mainNo !== null) {
+      tongban = tongban.filter((row) =>
+        containsJibun(row.area || "", exactParsed.legalArea, exactParsed.mainNo, exactParsed.subNo, exactParsed.isMountain)
+      );
+    }
+  }
+
   let school = findSchoolByTongban(tongban);
   let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
 
@@ -2718,7 +2730,7 @@ function findSchoolByTongban(tongbanResult) {
     let matchedForItem = false;
 
     for (const row of state.core.schools) {
-      if (row.eupKey === eup && row.tongriKey === tongri && banMatches(row.ban, ban)) {
+      if (row.eupKey === eup && tongriMatches(row.tongriKey, tongri) && banMatches(row.ban, ban)) {
         matchedForItem = true;
         finalResults.push({
           school: row.school,
@@ -3162,6 +3174,18 @@ function normalizeBan(value) {
 
 function normalizeSchoolName(value) {
   return normalizeText(value).replaceAll("초등학교", "초").replaceAll("초교", "초");
+}
+
+function tongriMatches(schoolTongri, foundTongri) {
+  const school = normalizeText(schoolTongri || "");
+  const found = normalizeText(foundTongri || "");
+  if (school === found) return true;
+
+  // 통학구역표의 "4통 중"은 통리반 원본의 "4통"과 같은 통을 뜻한다.
+  // 세부 분할은 이어지는 반/관할구역 및 refineSchoolsByExactAddress에서 판정한다.
+  const schoolBase = school.replace(/중$/, "");
+  const foundBase = found.replace(/중$/, "");
+  return Boolean(schoolBase && schoolBase === foundBase);
 }
 
 function banMatches(schoolBan, foundBan) {
