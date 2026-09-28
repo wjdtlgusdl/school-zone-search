@@ -1,10 +1,11 @@
-const APP_VERSION = "20260928-v17";
+const APP_VERSION = "20260928-v21-school-address-fallback";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
   searchIndex: `/data/search_index.json?v=${APP_VERSION}`,
+  structuredSchoolMap: `/data/structured_school_map_test.json?v=${APP_VERSION}`,
 };
 
 const APT_ALIAS = {
@@ -23,6 +24,7 @@ const state = {
   suggestionsPromise: null,
   searchIndex: null,
   searchIndexPromise: null,
+  structuredSchoolMap: null,
   addressSuggestionMatches: [],
   schoolSuggestionMatches: [],
   activeSuggestionIndex: -1,
@@ -41,7 +43,12 @@ async function init() {
   bindEvents();
 
   try {
-    state.core = await fetchJson(DATA_PATHS.core);
+    const [coreData, structuredSchoolMap] = await Promise.all([
+      fetchJson(DATA_PATHS.core),
+      fetchJson(DATA_PATHS.structuredSchoolMap),
+    ]);
+    state.core = coreData;
+    state.structuredSchoolMap = structuredSchoolMap;
     updateDataChip();
     populateRegionFilters();
     populateSchoolSuggestions();
@@ -1548,12 +1555,19 @@ async function initResultMap(homeAddress, schoolItems) {
         locatedSchools.push({ ...item, pos: new window.kakao.maps.LatLng(Number(point.lat), Number(point.lng)) });
         continue;
       }
-      if (!item.address) continue;
+      // 좌표가 없는 학교(신설학교 포함)는 school 2026.csv에서 core.schoolInfo로
+      // 정제된 학교 도로명주소(mapAddress/address)를 사용해 카카오 지오코딩한다.
+      const csvSchoolInfo = getSchoolInfo(item.name);
+      const schoolAddress = csvSchoolInfo?.mapAddress || csvSchoolInfo?.address || item.address || "";
+      if (!schoolAddress) {
+        console.warn("school address missing", item.name);
+        continue;
+      }
       try {
-        const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(item.address));
-        locatedSchools.push({ ...item, pos });
+        const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(schoolAddress));
+        locatedSchools.push({ ...item, address: schoolAddress, pos });
       } catch (error) {
-        console.warn("school geocode failed", item.name, error);
+        console.warn("school geocode failed", item.name, schoolAddress, error);
       }
     }
 
@@ -2722,44 +2736,49 @@ function schoolAreaContainsBuildingDong(areaText, buildingDong) {
 function findSchoolByTongban(tongbanResult) {
   if (!Array.isArray(tongbanResult)) return tongbanResult;
 
-  const finalResults = [];
+  // 시험 적용: 구조화 정제자료를 통리반→학교의 유일한 판정원으로 사용한다.
+  // 사람확인필요 행과 겹치는 통리는 기존 schoolzone/fallback으로 내려가지 않고 조회를 보류한다.
+  const structured = state.structuredSchoolMap;
+  if (!structured || !structured.mappings || !structured.blocked) {
+    return "구조화 통학구역 자료를 불러오지 못했습니다.";
+  }
+
+  const blockedRows = Object.values(structured.blocked || {});
   for (const item of tongbanResult) {
-    const eup = normalizeText(item.eup);
-    const tongri = normalizeText(item.tongri);
-    const ban = normalizeText(item.ban);
-    let matchedForItem = false;
-
-    for (const row of state.core.schools) {
-      if (row.eupKey === eup && tongriMatches(row.tongriKey, tongri) && banMatches(row.ban, ban)) {
-        matchedForItem = true;
-        finalResults.push({
-          school: row.school,
-          sigun: item.sigun || "",
-          eup: item.eup,
-          tongri: item.tongri,
-          ban: item.ban,
-          tongbanArea: item.area,
-          schoolArea: row.area,
-          note: row.note,
-          match: "통리반",
-        });
-      }
-    }
-
-    // 통리·반이 비어 있거나 "미정"인 행은 통학구역표와 직접 연결되지 않을 수 있다.
-    // 이때는 같은 읍면동 안에서 관할구역 설명(블록명, 단지명, 행복주택 등)을
-    // 통학구역표의 관할구역/비고와 다시 비교해 후보 학교를 보완한다.
-    if (!matchedForItem) {
-      // 통리반 직접 일치가 실패한 경우 관할구역 문구 유사도로 학교를 추정하지 않는다.
-      // 명시적으로 관리하는 예외 규칙만 허용한다.
-      const specialSchools = findSpecialSchoolsForTongban(item);
-      for (const special of specialSchools) {
-        finalResults.push(special);
-      }
+    const eup = normalizeText(item.eup || "");
+    const tongri = normalizeText(item.tongri || "");
+    const blocked = blockedRows.some((row) =>
+      normalizeText(row.eup || "") === eup && tongriMatches(normalizeText(row.tongri || ""), tongri)
+    );
+    if (blocked) {
+      return "현재 정제 확인이 필요한 통학구역입니다. 원자료 확인 후 조회 결과를 제공할 예정입니다.";
     }
   }
 
-  return finalResults.length ? mergeSchoolResults([], finalResults) : "통리반은 찾았지만, 통학구역 자료에서 학교를 찾지 못했습니다.";
+  const finalResults = [];
+  for (const item of tongbanResult) {
+    const key = [item.eup, item.tongri, item.ban].map((v) => normalizeText(v || "")).join("|");
+    const mapped = structured.mappings[key];
+    if (!mapped || !Array.isArray(mapped.schools)) continue;
+
+    for (const schoolName of mapped.schools) {
+      finalResults.push({
+        school: schoolName,
+        sigun: item.sigun || "",
+        eup: item.eup,
+        tongri: item.tongri,
+        ban: item.ban,
+        tongbanArea: item.area,
+        schoolArea: "구조화 정제자료",
+        note: mapped.grade === "교차검증확정" ? "통리반 원자료 교차검증" : "통 전체 자동확정",
+        match: "구조화 통리반",
+      });
+    }
+  }
+
+  return finalResults.length
+    ? mergeSchoolResults([], finalResults)
+    : "통리반은 확인했지만, 현재 구조화 확정자료에서 배정학교를 확인하지 못했습니다.";
 }
 
 function findSchoolsByTongbanAreaKeyword(item) {
