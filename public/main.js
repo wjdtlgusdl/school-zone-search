@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-locality-v12";
+const APP_VERSION = "20260928-resultmaps-v13";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -627,18 +627,22 @@ function renderAddressResult(result) {
   const primarySchool = schoolNames.length === 1 ? schoolNames[0] : `${schoolNames.length || 0}개 후보`;
   const matchLabel = result.road ? "도로명주소 매칭" : "입력값 기반 검색";
 
-  let html = renderMatchedAddressCard(result);
-  html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
+  let html = renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
-  const canShowMap = schoolNames.length === 1 && Boolean(result.road || result.input);
+  // 주소 매칭 정보 카드는 화면에서 제거한다.
+  // 학교가 하나 이상 확정되면 공동학구를 포함해 결과 지도를 표시한다.
+  const canShowMap = schoolNames.length >= 1 && Boolean(result.road || result.input);
   if (canShowMap) html += renderMapCard();
 
   showResults(html);
 
   if (canShowMap) {
-    const info = getSchoolInfo(schoolNames[0]);
-    window.setTimeout(() => initResultMap(result.road || result.input, schoolNames[0], info?.mapAddress || info?.address || ""), 0);
+    const schoolItems = schoolNames.map((name) => {
+      const info = getSchoolInfo(name);
+      return { name, address: info?.mapAddress || info?.address || "" };
+    });
+    window.setTimeout(() => initResultMap(result.road || result.input, schoolItems), 0);
   }
 }
 
@@ -648,7 +652,7 @@ function renderMapCard() {
       <div class="card-header">
         <div class="card-title">
           <span>위치 확인</span>
-          <strong>검색 주소와 배정학교</strong>
+          <strong>검색 주소와 배정학교 위치·통학구역</strong>
         </div>
         <span class="badge">지도</span>
       </div>
@@ -1205,69 +1209,112 @@ async function initFullSchoolZoneMap() {
   }
 }
 
-async function initResultMap(homeAddress, schoolName, schoolAddress) {
+async function initResultMap(homeAddress, schoolItems) {
   const mapEl = document.querySelector("#resultMap");
   const statusEl = document.querySelector("#mapStatus");
   if (!mapEl || !statusEl) return;
 
-  // CSS가 이전 버전으로 캐시되어도 지도 영역의 크기가 0이 되지 않도록 보장합니다.
+  const schools = Array.isArray(schoolItems) ? schoolItems.filter(item => item?.name) : [];
   mapEl.hidden = false;
   mapEl.style.display = "block";
   mapEl.style.width = "100%";
-  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "300px" : "360px";
-  mapEl.style.minHeight = "300px";
-
-  if (!schoolAddress) {
-    statusEl.textContent = "학교 주소 정보가 없어 지도를 표시하지 못했습니다.";
-    mapEl.hidden = true;
-    return;
-  }
+  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "340px" : "460px";
+  mapEl.style.minHeight = window.matchMedia("(max-width: 720px)").matches ? "340px" : "420px";
 
   try {
     await loadKakaoMapSdk();
     const geocoder = new window.kakao.maps.services.Geocoder();
     const homeQuery = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
-    const schoolQuery = cleanGeocodeAddress(schoolAddress);
-    const [homePos, schoolPos] = await Promise.all([
-      geocodeAddress(geocoder, homeQuery),
-      geocodeAddress(geocoder, schoolQuery),
-    ]);
+    const homePos = await geocodeAddress(geocoder, homeQuery);
+
+    const locatedSchools = [];
+    for (const item of schools) {
+      if (!item.address) continue;
+      try {
+        const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(item.address));
+        locatedSchools.push({ ...item, pos });
+      } catch (error) {
+        console.warn("school geocode failed", item.name, error);
+      }
+    }
 
     const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
+    const bounds = new window.kakao.maps.LatLngBounds();
+    bounds.extend(homePos);
 
-    // 공개 GIS 학구도는 배정 판정이 아니라 지도 시각화/교차검증용으로만 표시합니다.
+    // 검색 주소가 실제로 들어 있는 공개 GIS 학구만 표시한다.
+    let zoneCount = 0;
     try {
-      await drawSchoolZoneLayer(map, homePos);
+      const geojson = await loadSchoolZoneGeoJson();
+      const lat = Number(homePos.getLat());
+      const lng = Number(homePos.getLng());
+      const matchedFeatures = (geojson?.features || []).filter(feature => featureContainsPoint(feature, lng, lat));
+      zoneCount = matchedFeatures.length;
+      let infoOverlay = null;
+
+      for (const feature of matchedFeatures) {
+        const props = feature.properties || {};
+        const isShared = String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역";
+        for (const polygonCoords of featurePolygonParts(feature)) {
+          const paths = geoPolygonToKakaoPaths(polygonCoords);
+          if (!paths.length || !paths[0]?.length) continue;
+          const polygon = new window.kakao.maps.Polygon({
+            map,
+            path: paths,
+            strokeWeight: isShared ? 4 : 3,
+            strokeColor: isShared ? "#7c3aed" : "#2563eb",
+            strokeOpacity: 0.85,
+            strokeStyle: isShared ? "dash" : "solid",
+            fillColor: isShared ? "#a78bfa" : "#60a5fa",
+            fillOpacity: isShared ? 0.16 : 0.11,
+          });
+          for (const path of paths) for (const p of path) bounds.extend(p);
+          window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
+            if (infoOverlay) infoOverlay.setMap(null);
+            const linked = (props.school_names || []).join(", ");
+            infoOverlay = new window.kakao.maps.CustomOverlay({
+              map,
+              position: mouseEvent.latLng,
+              yAnchor: 1.15,
+              content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(isShared ? "공동통학구역" : (props.zone_type || "통학구역"))}</span>${linked ? `<span>${escapeHtml(linked)}</span>` : ""}</div>`,
+            });
+          });
+        }
+      }
     } catch (zoneError) {
       console.warn("school zone layer load failed", zoneError);
     }
 
-    // 기본 핀 대신 검색 주소(파랑)와 배정학교(초록)를 명확히 구분한 커스텀 마커를 사용합니다.
-    const homeOverlay = new window.kakao.maps.CustomOverlay({
+    new window.kakao.maps.CustomOverlay({
       map,
       position: homePos,
       yAnchor: 1,
       content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
     });
-    const schoolOverlay = new window.kakao.maps.CustomOverlay({
-      map,
-      position: schoolPos,
-      yAnchor: 1,
-      content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(schoolName)}</span></div>`,
-    });
 
-    const bounds = new window.kakao.maps.LatLngBounds();
-    bounds.extend(homePos);
-    bounds.extend(schoolPos);
-    map.setBounds(bounds, 80, 80, 80, 80);
+    for (const item of locatedSchools) {
+      bounds.extend(item.pos);
+      new window.kakao.maps.CustomOverlay({
+        map,
+        position: item.pos,
+        yAnchor: 1,
+        content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(item.name)}</span></div>`,
+      });
+    }
 
-    // 컨테이너 크기 확정 뒤 한 번 더 재배치해 두 위치가 안정적으로 한 화면에 들어오게 합니다.
+    map.setBounds(bounds, 70, 70, 70, 70);
     window.setTimeout(() => {
       map.relayout();
-      map.setBounds(bounds, 80, 80, 80, 80);
+      map.setBounds(bounds, 70, 70, 70, 70);
     }, 0);
 
-    statusEl.textContent = "파란 마커는 검색 주소, 초록 마커는 배정학교입니다. 지도 경계를 클릭하면 학구명을 확인할 수 있습니다.";
+    const schoolText = locatedSchools.length > 1
+      ? `초록 마커 ${locatedSchools.length}곳은 공동학구 배정학교입니다.`
+      : "초록 마커는 배정학교입니다.";
+    const zoneText = zoneCount
+      ? "색칠된 경계는 검색 주소가 포함된 공공 GIS 통학구역입니다."
+      : "현재 공공 GIS에 별도 경계가 없는 최신 부서자료 구역은 학교 위치만 표시될 수 있습니다.";
+    statusEl.textContent = `파란 마커는 검색 주소, ${schoolText} ${zoneText}`;
   } catch (error) {
     console.warn("map load failed", error);
     mapEl.hidden = true;
@@ -2989,7 +3036,110 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const compare = matched
     ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
     : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}</div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중학교 학교군·중학구 지도</h3><div id="middleResultMap" class="result-map" aria-label="중학교 학교군·중학구 경계와 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">중학군 지도를 불러오는 중입니다.</p></div>`;
+}
+
+async function initMiddleResultMap(elementarySchool) {
+  const mapEl = document.querySelector("#middleResultMap");
+  const statusEl = document.querySelector("#middleMapStatus");
+  if (!mapEl || !statusEl) return;
+
+  const groups = middleGroupsForSchool(elementarySchool);
+  if (!groups.length) {
+    mapEl.hidden = true;
+    statusEl.textContent = "표시할 중학교 학교군·중학구 자료가 없습니다.";
+    return;
+  }
+
+  mapEl.hidden = false;
+  mapEl.style.display = "block";
+  mapEl.style.width = "100%";
+  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "340px" : "460px";
+  mapEl.style.minHeight = window.matchMedia("(max-width: 720px)").matches ? "340px" : "420px";
+
+  try {
+    await loadKakaoMapSdk();
+    const [geojson, pointJson] = await Promise.all([loadMiddleZoneGeoJson(), loadPublicSchoolPoints()]);
+    const wantedGroupNames = new Set(groups.map(g => normalizeText(g[0] || "")));
+    const rule = integratedAreaRule(elementarySchool);
+    const allowed = rule?.type === "fixed" ? new Set(rule.schools || []) : null;
+    const wantedSchools = new Set(groups.flatMap(g => g[2] || []).filter(name => !allowed || allowed.has(name)));
+
+    const features = (geojson?.features || []).filter(feature => {
+      const props = feature?.properties || {};
+      const featureName = normalizeText(props.HAKGUDO_NM || "");
+      const linked = (props.school_names || []).some(name => wantedSchools.has(name));
+      return wantedGroupNames.has(featureName) || linked;
+    });
+
+    const schoolRows = Array.isArray(pointJson) ? pointJson : (pointJson?.schools || []);
+    const schoolPoints = schoolRows.filter(s => {
+      if (s.school_level !== "중학교" || !wantedSchools.has(s.school_name)) return false;
+      const lat = Number(s.lat), lng = Number(s.lng);
+      return s.lat !== null && s.lng !== null && s.lat !== "" && s.lng !== "" &&
+        Number.isFinite(lat) && Number.isFinite(lng) && lat >= 33 && lat <= 39 && lng >= 124 && lng <= 132;
+    });
+
+    let center = new window.kakao.maps.LatLng(37.15, 127.05);
+    if (schoolPoints.length) center = new window.kakao.maps.LatLng(Number(schoolPoints[0].lat), Number(schoolPoints[0].lng));
+    const map = new window.kakao.maps.Map(mapEl, { center, level: 7 });
+    const bounds = new window.kakao.maps.LatLngBounds();
+    let boundCount = 0;
+    let infoOverlay = null;
+
+    for (const feature of features) {
+      const props = feature.properties || {};
+      for (const polygonCoords of featurePolygonParts(feature)) {
+        const paths = geoPolygonToKakaoPaths(polygonCoords);
+        if (!paths.length || !paths[0]?.length) continue;
+        const polygon = new window.kakao.maps.Polygon({
+          map,
+          path: paths,
+          strokeWeight: 3,
+          strokeColor: "#0f766e",
+          strokeOpacity: 0.85,
+          strokeStyle: "solid",
+          fillColor: "#2dd4bf",
+          fillOpacity: 0.12,
+        });
+        for (const path of paths) for (const p of path) { bounds.extend(p); boundCount += 1; }
+        window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
+          if (infoOverlay) infoOverlay.setMap(null);
+          const linked = (props.school_names || []).join(", ");
+          infoOverlay = new window.kakao.maps.CustomOverlay({
+            map,
+            position: mouseEvent.latLng,
+            yAnchor: 1.15,
+            content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학교군·중학구")}</strong><span>중학교 학교군·중학구</span>${linked ? `<span>${escapeHtml(linked)}</span>` : ""}</div>`,
+          });
+        });
+      }
+    }
+
+    for (const school of schoolPoints) {
+      const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
+      bounds.extend(pos); boundCount += 1;
+      new window.kakao.maps.CustomOverlay({
+        map,
+        position: pos,
+        yAnchor: 1,
+        content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">M</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span></div>`,
+      });
+    }
+
+    if (boundCount) map.setBounds(bounds, 70, 70, 70, 70);
+    window.setTimeout(() => {
+      map.relayout();
+      if (boundCount) map.setBounds(bounds, 70, 70, 70, 70);
+    }, 0);
+
+    const groupText = groups.map(g => g[0]).join(", ");
+    statusEl.textContent = `${groupText} 경계와 해당 중학교 ${schoolPoints.length}곳의 위치를 표시합니다.`;
+  } catch (error) {
+    console.warn("middle result map load failed", error);
+    mapEl.hidden = true;
+    statusEl.textContent = "중학교 학교군·중학구 지도를 불러오지 못했습니다.";
+  }
 }
 
 // 기존 주소 결과 렌더링을 감싸 통합 비교 카드를 추가한다.
@@ -3000,5 +3150,9 @@ renderAddressResult = function(result) {
   originalRenderAddressResultIntegrated(result);
   if (els.results && !els.results.hidden) {
     els.results.insertAdjacentHTML("beforeend", renderEnrollmentComparison(schoolNames));
+    const current = canonicalIntegratedSchool(document.querySelector("#currentSchoolInput")?.value?.trim() || "");
+    if (current && document.querySelector("#middleResultMap")) {
+      window.setTimeout(() => initMiddleResultMap(current), 0);
+    }
   }
 };
