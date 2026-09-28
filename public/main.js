@@ -2463,7 +2463,7 @@ function makeSearchIndexCandidates(value) {
 
 
 function filterTongbanByRoadContext(rows, roadInfo) {
-  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
+  if (!Array.isArray(rows) || !rows.length || !roadInfo) return rows;
 
   const admin = normalizeText(roadInfo.admin || "");
   const legal = cleanText(roadInfo.legal || "");
