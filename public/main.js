@@ -664,10 +664,15 @@ function renderMapCard() {
 }
 
 function cleanGeocodeAddress(value) {
-  return cleanText(String(value || "")
+  let cleaned = cleanText(String(value || "")
     .replace(/^\(\d{5}\)\s*/, "")
     .replace(/\([^)]*\)\s*$/, "")
     .replace(/[.]/g, " "));
+
+  // 학교 기본정보에 "동탄반석로 84. 84"처럼 도로번호가 중복된 경우
+  // 카카오 주소검색이 실패할 수 있으므로 마지막 중복 번호를 하나로 정리한다.
+  cleaned = cleaned.replace(/((?:대로|로|길)\s*\d+(?:-\d+)?)\s+\d+(?:-\d+)?$/, "$1");
+  return cleaned;
 }
 
 function loadKakaoMapSdk() {
@@ -2323,6 +2328,46 @@ async function searchAddress(address) {
   // 최신 원자료의 판정을 우선한다. 공공 GIS는 원자료에서 학교를 확정하지 못했을 때만 fallback으로 사용한다.
   // 예: 반송동 216은 공공 GIS의 오래된 공동통학 폴리곤에 걸리더라도
   //     2026 원자료의 9통 1반 / 반송동 216~218 조건에 따라 반송초로 판정한다.
+  // 2026 원자료에 지번이 직접 명시된 경우에는 통리반 검색 경로와 무관하게
+  // 해당 지번 조건을 최우선으로 사용한다.
+  // 예: 반송동 216 -> 반송초(반송동 216~218).
+  const exactSourceParsed = parseAddress([jibun || original, legal].filter(Boolean).join(" "));
+  if (exactSourceParsed.legalArea && exactSourceParsed.mainNo !== null) {
+    const exactSourceRows = (state.core.schools || []).filter((row) =>
+      containsJibun(row.area || "", exactSourceParsed.legalArea, exactSourceParsed.mainNo, exactSourceParsed.subNo, exactSourceParsed.isMountain)
+    );
+    if (exactSourceRows.length) {
+      school = mergeSchoolResults([], exactSourceRows.map((row) => ({
+        school: row.school,
+        sigun: sigun || "",
+        eup: row.eup || admin || "",
+        tongri: row.tongri || "",
+        ban: row.ban || "",
+        tongbanArea: Array.isArray(tongban) && tongban.length ? (tongban[0].area || "") : "",
+        schoolArea: row.area || "",
+        note: row.note || "",
+        match: "2026 원자료 지번",
+      })));
+      matchMethod = "2026 원자료 세부주소 우선";
+      hasLatestDepartmentOverride = true;
+    }
+  }
+
+  // 도로명 DB에서 지번까지 정확히 확인됐지만 통리반 원자료에는 그 지번이 전혀 없으면
+  // 검색색인/유사매칭이나 오래된 GIS만으로 학교를 확정하지 않는다.
+  // 대표 사례: 오산동 540-15.
+  const resolvedRoadParsed = parseAddress([legal, jibun].filter(Boolean).join(" "));
+  const hasExactTongbanCoverage = resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null
+    ? applySelectedRegionToTongban(state.core.tongban || []).some((row) =>
+        containsJibun(row.area || "", resolvedRoadParsed.legalArea, resolvedRoadParsed.mainNo, resolvedRoadParsed.subNo, resolvedRoadParsed.isMountain)
+      )
+    : true;
+  if (roadInfo && resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null && !hasExactTongbanCoverage && !hasLatestDepartmentOverride) {
+    tongban = [];
+    school = "통리반 원자료에서 해당 지번을 확인하지 못했습니다. 세부 확인이 필요합니다.";
+    matchMethod = "";
+  }
+
   const sourceSchoolNames = Array.isArray(school) ? unique(school.map((item) => item.school).filter(Boolean)) : [];
   const has2026SourceDecision =
     sourceSchoolNames.length > 0 &&
@@ -2365,13 +2410,18 @@ async function roadToJibun(address) {
     return (key && key.includes(query)) || (building && building.includes(query));
   });
 
+  // 지번주소를 직접 입력한 경우 roads.json의 지번과 정확히 연결한다.
+  // 기존에는 도로명/건물명 키만 보아 "오산동 540-15"가 roads.json의
+  // "역광장로 90"으로 연결되지 못하고 잘못된 검색색인 fallback으로 빠질 수 있었다.
+  const directJibun = roads.filter((item) => normalizeSearchKey(item.j || "") === query);
+
   const looksLikeAddress = /\d/.test(query);
-  let row = null;
+  let row = directJibun.length === 1 ? directJibun[0] : null;
 
   // 건물명-only 검색은 후보가 딱 하나일 때만 주소로 변환한다.
-  if (direct.length === 1) {
+  if (!row && direct.length === 1) {
     row = direct[0];
-  } else if (direct.length > 1 && looksLikeAddress) {
+  } else if (!row && direct.length > 1 && looksLikeAddress) {
     row = direct.find((item) => normalizeSearchKey(item.k || "") === query)
       || direct.find((item) => normalizeSearchKey(item.k || "").includes(query))
       || null;
@@ -2516,7 +2566,7 @@ function makeSearchIndexCandidates(value) {
 
 
 function filterTongbanByRoadContext(rows, roadInfo) {
-  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
+  if (!Array.isArray(rows) || !rows.length || !roadInfo) return rows;
 
   const admin = normalizeText(roadInfo.admin || "");
   const legal = cleanText(roadInfo.legal || "");
