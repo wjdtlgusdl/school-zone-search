@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-homepage-fix-v19";
+const APP_VERSION = "20260928-zone-colors-v20";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -775,6 +775,19 @@ function ensureAddressMapPopupStyle() {
       overflow-wrap:anywhere;
       word-break:keep-all;
     }
+    .legend-normal,.legend-shared,.legend-middle-group,.legend-middle-zone{
+      display:inline-block;
+      width:14px;
+      height:10px;
+      margin-right:5px;
+      border-radius:3px;
+      vertical-align:-1px;
+      box-sizing:border-box;
+    }
+    .legend-normal{background:#60a5fa;border:2px solid #1d4ed8;}
+    .legend-shared{background:#c084fc;border:2px dashed #7e22ce;}
+    .legend-middle-group{background:#fb923c;border:2px dashed #c2410c;}
+    .legend-middle-zone{background:#34d399;border:2px solid #047857;}
     .address-map-school-popup__close{
       position:absolute;
       top:7px;
@@ -1267,11 +1280,13 @@ function setFullMapHighlight(matchedFeatures) {
   for (const mode of ["elementary", "middle"]) {
     for (const item of fullZonePolygonsByMode[mode]) {
       const active = ids.has(item.feature?.properties?.HAKGUDO_ID);
-      const isShared = String(item.feature?.properties?.HAKGUDO_GB || "") === "1" || item.feature?.properties?.zone_type === "공동통학구역";
+      const props = item.feature?.properties || {};
+      const isShared = mode === "elementary" && (String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역");
+      const isMiddleGroup = mode === "middle" && String(props.HAKGUDO_NM || "").includes("학교군");
       item.polygon.setOptions({
-        strokeWeight: active ? 5 : (isShared ? 3 : 2),
-        strokeOpacity: active ? 1 : 0.72,
-        fillOpacity: active ? 0.30 : (isShared ? 0.10 : 0.07),
+        strokeWeight: active ? 5 : (isShared ? 4 : (isMiddleGroup ? 3 : 2)),
+        strokeOpacity: active ? 1 : (isShared ? 0.95 : 0.82),
+        fillOpacity: active ? 0.36 : (isShared ? 0.28 : (isMiddleGroup ? 0.22 : 0.10)),
       });
     }
   }
@@ -1343,7 +1358,7 @@ function updateFullMapModeUI() {
   if (els.zoneSchoolInput) els.zoneSchoolInput.placeholder = isMiddle ? "중학교명 검색 (예: 동탄중)" : "학교명 검색 (예: 솔빛초)";
   const legend = document.querySelector("#fullMapLegend");
   if (legend) legend.innerHTML = isMiddle
-    ? `<span><i class="legend-middle"></i>학교군·중학구</span><span>📍 중학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`
+    ? `<span><i class="legend-middle-group"></i>학교군</span><span><i class="legend-middle-zone"></i>중학구</span><span>📍 중학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`
     : `<span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span>📍 초등학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`;
   const countEl = document.querySelector("#zoneMapCount");
   const schoolCount = fullSchoolPointData.filter(s => s.school_level === schoolLevelForFullMap()).length;
@@ -1371,17 +1386,26 @@ function drawFullZonePolygons(features, mode) {
   for (const feature of features) {
     const props = feature.properties || {};
     const isShared = !isMiddleMode && (String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역");
+    const middleName = String(props.HAKGUDO_NM || "");
+    // 중학교 자료의 공식 명칭을 기준으로 학교군과 중학구를 구분한다.
+    // 학교군은 여러 중학교가 연결되는 영역이므로 중학구와 시각적으로 확실히 분리한다.
+    const isMiddleGroup = isMiddleMode && middleName.includes("학교군");
+    const isMiddleZone = isMiddleMode && !isMiddleGroup;
     for (const polygonCoords of featurePolygonParts(feature)) {
       const paths = geoPolygonToKakaoPaths(polygonCoords);
       if (!paths.length || !paths[0]?.length) continue;
       const polygon = new window.kakao.maps.Polygon({
         map: mode === fullZoneMode ? fullZoneMap : null, path: paths,
-        strokeWeight: isShared ? 3 : 2,
-        strokeColor: isMiddleMode ? "#059669" : (isShared ? "#7c3aed" : "#2563eb"),
-        strokeOpacity: 0.72,
-        strokeStyle: isShared ? "dash" : "solid",
-        fillColor: isMiddleMode ? "#34d399" : (isShared ? "#a78bfa" : "#60a5fa"),
-        fillOpacity: isShared ? 0.10 : 0.07,
+        strokeWeight: isShared ? 4 : (isMiddleGroup ? 3 : 2),
+        strokeColor: isMiddleMode
+          ? (isMiddleGroup ? "#c2410c" : "#047857")
+          : (isShared ? "#7e22ce" : "#1d4ed8"),
+        strokeOpacity: isShared ? 0.95 : 0.82,
+        strokeStyle: (isShared || isMiddleGroup) ? "dash" : "solid",
+        fillColor: isMiddleMode
+          ? (isMiddleGroup ? "#fb923c" : "#34d399")
+          : (isShared ? "#c084fc" : "#60a5fa"),
+        fillOpacity: isShared ? 0.28 : (isMiddleGroup ? 0.22 : 0.10),
       });
       fullZonePolygonsByMode[mode].push({ polygon, feature });
       window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
@@ -1389,7 +1413,7 @@ function drawFullZonePolygons(features, mode) {
         const linked = (props.school_names || []).join(", ");
         fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
           map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
-          content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(isMiddleMode ? "중학교 학교군·중학구" : (props.zone_type || (isShared ? "공동통학구역" : "통학구역")))}</span><span>${escapeHtml(linked || props.city || "")}</span></div>`,
+          content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(isMiddleMode ? (isMiddleGroup ? "중학교 학교군" : "중학교 중학구") : (props.zone_type || (isShared ? "공동통학구역" : "통학구역")))}</span><span>${escapeHtml(linked || props.city || "")}</span></div>`,
         });
       });
     }
