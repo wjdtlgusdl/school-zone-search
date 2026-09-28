@@ -638,7 +638,7 @@ function renderAddressResult(result) {
 
   if (canShowMap) {
     const info = getSchoolInfo(schoolNames[0]);
-    window.setTimeout(() => initResultMap(result.road || result.input, schoolNames[0], info?.address || ""), 0);
+    window.setTimeout(() => initResultMap(result.road || result.input, schoolNames[0], info?.mapAddress || info?.address || ""), 0);
   }
 }
 
@@ -688,7 +688,7 @@ function loadKakaoMapSdk() {
   return window.__kakaoMapSdkPromise;
 }
 
-function geocodeAddress(geocoder, address) {
+function geocodeAddressOnce(geocoder, address) {
   return new Promise((resolve, reject) => {
     geocoder.addressSearch(address, (result, status) => {
       if (status === window.kakao.maps.services.Status.OK && result?.length) {
@@ -698,6 +698,27 @@ function geocodeAddress(geocoder, address) {
       }
     });
   });
+}
+
+async function geocodeAddress(geocoder, address) {
+  const original = cleanText(address);
+  const candidates = unique([
+    original,
+    // 2026년 신설 동탄구 주소가 카카오 주소 DB에 아직 반영되지 않은 경우를 대비.
+    // 기존 화성시 도로명 형식으로 한 번 더 조회한다.
+    original.replace(/(경기도\s+화성시)\s+동탄구\s+/, "$1 "),
+    original.replace(/(화성시)\s+동탄구\s+/, "$1 "),
+  ].filter(Boolean));
+
+  let lastError = null;
+  for (const candidate of candidates) {
+    try {
+      return await geocodeAddressOnce(geocoder, candidate);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error(`GEOCODE_FAILED:${original}`);
 }
 
 let schoolZoneGeoJsonPromise = null;
@@ -973,7 +994,7 @@ async function drawFullSchoolPoints(schools) {
       if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
       fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
         map: fullZoneMap, position: pos, yAnchor: 1.35,
-        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.road_address || school.jibun_address || "")}</span>${school.established_date ? `<span>설립일: ${escapeHtml(String(school.established_date).replace(/-/g, ". "))}</span>` : ""}</div>`,
+        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.current_address || school.road_address || school.jibun_address || "")}</span>${school.established_date ? `<span>설립일: ${escapeHtml(String(school.established_date).replace(/-/g, ". "))}</span>` : ""}</div>`,
       });
     });
   }
