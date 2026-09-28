@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-resultmaps-v13";
+const APP_VERSION = "20260928-address-v14";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -741,6 +741,33 @@ function loadPublicSchoolPoints() {
   return publicSchoolPointsPromise;
 }
 
+let middleSchoolInfoPromise = null;
+function loadMiddleSchoolInfoForAddressResult() {
+  if (!middleSchoolInfoPromise) {
+    middleSchoolInfoPromise = fetch(`/data/middle_school_info_2026.json?v=${APP_VERSION}`)
+      .then((response) => {
+        if (!response.ok) throw new Error("MIDDLE_SCHOOL_INFO_LOAD_FAILED");
+        return response.json();
+      });
+  }
+  return middleSchoolInfoPromise;
+}
+
+function markerSchoolInfoHtml(title, info, establishedDate = "") {
+  const homepageRaw = info?.homepage || "";
+  const homepage = homepageRaw ? normalizeHomepage(homepageRaw) : "";
+  const phone = stripHtmlBreaks(info?.phone || "");
+  const type = info?.school_type || "";
+  return `<div class="schoolzone-map-info">
+    <strong>${escapeHtml(title)}</strong>
+    ${type ? `<span>설립형태: ${escapeHtml(type)}</span>` : ""}
+    ${info?.address ? `<span>${escapeHtml(info.address)}</span>` : ""}
+    ${establishedDate ? `<span>설립일: ${escapeHtml(establishedDate)}</span>` : ""}
+    ${phone ? `<span>전화번호: ${escapeHtml(phone)}</span>` : ""}
+    ${homepage ? `<span><a href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">홈페이지</a></span>` : ""}
+  </div>`;
+}
+
 function loadSchoolZoneGeoJson() {
   if (!schoolZoneGeoJsonPromise) {
     schoolZoneGeoJsonPromise = fetch("/data/schoolzones_map_20260320.geojson")
@@ -1292,13 +1319,38 @@ async function initResultMap(homeAddress, schoolItems) {
       content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
     });
 
+    let schoolInfoOverlay = null;
+    const pointJson = await loadPublicSchoolPoints().catch(() => ({ schools: [] }));
+    const pointRows = Array.isArray(pointJson) ? pointJson : (pointJson?.schools || []);
+
     for (const item of locatedSchools) {
       bounds.extend(item.pos);
-      new window.kakao.maps.CustomOverlay({
+      const markerEl = document.createElement("button");
+      markerEl.type = "button";
+      markerEl.className = "zone-map-marker zone-map-marker--school";
+      markerEl.style.border = "0";
+      markerEl.style.background = "transparent";
+      markerEl.style.cursor = "pointer";
+      markerEl.innerHTML = `<span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(item.name)}</span>`;
+
+      const markerOverlay = new window.kakao.maps.CustomOverlay({
         map,
         position: item.pos,
         yAnchor: 1,
-        content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(item.name)}</span></div>`,
+        content: markerEl,
+      });
+
+      markerEl.addEventListener("click", () => {
+        if (schoolInfoOverlay) schoolInfoOverlay.setMap(null);
+        const info = getSchoolInfo(item.name);
+        const point = pointRows.find(s => normalizeSchoolName(s.school_name) === normalizeSchoolName(item.name));
+        const established = point?.established_date || "";
+        schoolInfoOverlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position: item.pos,
+          yAnchor: 1.35,
+          content: markerSchoolInfoHtml(item.name, info, established),
+        });
       });
     }
 
@@ -1312,7 +1364,7 @@ async function initResultMap(homeAddress, schoolItems) {
       ? `초록 마커 ${locatedSchools.length}곳은 공동학구 배정학교입니다.`
       : "초록 마커는 배정학교입니다.";
     const zoneText = zoneCount
-      ? "경계는 검색 주소가 포함된 통학구역입니다."
+      ? "색칠된 경계는 검색 주소가 포함된 공공 GIS 통학구역입니다."
       : "현재 공공 GIS에 별도 경계가 없는 최신 부서자료 구역은 학교 위치만 표시될 수 있습니다.";
     statusEl.textContent = `파란 마커는 검색 주소, ${schoolText} ${zoneText}`;
   } catch (error) {
@@ -1795,8 +1847,8 @@ function renderResultFooter() {
   const dataYear = state.core?.meta?.dataYear || "현재";
   return `
     <div class="result-footer">
-      <p>자료 기준: ${escapeHtml(dataYear)}학년도</p>
-      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색</button>
+      <p>자료 기준: ${escapeHtml(dataYear)}학년도 · 최종 확인은 경기도화성오산교육지원청 학생배치과 안내를 따르세요.</p>
+      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색하기</button>
     </div>
   `;
 }
@@ -3039,7 +3091,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
   return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중학교 학교군·중학구 지도</h3><div id="middleResultMap" class="result-map" aria-label="중학교 학교군·중학구 경계와 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">중학군 지도를 불러오는 중입니다.</p></div>`;
 }
 
-async function initMiddleResultMap(elementarySchool) {
+async function initMiddleResultMap(elementarySchool, homeAddress) {
   const mapEl = document.querySelector("#middleResultMap");
   const statusEl = document.querySelector("#middleMapStatus");
   if (!mapEl || !statusEl) return;
@@ -3059,7 +3111,13 @@ async function initMiddleResultMap(elementarySchool) {
 
   try {
     await loadKakaoMapSdk();
-    const [geojson, pointJson] = await Promise.all([loadMiddleZoneGeoJson(), loadPublicSchoolPoints()]);
+    const [geojson, pointJson, middleInfo] = await Promise.all([
+      loadMiddleZoneGeoJson(),
+      loadPublicSchoolPoints(),
+      loadMiddleSchoolInfoForAddressResult().catch(() => ({}))
+    ]);
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
     const wantedGroupNames = new Set(groups.map(g => normalizeText(g[0] || "")));
     const rule = integratedAreaRule(elementarySchool);
     const allowed = rule?.type === "fixed" ? new Set(rule.schools || []) : null;
@@ -3080,8 +3138,31 @@ async function initMiddleResultMap(elementarySchool) {
         Number.isFinite(lat) && Number.isFinite(lng) && lat >= 33 && lat <= 39 && lng >= 124 && lng <= 132;
     });
 
-    let center = new window.kakao.maps.LatLng(37.15, 127.05);
-    if (schoolPoints.length) center = new window.kakao.maps.LatLng(Number(schoolPoints[0].lat), Number(schoolPoints[0].lng));
+    let homePos = null;
+    if (homeAddress) {
+      try {
+        const q = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
+        homePos = await geocodeAddress(geocoder, q);
+      } catch (error) {
+        console.warn("middle map home geocode failed", error);
+      }
+    }
+
+    let elementaryPos = null;
+    const elementaryInfo = getSchoolInfo(elementarySchool);
+    const elementaryAddress = elementaryInfo?.mapAddress || elementaryInfo?.address || "";
+    if (elementaryAddress) {
+      try {
+        elementaryPos = await geocodeAddress(geocoder, cleanGeocodeAddress(elementaryAddress));
+      } catch (error) {
+        console.warn("middle map elementary geocode failed", error);
+      }
+    }
+
+    let center = homePos || elementaryPos || new window.kakao.maps.LatLng(37.15, 127.05);
+    if (!homePos && !elementaryPos && schoolPoints.length) {
+      center = new window.kakao.maps.LatLng(Number(schoolPoints[0].lat), Number(schoolPoints[0].lng));
+    }
     const map = new window.kakao.maps.Map(mapEl, { center, level: 7 });
     const bounds = new window.kakao.maps.LatLngBounds();
     let boundCount = 0;
@@ -3116,14 +3197,63 @@ async function initMiddleResultMap(elementarySchool) {
       }
     }
 
+    // 입력 주소
+    if (homePos) {
+      bounds.extend(homePos); boundCount += 1;
+      new window.kakao.maps.CustomOverlay({
+        map,
+        position: homePos,
+        yAnchor: 1,
+        content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
+      });
+    }
+
+    // 현재 재학 중인 초등학교
+    if (elementaryPos) {
+      bounds.extend(elementaryPos); boundCount += 1;
+      const elemEl = document.createElement("button");
+      elemEl.type = "button";
+      elemEl.className = "zone-map-marker zone-map-marker--school";
+      elemEl.style.border = "0";
+      elemEl.style.background = "transparent";
+      elemEl.style.cursor = "pointer";
+      elemEl.innerHTML = `<span class="zone-map-marker__icon">E</span><span class="zone-map-marker__label">${escapeHtml(String(elementarySchool).replace(/초등학교$/, "초"))}</span>`;
+      new window.kakao.maps.CustomOverlay({ map, position: elementaryPos, yAnchor: 1, content: elemEl });
+      elemEl.addEventListener("click", () => {
+        if (infoOverlay) infoOverlay.setMap(null);
+        const point = schoolRows.find(s => normalizeSchoolName(s.school_name) === normalizeSchoolName(elementarySchool));
+        infoOverlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position: elementaryPos,
+          yAnchor: 1.35,
+          content: markerSchoolInfoHtml(elementarySchool, elementaryInfo, point?.established_date || ""),
+        });
+      });
+    }
+
+    // 배정 대상 중학교: 클릭하면 업로드된 학교현황 정보 표시
     for (const school of schoolPoints) {
       const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
       bounds.extend(pos); boundCount += 1;
-      new window.kakao.maps.CustomOverlay({
-        map,
-        position: pos,
-        yAnchor: 1,
-        content: `<div class="zone-map-marker zone-map-marker--school"><span class="zone-map-marker__icon">M</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span></div>`,
+
+      const markerEl = document.createElement("button");
+      markerEl.type = "button";
+      markerEl.className = "zone-map-marker zone-map-marker--school";
+      markerEl.style.border = "0";
+      markerEl.style.background = "transparent";
+      markerEl.style.cursor = "pointer";
+      markerEl.innerHTML = `<span class="zone-map-marker__icon">M</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span>`;
+
+      new window.kakao.maps.CustomOverlay({ map, position: pos, yAnchor: 1, content: markerEl });
+      markerEl.addEventListener("click", () => {
+        if (infoOverlay) infoOverlay.setMap(null);
+        const detail = middleInfo?.[school.school_name] || {};
+        infoOverlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position: pos,
+          yAnchor: 1.35,
+          content: markerSchoolInfoHtml(school.school_name, detail, school.established_date || ""),
+        });
       });
     }
 
@@ -3134,7 +3264,7 @@ async function initMiddleResultMap(elementarySchool) {
     }, 0);
 
     const groupText = groups.map(g => g[0]).join(", ");
-    statusEl.textContent = `${groupText} 경계와 해당 중학교 ${schoolPoints.length}곳의 위치를 표시합니다.`;
+    statusEl.textContent = `${groupText} 경계 · 검색 주소 · 재학 초등학교 · 해당 중학교 ${schoolPoints.length}곳을 표시합니다. 학교 마커를 누르면 상세정보를 확인할 수 있습니다.`;
   } catch (error) {
     console.warn("middle result map load failed", error);
     mapEl.hidden = true;
@@ -3152,7 +3282,7 @@ renderAddressResult = function(result) {
     els.results.insertAdjacentHTML("beforeend", renderEnrollmentComparison(schoolNames));
     const current = canonicalIntegratedSchool(document.querySelector("#currentSchoolInput")?.value?.trim() || "");
     if (current && document.querySelector("#middleResultMap")) {
-      window.setTimeout(() => initMiddleResultMap(current), 0);
+      window.setTimeout(() => initMiddleResultMap(current, result.road || result.input || ""), 0);
     }
   }
 };
