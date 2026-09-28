@@ -1183,4 +1183,9 @@ summary::-webkit-details-marker {
   .full-map-search input { width:100%; flex:1 1 100%; }
   .full-schoolzone-map { height:68vh; min-height:480px; }
   .full-map-count { margin-left:0; width:100%; }
+.schoolzone-source {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #777;
 }
