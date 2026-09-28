@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-address-ui-v31";
+const APP_VERSION = "20260928-address-only-no-map-v32";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -80,7 +80,7 @@ function collectElements() {
 
 function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
-  els.addressTab.addEventListener("click", () => switchMode("address"));
+  els.addressTab?.addEventListener("click", () => switchMode("address"));
   els.schoolTab?.addEventListener("click", () => switchMode("school"));
   els.mapTab?.addEventListener("click", () => switchMode("map"));
   els.zoneSchoolSearchButton?.addEventListener("click", focusFullMapSchool);
@@ -631,20 +631,8 @@ function renderAddressResult(result) {
   let html = renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
   html += renderAddressTongbanCard(tongban, result.input);
 
-  // 주소 매칭 정보 카드는 화면에서 제거한다.
-  // 학교가 하나 이상 확정되면 공동학구를 포함해 결과 지도를 표시한다.
-  const canShowMap = schoolNames.length >= 1 && Boolean(result.road || result.input);
-  if (canShowMap) html += renderMapCard();
-
+  // 임시 주소조회 전용판: 통학구역 지도는 표시하지 않는다.
   showResults(html);
-
-  if (canShowMap) {
-    const schoolItems = schoolNames.map((name) => {
-      const info = getSchoolInfo(name);
-      return { name, address: info?.mapAddress || info?.address || "" };
-    });
-    window.setTimeout(() => initResultMap(result.road || result.input, schoolItems), 0);
-  }
 }
 
 function renderMapCard() {
@@ -3407,7 +3395,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const compare = matched
     ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
     : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중학군(구) 지도</h3><div id="middleResultMap" class="result-map" aria-label="중학군(구) 경계와 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">중학군 지도를 불러오는 중입니다.</p></div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}</div>`;
 }
 
 async function initMiddleResultMap(elementarySchool, homeAddress) {
@@ -3618,9 +3606,6 @@ renderAddressResult = function(result) {
   originalRenderAddressResultIntegrated(result);
   if (els.results && !els.results.hidden) {
     els.results.insertAdjacentHTML("beforeend", renderEnrollmentComparison(schoolNames));
-    const current = canonicalIntegratedSchool(document.querySelector("#currentSchoolInput")?.value?.trim() || "");
-    if (current && document.querySelector("#middleResultMap")) {
-      window.setTimeout(() => initMiddleResultMap(current, result.road || result.input || ""), 0);
-    }
+
   }
 };

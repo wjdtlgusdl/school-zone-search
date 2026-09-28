@@ -79,17 +79,7 @@
             <p class="eyebrow">2026학년도 자료 기준</p>
             <h1>초등학교 통학구역 확인</h1>
           </div>
-
-          <div class="segmented-control" role="tablist" aria-label="조회 방식">
-            <button class="segment is-active" type="button" id="addressTab" role="tab" aria-selected="true" aria-controls="addressMode">
-              주소 조회
-            </button>
-            <button class="segment" type="button" id="mapTab" role="tab" aria-selected="false" aria-controls="mapMode">
-              통학구역지도
-            </button>
-          </div>
-
-          <form class="mode-panel" id="addressMode" autocomplete="off">
+<form class="mode-panel" id="addressMode" autocomplete="off">
             <label class="field-label" for="addressInput">도로명 주소 또는 지번 주소</label>
             <div class="search-box">
               <div class="autocomplete" id="addressAutocomplete">
@@ -107,14 +97,9 @@
             </div>
             <p class="field-hint">통학구역과 재학학교를 비교한 뒤, 재학학교 기준 중입배정 범위를 함께 안내합니다.</p>
           </form>
-
-          <div class="mode-panel map-mode-copy" id="mapMode" hidden>
-            <p class="field-hint">화성·오산 초등학교 통학구역을 큰 지도에서 확인할 수 있습니다. 지도에서 학구를 클릭하거나 학교명을 검색해 보세요.</p>
-          </div>
-
-          <div class="notice-card" role="note">
+<div class="notice-card" role="note">
             <strong>입력한 주소는 저장하지 않으며, 참고용으로 활용하시기 바랍니다.</strong>
-            <span>통학구역 및 위치 데이터 출처: 한국교육시설안전원 학구도안내서비스 공공데이터</span>
+            
           </div>
         </section>
 
@@ -132,35 +117,12 @@
 
           <div class="results" id="results" hidden></div>
         </section>
-
-        <section class="full-map-panel" id="fullMapPanel" aria-label="통학구역 지도" hidden>
-          <div class="full-map-toolbar">
-            <div>
-              <p class="eyebrow">2026.03.20 공공데이터 기준</p>
-              <h2 id="fullMapTitle">화성·오산 초등학교 통학구역 지도</h2>
-            </div>
-            <div class="full-map-search">
-              <div class="zone-layer-switch" role="group" aria-label="지도 구분 전환">
-                <button class="zone-layer-button is-active" type="button" id="elementaryZoneButton" aria-pressed="true">초등학교 통학구역</button>
-                <button class="zone-layer-button" type="button" id="middleZoneButton" aria-pressed="false">중학군(구)</button>
-              </div>
-              <input id="zoneSchoolInput" type="search" list="zoneSchoolList" placeholder="학교명 검색 (예: 솔빛초)" autocomplete="off">
-              <datalist id="zoneSchoolList"></datalist>
-              <button class="primary-button" type="button" id="zoneSchoolSearchButton">찾기</button>
-              <button class="secondary-button" type="button" id="zoneMapResetButton">전체보기</button>
-            </div>
-          </div>
-          <div class="full-map-legend" id="fullMapLegend"><span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span>📍 초등학교 위치</span><span class="full-map-count" id="zoneMapCount"></span></div>
-          <div id="fullSchoolZoneMap" class="full-schoolzone-map" aria-label="화성·오산 통학구역 전체 지도"></div>
-          <p class="map-status" id="fullMapStatus">지도를 불러오는 중입니다.</p>
-          <p class="schoolzone-source">통학구역 지도 및 학교 위치 데이터 출처: 한국교육시설안전원 학구도안내서비스 공공데이터(SHP·CSV)<br>※ 웹 지도 표시를 위해 GeoJSON/JSON 형식으로 가공하였습니다. 데이터 기준일: 2026. 3. 20.</p>
-        </section>
-      </main>
+</main>
 
     </div>
 
     <script src="/middle-data.js?v=20260917-integrated1" defer></script>
     <script src="/map-config.js?v=20260922-mapfix2" defer></script>
-    <script src="/main.js?v=20260928-address-ui-v31" defer></script>
+    <script src="/main.js?v=20260928-address-only-no-map-v32" defer></script>
   </body>
 </html>
