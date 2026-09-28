@@ -940,8 +940,26 @@ function updateFullSchoolMarkers() {
   updateFullSchoolLabels();
 }
 
-function drawFullSchoolPoints(schools) {
-  fullSchoolPointData = (schools || []).filter(s => ["초등학교", "중학교"].includes(s.school_level) && Number.isFinite(Number(s.lat)) && Number.isFinite(Number(s.lng)));
+async function drawFullSchoolPoints(schools) {
+  const candidates = (schools || []).filter(s => ["초등학교", "중학교"].includes(s.school_level));
+  const geocoder = new window.kakao.maps.services.Geocoder();
+
+  // 2026-03-20 공공 학교위치 자료 이후 개교한 학교(예: 다올초)는
+  // 좌표가 비어 있어도 최신 도로명주소를 이용해 지도 표시 좌표를 보완한다.
+  for (const school of candidates) {
+    if (Number.isFinite(Number(school.lat)) && Number.isFinite(Number(school.lng))) continue;
+    const address = school.road_address || school.jibun_address || "";
+    if (!address) continue;
+    try {
+      const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(address));
+      school.lat = Number(pos.getLat());
+      school.lng = Number(pos.getLng());
+    } catch (error) {
+      console.warn("school marker geocode failed", school.school_name, error);
+    }
+  }
+
+  fullSchoolPointData = candidates.filter(s => Number.isFinite(Number(s.lat)) && Number.isFinite(Number(s.lng)));
   for (const school of fullSchoolPointData) {
     const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
     const marker = new window.kakao.maps.Marker({ position: pos, title: school.school_name || "학교" });
@@ -1105,7 +1123,7 @@ async function initFullSchoolZoneMap() {
     fullZoneMap.addControl(new window.kakao.maps.ZoomControl(), window.kakao.maps.ControlPosition.RIGHT);
     drawFullZonePolygons(fullZoneFeaturesByMode.elementary, "elementary");
     drawFullZonePolygons(fullZoneFeaturesByMode.middle, "middle");
-    drawFullSchoolPoints(Array.isArray(schoolPointJson?.schools) ? schoolPointJson.schools : []);
+    await drawFullSchoolPoints(Array.isArray(schoolPointJson?.schools) ? schoolPointJson.schools : []);
     document.querySelector("#elementaryZoneButton")?.addEventListener("click", () => switchFullZoneMode("elementary"));
     document.querySelector("#middleZoneButton")?.addEventListener("click", () => switchFullZoneMode("middle"));
     updateFullMapModeUI();
@@ -1771,15 +1789,35 @@ async function searchAddress(address) {
     }
   }
 
+  // 2026.8.20 다올초 조기 개교 반영.
+  // 2026-03-20 공공 GIS에는 다올초가 없으므로, 최신 부서 통학구역 자료에서
+  // 다올초 관할로 확인되는 주소는 공공 GIS보다 우선한다.
+  // A61(힐스테이트 동탄포레)은 화성신동초와 공동학구이므로 두 학교를 함께 유지한다.
+  let hasLatestDepartmentOverride = false;
+  if (Array.isArray(school)) {
+    const daolRows = school.filter((item) => item.school === "다올초");
+    if (daolRows.length) {
+      const isA61Shared = daolRows.some((item) => /A-?61|힐스테이트.*포레/i.test(String(item.schoolArea || item.area || "")));
+      const latest = [...daolRows];
+      if (isA61Shared) {
+        const sindong = school.filter((item) => item.school === "화성신동초");
+        latest.push(...sindong);
+      }
+      school = mergeSchoolResults([], latest);
+      matchMethod = isA61Shared ? "최신 부서자료 공동학구 보정" : "최신 부서자료 다올초 보정";
+      hasLatestDepartmentOverride = true;
+    }
+  }
+
   // GIS에서 한 학교만 확정되면 그것을 주소 검색의 우선 판정으로 사용한다.
-  // 기존 통리반 결과가 잘못 살아남아 엉뚱한 학교를 확정하는 문제를 차단한다.
+  // 다만 2026-03-20 이후 개교·변경된 최신 부서자료 보정은 GIS보다 우선한다.
   const gisSchoolNames = unique((gisLookup?.schools || []).map((item) => item.school));
-  if (gisSchoolNames.length === 1) {
+  if (!hasLatestDepartmentOverride && gisSchoolNames.length === 1) {
     school = gisLookup.schools;
     matchMethod = "공공 학구도 GIS 좌표 매칭";
     // GIS 판정과 충돌할 수 있는 기존 통리반 카드는 숨긴다.
     tongban = [];
-  } else if (gisSchoolNames.length > 1) {
+  } else if (!hasLatestDepartmentOverride && gisSchoolNames.length > 1) {
     school = gisLookup.schools;
     matchMethod = "공공 학구도 GIS 공동·중첩구역 매칭";
     tongban = [];
