@@ -1534,7 +1534,14 @@ async function initResultMap(homeAddress, schoolItems) {
   try {
     await loadKakaoMapSdk();
     const geocoder = new window.kakao.maps.services.Geocoder();
-    const homeQuery = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
+    let homeQuery = cleanGeocodeAddress(homeAddress);
+    // 지번만 직접 입력한 경우(예: 반송동 219)에도 카카오 지오코딩이 지역을
+    // 정확히 찾도록 현재 선택 지역의 시명을 보완한다.
+    if (!/(?:화성시|오산시)/.test(homeQuery)) {
+      const selectedRegion = getSelectedRegion();
+      if (selectedRegion?.sigun) homeQuery = `${selectedRegion.sigun} ${homeQuery}`;
+    }
+    homeQuery = homeQuery.replace(/^(화성시|오산시)\s/, "경기도 $1 ");
     const homePos = await geocodeAddress(geocoder, homeQuery);
 
     const locatedSchools = [];
@@ -2756,6 +2763,46 @@ function findSchoolByTongban(tongbanResult, roadInfo = null, originalInput = "")
   ].filter(Boolean).join(" "));
   const buildingDong = extractBuildingDong([originalInput, roadInfo?.building || ""].filter(Boolean).join(" "));
   const buildingText = looseNormalize([roadInfo?.building || "", originalInput || ""].filter(Boolean).join(" "));
+
+  // 도로명 DB에서 행정동+정확한 지번을 확인한 경우에는 현재 통리반 후보 하나에
+  // 먼저 종속시키지 않고, 그 지번에 해당하는 구조화 규칙 전체를 함께 확인한다.
+  // 예: 동탄반석로 71 = 반송동 135. 441~454동은 통·반은 서로 달라도
+  //     해당 지번 규칙의 최종 학교가 모두 솔빛초이므로 솔빛초로 확정할 수 있다.
+  if (roadInfo && exactAddress.legalArea && exactAddress.mainNo !== null) {
+    const admin = normalizeText(roadInfo.admin || "");
+    const addressWideMatches = [];
+
+    for (const [key, rules] of Object.entries(structured.rules || {})) {
+      const [eup = "", tongri = "", ban = ""] = key.split("|");
+      if (admin && normalizeText(eup) !== admin) continue;
+
+      for (const rule of rules || []) {
+        const jibunCondition = cleanText(rule.jibun || "");
+        if (!jibunCondition) continue;
+        if (!containsJibun(jibunCondition, exactAddress.legalArea, exactAddress.mainNo, exactAddress.subNo, exactAddress.isMountain)) continue;
+
+        const apartmentDong = String(rule.apartmentDong || "").replace(/[^0-9]/g, "");
+        if (buildingDong && apartmentDong && String(buildingDong).replace(/[^0-9]/g, "") !== apartmentDong) continue;
+
+        addressWideMatches.push({
+          school: rule.school,
+          sigun: tongbanResult.find((item) => normalizeText(item.eup || "") === normalizeText(eup))?.sigun || "",
+          eup,
+          tongri,
+          ban,
+          tongbanArea: cleanText(rule.condition || rule.jibun || ""),
+          schoolArea: cleanText(rule.condition || rule.jibun || "세부조건 구조화 자료"),
+          note: rule.basis || "세부조건 구조화",
+          match: "구조화 세부주소 통합판정",
+        });
+      }
+    }
+
+    if (addressWideMatches.length) {
+      const addressWideSchools = unique(addressWideMatches.map((item) => item.school).filter(Boolean));
+      if (addressWideSchools.length === 1) return mergeSchoolResults([], addressWideMatches);
+    }
+  }
 
   const strictMatches = [];
   const relaxedApartmentMatches = [];
