@@ -1142,3 +1142,14 @@ summary::-webkit-details-marker {
 .integrated-tags em { font-style:normal; padding:6px 9px; border-radius:999px; background:rgba(55,117,255,.10); font-size:.88rem; }
 .integrated-note,.integrated-footnote { line-height:1.55; opacity:.72; font-size:.88rem; }
 @media (max-width:700px){ .integrated-compare{grid-template-columns:1fr;} }
+
+
+/* 공공데이터 학구도 지도 레이어 */
+.schoolzone-map-info {
+  display:flex; flex-direction:column; gap:3px; min-width:130px;
+  padding:8px 10px; border:1px solid rgba(37,99,235,.35); border-radius:10px;
+  background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.18); color:#172033;
+  font-size:12px; line-height:1.35; white-space:nowrap;
+}
+.schoolzone-map-info strong { font-size:12px; }
+.schoolzone-map-info span { opacity:.68; }

@@ -676,6 +676,76 @@ function geocodeAddress(geocoder, address) {
   });
 }
 
+let schoolZoneGeoJsonPromise = null;
+
+function loadSchoolZoneGeoJson() {
+  if (!schoolZoneGeoJsonPromise) {
+    schoolZoneGeoJsonPromise = fetch("/data/schoolzones_map_20260320.geojson")
+      .then((response) => {
+        if (!response.ok) throw new Error("SCHOOLZONE_GEOJSON_LOAD_FAILED");
+        return response.json();
+      });
+  }
+  return schoolZoneGeoJsonPromise;
+}
+
+function geoRingToKakaoPath(ring) {
+  return (ring || []).map(([lng, lat]) => new window.kakao.maps.LatLng(Number(lat), Number(lng)));
+}
+
+function geoPolygonToKakaoPaths(coordinates) {
+  return (coordinates || []).map(geoRingToKakaoPath);
+}
+
+function featurePolygonParts(feature) {
+  const geometry = feature?.geometry;
+  if (!geometry) return [];
+  if (geometry.type === "Polygon") return [geometry.coordinates];
+  if (geometry.type === "MultiPolygon") return geometry.coordinates || [];
+  return [];
+}
+
+async function drawSchoolZoneLayer(map, homePos) {
+  const geojson = await loadSchoolZoneGeoJson();
+  const features = Array.isArray(geojson?.features) ? geojson.features : [];
+  const overlays = [];
+  let infoOverlay = null;
+
+  for (const feature of features) {
+    const props = feature.properties || {};
+    const isShared = String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역";
+    for (const polygonCoords of featurePolygonParts(feature)) {
+      const paths = geoPolygonToKakaoPaths(polygonCoords);
+      if (!paths.length || !paths[0]?.length) continue;
+      const polygon = new window.kakao.maps.Polygon({
+        map,
+        path: paths,
+        strokeWeight: isShared ? 3 : 2,
+        strokeColor: isShared ? "#7c3aed" : "#2563eb",
+        strokeOpacity: 0.72,
+        strokeStyle: isShared ? "dash" : "solid",
+        fillColor: isShared ? "#a78bfa" : "#60a5fa",
+        fillOpacity: isShared ? 0.10 : 0.07,
+      });
+      overlays.push(polygon);
+
+      window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
+        if (infoOverlay) infoOverlay.setMap(null);
+        const name = escapeHtml(props.HAKGUDO_NM || "학구 정보");
+        const type = escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"));
+        infoOverlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position: mouseEvent.latLng,
+          yAnchor: 1.15,
+          content: `<div class="schoolzone-map-info"><strong>${name}</strong><span>${type}</span></div>`,
+        });
+      });
+    }
+  }
+
+  return overlays;
+}
+
 async function initResultMap(homeAddress, schoolName, schoolAddress) {
   const mapEl = document.querySelector("#resultMap");
   const statusEl = document.querySelector("#mapStatus");
@@ -706,6 +776,13 @@ async function initResultMap(homeAddress, schoolName, schoolAddress) {
 
     const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
 
+    // 공개 GIS 학구도는 배정 판정이 아니라 지도 시각화/교차검증용으로만 표시합니다.
+    try {
+      await drawSchoolZoneLayer(map, homePos);
+    } catch (zoneError) {
+      console.warn("school zone layer load failed", zoneError);
+    }
+
     // 기본 핀 대신 검색 주소(파랑)와 배정학교(초록)를 명확히 구분한 커스텀 마커를 사용합니다.
     const homeOverlay = new window.kakao.maps.CustomOverlay({
       map,
@@ -731,7 +808,7 @@ async function initResultMap(homeAddress, schoolName, schoolAddress) {
       map.setBounds(bounds, 80, 80, 80, 80);
     }, 0);
 
-    statusEl.textContent = "파란 마커는 검색 주소, 초록 마커는 배정학교입니다.";
+    statusEl.textContent = "파란 마커는 검색 주소, 초록 마커는 배정학교입니다. 지도 경계를 클릭하면 학구명을 확인할 수 있습니다.";
   } catch (error) {
     console.warn("map load failed", error);
     mapEl.hidden = true;
