@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-no-public-zone-v32";
+const APP_VERSION = "20260928-v17";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1531,7 +1531,23 @@ async function initResultMap(homeAddress, schoolItems) {
     const homePos = await geocodeAddress(geocoder, homeQuery);
 
     const locatedSchools = [];
+    let publicPoints = [];
+    try {
+      const pointData = await loadPublicSchoolPoints();
+      publicPoints = Array.isArray(pointData) ? pointData : (pointData?.schools || []);
+    } catch (error) {
+      console.warn("public school points load failed", error);
+    }
     for (const item of schools) {
+      const targetKey = normalizeSchoolName(item.name);
+      const point = publicPoints.find((school) =>
+        school?.school_level === "초등학교" && normalizeSchoolName(school.school_name) === targetKey &&
+        Number.isFinite(Number(school.lat)) && Number.isFinite(Number(school.lng))
+      );
+      if (point) {
+        locatedSchools.push({ ...item, pos: new window.kakao.maps.LatLng(Number(point.lat), Number(point.lng)) });
+        continue;
+      }
       if (!item.address) continue;
       try {
         const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(item.address));
@@ -2176,20 +2192,16 @@ async function searchAddress(address) {
     }
   }
 
-  if (typeof school === "string" && building) {
-    school = findSchoolByKeyword(building);
-    matchMethod = Array.isArray(school) ? "건물명 유사 매칭" : "";
-  }
-
+  // 주소/지번으로 통리반이 확정되지 않은 경우 건물명·주소 키워드만으로
+  // 학교를 추정하지 않는다. 오탐 방지를 위해 미확정 상태를 그대로 유지한다.
   if (typeof school === "string") {
     const looksLikeAddressInput = /\d/.test(normalizeSearchKey(original));
-    if (roadInfo || looksLikeAddressInput) {
-      school = findSchoolByKeyword(original);
-      matchMethod = Array.isArray(school) ? "키워드 유사 매칭" : "";
-    } else {
+    if (!roadInfo && !looksLikeAddressInput) {
       school = "건물명만으로 주소를 특정할 수 없습니다. 도로명주소 또는 지번주소를 입력해 주세요.";
-      matchMethod = "";
+    } else {
+      school = "통리반을 정확히 확인할 수 없어 배정학교를 확정하지 않았습니다. 세부 주소를 확인해 주세요.";
     }
+    matchMethod = "";
   }
 
   if (Array.isArray(school)) {
