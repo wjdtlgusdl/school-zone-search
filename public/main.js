@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-address-only-v30";
+const APP_VERSION = "20260928-address-ui-v31";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -402,7 +402,6 @@ function findAddressSuggestions(query, suggestions) {
   const normalizedQuery = normalizeSearchKey(query);
   const region = getSelectedRegion();
   const kindWeight = {
-    건물명: 0,
     도로명: 1,
     읍면동: 2,
     지번지역: 3,
@@ -410,6 +409,8 @@ function findAddressSuggestions(query, suggestions) {
 
   return suggestions
     .map((item) => {
+      // 주소 조회에서는 건물명 추천을 표시하지 않는다.
+      if (item.k === "건물명") return null;
       const value = item.v || "";
       if (region.sigun && value.includes("시") && !value.includes(region.sigun)) return null;
       if (region.eup && /[가-힣0-9]+(?:읍|면|동)/.test(value) && !value.includes(region.eup) && (item.k === "읍면동" || item.k === "지번지역")) return null;
@@ -574,7 +575,7 @@ function selectSchoolSuggestion(index) {
 async function handleAddressSearch(rawQuery) {
   const query = cleanText(rawQuery);
   if (!query) {
-    renderWarning("주소를 입력해 주세요.", ["도로명주소, 지번주소, 아파트명 중 하나로 검색할 수 있습니다."]);
+    renderWarning("도로명주소 또는 지번주소를 입력해 주세요.");
     return;
   }
 
@@ -1711,10 +1712,7 @@ function renderMatchedAddressCard(result) {
 
 function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
   if (!schools.length) {
-    return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.", [
-      "주소에 읍면동 또는 아파트명을 함께 입력해 보세요.",
-      "검색 결과는 자료 기준에 따라 달라질 수 있습니다.",
-    ]);
+    return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.");
   }
 
   const groupedSchools = groupAddressSchools(schools);
