@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-map-ui-v28";
+const APP_VERSION = "20260928-building-gis-v29";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -2148,7 +2148,9 @@ async function searchAddress(address) {
   // 2026-03-20 공공 학구도 GIS를 이용한 좌표 기반 판정.
   // 도로명주소를 카카오 주소검색으로 좌표화한 뒤 실제 학구 폴리곤에 포함되는지 확인한다.
   // 정확히 한 학교로 연결되면 기존 문자열/통리반 fallback보다 우선 사용한다.
-  const gisLookup = await findElementarySchoolsByGis(road || original);
+  // 건물명도 roads.json에서 주소가 유일하게 확정되면 그 도로명주소로 GIS 판정한다.
+  const gisAddress = roadInfo?.road || roadInfo?.jibun || original;
+  const gisLookup = await findElementarySchoolsByGis(gisAddress);
 
   let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
   if (Array.isArray(tongban) && roadInfo) {
@@ -2214,8 +2216,14 @@ async function searchAddress(address) {
   }
 
   if (typeof school === "string") {
-    school = findSchoolByKeyword(original);
-    matchMethod = Array.isArray(school) ? "키워드 유사 매칭" : "";
+    const looksLikeAddressInput = /\d/.test(normalizeSearchKey(original));
+    if (roadInfo || looksLikeAddressInput) {
+      school = findSchoolByKeyword(original);
+      matchMethod = Array.isArray(school) ? "키워드 유사 매칭" : "";
+    } else {
+      school = "건물명만으로 주소를 특정할 수 없습니다. 도로명주소 또는 지번주소를 입력해 주세요.";
+      matchMethod = "";
+    }
   }
 
   if (Array.isArray(school)) {
@@ -2340,12 +2348,35 @@ async function searchAddress(address) {
 
 async function roadToJibun(address) {
   const query = normalizeSearchKey(address);
-  if (query.length < 4) return null;
+  if (query.length < 2) return null;
 
   const roads = await loadRoads();
-  const exact = roads.find((row) => row.k && row.k.includes(query));
-  const reverse = exact || roads.find((row) => row.k && query.includes(row.k) && row.k.length >= 5);
-  const row = reverse || findRoadByTokens(roads, query);
+  const direct = roads.filter((row) => {
+    const key = normalizeSearchKey(row.k || "");
+    const building = normalizeSearchKey(row.b || "");
+    return (key && key.includes(query)) || (building && building.includes(query));
+  });
+
+  const looksLikeAddress = /\d/.test(query);
+  let row = null;
+
+  // 건물명-only 검색은 후보가 딱 하나일 때만 주소로 변환한다.
+  if (direct.length === 1) {
+    row = direct[0];
+  } else if (direct.length > 1 && looksLikeAddress) {
+    row = direct.find((item) => normalizeSearchKey(item.k || "") === query)
+      || direct.find((item) => normalizeSearchKey(item.k || "").includes(query))
+      || null;
+  }
+
+  // 기존 fuzzy 토큰 검색은 주소형 입력에서만 허용한다.
+  if (!row && looksLikeAddress) {
+    const reverse = roads.find((item) => {
+      const key = normalizeSearchKey(item.k || "");
+      return key && query.includes(key) && key.length >= 5;
+    });
+    row = reverse || findRoadByTokens(roads, query);
+  }
 
   if (!row) return null;
   return {
