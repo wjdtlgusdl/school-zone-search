@@ -1547,10 +1547,16 @@ async function initResultMap(homeAddress, schoolItems) {
     }
     for (const item of schools) {
       const targetKey = normalizeSchoolName(item.name);
-      const point = publicPoints.find((school) =>
-        school?.school_level === "초등학교" && normalizeSchoolName(school.school_name) === targetKey &&
-        Number.isFinite(Number(school.lat)) && Number.isFinite(Number(school.lng))
-      );
+      const point = publicPoints.find((school) => {
+        if (school?.school_level !== "초등학교" || normalizeSchoolName(school.school_name) !== targetKey) return false;
+        // null/빈 문자열은 Number(null) === 0 이므로 숫자 검사만 하면 (0, 0)을 정상 좌표로 오인한다.
+        if (school.lat === null || school.lat === undefined || school.lng === null || school.lng === undefined) return false;
+        if (String(school.lat).trim() === "" || String(school.lng).trim() === "") return false;
+        const lat = Number(school.lat);
+        const lng = Number(school.lng);
+        // 화성·오산 학교 좌표로 사용할 수 있는 대한민국 범위인지도 확인한다.
+        return Number.isFinite(lat) && Number.isFinite(lng) && lat >= 33 && lat <= 39 && lng >= 124 && lng <= 132;
+      });
       if (point) {
         locatedSchools.push({ ...item, pos: new window.kakao.maps.LatLng(Number(point.lat), Number(point.lng)) });
         continue;
