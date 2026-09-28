@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-middle-shared-v24";
+const APP_VERSION = "20260928-zone-popup-width-v25";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -798,12 +798,13 @@ function ensureAddressMapPopupStyle() {
     .middle-result-dot--elementary{background:#16a34a;border:1px solid #166534;}
     .middle-result-dot--middle{background:#f97316;border:1px solid #c2410c;}
     .schoolzone-map-info.zone-area-popup{
-      width:auto;min-width:0;max-width:260px;padding:9px 12px;
+      width:max-content;min-width:150px;max-width:320px;padding:9px 12px;
       border-radius:10px;white-space:normal;word-break:keep-all;
-      overflow-wrap:anywhere;box-sizing:border-box;
+      overflow-wrap:normal;box-sizing:border-box;
     }
     .schoolzone-map-info.zone-area-popup strong{
       display:block;margin:0;font-size:13px;line-height:1.35;
+      white-space:nowrap;word-break:keep-all;
     }
     .schoolzone-map-info.zone-area-popup .zone-area-popup__schools{
       display:block;margin-top:5px;font-size:11px;line-height:1.4;color:#475569;
