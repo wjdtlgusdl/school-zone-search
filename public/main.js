@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-fullmap-popup-v16";
+const APP_VERSION = "20260928-popup-close-v17";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -775,6 +775,30 @@ function ensureAddressMapPopupStyle() {
       overflow-wrap:anywhere;
       word-break:keep-all;
     }
+    .address-map-school-popup__close{
+      position:absolute;
+      top:7px;
+      right:8px;
+      width:24px;
+      height:24px;
+      padding:0;
+      border:0;
+      border-radius:50%;
+      background:#f1f5f9;
+      color:#64748b;
+      font-size:18px;
+      line-height:22px;
+      text-align:center;
+      cursor:pointer;
+    }
+    .address-map-school-popup__close:hover{
+      background:#e2e8f0;
+      color:#0f172a;
+    }
+    .address-map-school-popup{
+      position:relative;
+      padding-right:40px;
+    }
     .address-map-school-popup__title{
       display:inline;
       font-size:14px;
@@ -828,12 +852,28 @@ function ensureAddressMapPopupStyle() {
   document.head.appendChild(style);
 }
 
+function bindSchoolPopupClose(overlay) {
+  window.setTimeout(() => {
+    document.querySelectorAll(".address-map-school-popup__close").forEach(button => {
+      if (button.dataset.closeBound === "1") return;
+      button.dataset.closeBound = "1";
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        overlay?.setMap(null);
+      });
+    });
+  }, 0);
+}
+
+
 function markerSchoolInfoHtml(title, info, establishedDate = "") {
   const homepageRaw = info?.homepage || "";
   const homepage = homepageRaw ? normalizeHomepage(homepageRaw) : "";
   const phone = stripHtmlBreaks(info?.phone || "");
   const type = info?.school_type || "";
   return `<div class="address-map-school-popup">
+    <button type="button" class="address-map-school-popup__close" aria-label="학교 정보 닫기">×</button>
     <strong class="address-map-school-popup__title">${escapeHtml(title)}</strong>
     ${type ? `<span class="address-map-school-popup__type">${escapeHtml(type)}</span>` : ""}
     ${info?.address ? `<div class="address-map-school-popup__row">${escapeHtml(info.address)}</div>` : ""}
@@ -1149,6 +1189,7 @@ async function drawFullSchoolPoints(schools) {
         map: fullZoneMap, position: pos, yAnchor: 1.35,
         content: await fullMapSchoolDetailHtml(school),
       });
+      bindSchoolPopupClose(fullZoneInfoOverlay);
     });
   }
   window.kakao.maps.event.addListener(fullZoneMap, "zoom_changed", updateFullSchoolLabels);
@@ -1320,6 +1361,12 @@ async function initFullSchoolZoneMap() {
       center: new window.kakao.maps.LatLng(37.17, 127.00),
       level: 9,
     });
+  window.kakao.maps.event.addListener(fullZoneMap, "click", () => {
+    if (fullZoneInfoOverlay) {
+      fullZoneInfoOverlay.setMap(null);
+      fullZoneInfoOverlay = null;
+    }
+  });
     fullZoneMap.addControl(new window.kakao.maps.ZoomControl(), window.kakao.maps.ControlPosition.RIGHT);
     drawFullZonePolygons(fullZoneFeaturesByMode.elementary, "elementary");
     drawFullZonePolygons(fullZoneFeaturesByMode.middle, "middle");
@@ -1452,6 +1499,7 @@ async function initResultMap(homeAddress, schoolItems) {
           yAnchor: 1.35,
           content: markerSchoolInfoHtml(item.name, info, established),
         });
+        bindSchoolPopupClose(schoolInfoOverlay);
       });
     }
 
@@ -1460,6 +1508,13 @@ async function initResultMap(homeAddress, schoolItems) {
       map.relayout();
       map.setBounds(bounds, 70, 70, 70, 70);
     }, 0);
+
+    window.kakao.maps.event.addListener(map, "click", () => {
+      if (schoolInfoOverlay) {
+        schoolInfoOverlay.setMap(null);
+        schoolInfoOverlay = null;
+      }
+    });
 
     const schoolText = locatedSchools.length > 1
       ? `초록 마커 ${locatedSchools.length}곳은 공동학구 배정학교입니다.`
@@ -3330,6 +3385,7 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
           yAnchor: 1.35,
           content: markerSchoolInfoHtml(elementarySchool, elementaryInfo, point?.established_date || ""),
         });
+        bindSchoolPopupClose(infoOverlay);
       });
     }
 
@@ -3356,6 +3412,7 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
           yAnchor: 1.35,
           content: markerSchoolInfoHtml(school.school_name, detail, school.established_date || ""),
         });
+        bindSchoolPopupClose(infoOverlay);
       });
     }
 
@@ -3364,6 +3421,13 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
       map.relayout();
       if (boundCount) map.setBounds(bounds, 70, 70, 70, 70);
     }, 0);
+
+    window.kakao.maps.event.addListener(map, "click", () => {
+      if (infoOverlay) {
+        infoOverlay.setMap(null);
+        infoOverlay = null;
+      }
+    });
 
     const groupText = groups.map(g => g[0]).join(", ");
     statusEl.textContent = `${groupText} 경계 · 검색 주소 · 재학 초등학교 · 해당 중학교 ${schoolPoints.length}곳을 표시합니다. 학교 마커를 누르면 상세정보를 확인할 수 있습니다.`;
