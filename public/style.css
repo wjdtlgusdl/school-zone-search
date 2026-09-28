@@ -1188,3 +1188,9 @@ summary::-webkit-details-marker {
 
 .schoolzone-source { margin-top:10px; font-size:12px; line-height:1.6; color:#777; }
 .full-school-label { padding:3px 6px; border-radius:7px; background:rgba(255,255,255,.92); border:1px solid rgba(0,0,0,.16); box-shadow:0 1px 4px rgba(0,0,0,.12); font-size:11px; font-weight:700; white-space:nowrap; color:#1f2937; pointer-events:none; }
+
+.zone-layer-switch { display:flex; gap:4px; padding:4px; border:1px solid var(--border); border-radius:12px; background:rgba(127,127,127,.06); }
+.zone-layer-button { min-height:36px; padding:0 12px; border:0; border-radius:9px; background:transparent; color:var(--text-muted); font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+.zone-layer-button.is-active { background:var(--bg-solid); color:var(--text); box-shadow:0 1px 4px rgba(0,0,0,.12); }
+.legend-middle { border:2px solid #059669; background:rgba(52,211,153,.18); }
+@media (max-width:720px) { .zone-layer-switch { width:100%; } .zone-layer-button { flex:1; } }
