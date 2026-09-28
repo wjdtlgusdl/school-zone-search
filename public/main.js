@@ -1,4 +1,4 @@
-const APP_VERSION = "20260513-v4";
+const APP_VERSION = "20260928-daol-v3";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -704,10 +704,11 @@ async function geocodeAddress(geocoder, address) {
   const original = cleanText(address);
   const candidates = unique([
     original,
-    // 2026년 신설 동탄구 주소가 카카오 주소 DB에 아직 반영되지 않은 경우를 대비.
-    // 기존 화성시 도로명 형식으로 한 번 더 조회한다.
-    original.replace(/(경기도\s+화성시)\s+동탄구\s+/, "$1 "),
-    original.replace(/(화성시)\s+동탄구\s+/, "$1 "),
+    // 읍면동+지번만 입력한 경우(예: 신동 874) 화성시 주소로 한 번 더 조회한다.
+    /^[가-힣]+(?:동|읍|면|리)\s+산?\s*\d/.test(original) ? `경기도 화성시 ${original}` : "",
+    // 2026년 신설 구 명칭이 카카오 주소 DB에 아직 반영되지 않은 경우를 대비.
+    original.replace(/(경기도\s+화성시)\s+(?:동탄구|만세구|효행구|병점구)\s+/, "$1 "),
+    original.replace(/(화성시)\s+(?:동탄구|만세구|효행구|병점구)\s+/, "$1 "),
   ].filter(Boolean));
 
   let lastError = null;
@@ -727,7 +728,7 @@ let publicSchoolPointsPromise = null;
 
 function loadPublicSchoolPoints() {
   if (!publicSchoolPointsPromise) {
-    publicSchoolPointsPromise = fetch("/data/schools_hwaseong_osan_20260320.json")
+    publicSchoolPointsPromise = fetch(`/data/schools_hwaseong_osan_20260320.json?v=${APP_VERSION}`)
       .then((response) => {
         if (!response.ok) throw new Error("PUBLIC_SCHOOL_POINTS_LOAD_FAILED");
         return response.json();
@@ -1828,6 +1829,25 @@ async function searchAddress(address) {
       matchMethod = isA61Shared ? "최신 부서자료 공동학구 보정" : "최신 부서자료 다올초 보정";
       hasLatestDepartmentOverride = true;
     }
+  }
+
+  // 최신 부서자료 주소 보정: 다올초 개교 후 신동 874(동탄신리천로 618)는 다올초 관할.
+  // 지번만 입력해도 2026-03-20 공공 GIS의 과거 학교로 되돌아가지 않도록 한다.
+  const daolAddressKey = normalizeText([original, road, jibun].filter(Boolean).join(" "));
+  if (/신동874/.test(daolAddressKey) || /동탄신리천로618/.test(daolAddressKey)) {
+    school = [{
+      school: "다올초",
+      sigun: "화성시",
+      eup: "동탄9동",
+      tongri: "",
+      ban: "",
+      tongbanArea: "",
+      schoolArea: "신동 874 / 동탄신리천로 618",
+      note: "2026.8.20 다올초 조기 개교 반영",
+      match: "최신 부서자료",
+    }];
+    matchMethod = "최신 부서자료 다올초 보정";
+    hasLatestDepartmentOverride = true;
   }
 
   // GIS에서 한 학교만 확정되면 그것을 주소 검색의 우선 판정으로 사용한다.
