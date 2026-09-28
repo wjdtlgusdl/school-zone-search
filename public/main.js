@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-label-v26";
+const APP_VERSION = "20260928-result-card-clean-v27";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1849,24 +1849,9 @@ function renderTongbanCard(tongban, message) {
 }
 
 function renderAddressSchoolRow(item) {
-  const info = getSchoolInfo(item.school);
-  const areaCount = Array.isArray(item.items) ? item.items.length : 1;
-  const notes = unique((item.items || [item]).map((row) => row.note).filter(Boolean));
-  return `
-    <article class="compact-row">
-      <div class="compact-row-title">
-        <strong>${escapeHtml(item.school)}</strong>
-      </div>
-      ${areaCount > 1 ? `<div class="meta-line">같은 학교로 배정되는 세부 주소 ${formatNumber(areaCount)}건을 묶어서 표시했습니다.</div>` : ""}
-      <details>
-        <summary>학교 관련 정보 보기</summary>
-        <div class="details-body">
-          ${renderSchoolInfoDetails(info)}
-          ${notes.length ? `<div><strong>비고</strong><br>${escapeHtml(notes.join(" / "))}</div>` : ""}
-        </div>
-      </details>
-    </article>
-  `;
+  // 주소조회 상단에 이미 배정 초등학교명이 표시되고,
+  // 지도 마커에서 학교 상세정보를 확인할 수 있으므로 중복 학교 카드는 표시하지 않는다.
+  return "";
 }
 
 function groupAddressSchools(schools) {
