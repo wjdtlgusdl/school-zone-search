@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-daol-v5";
+const APP_VERSION = "20260928-daol-v6";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -969,7 +969,14 @@ async function drawFullSchoolPoints(schools) {
   // 2026-03-20 공공 학교위치 자료 이후 개교한 학교(예: 다올초)는
   // 좌표가 비어 있어도 최신 도로명주소를 이용해 지도 표시 좌표를 보완한다.
   for (const school of candidates) {
-    if (Number.isFinite(Number(school.lat)) && Number.isFinite(Number(school.lng))) continue;
+    const hasValidCoordinates =
+      school.lat !== null && school.lat !== "" &&
+      school.lng !== null && school.lng !== "" &&
+      Number.isFinite(Number(school.lat)) &&
+      Number.isFinite(Number(school.lng)) &&
+      Number(school.lat) >= 33 && Number(school.lat) <= 39 &&
+      Number(school.lng) >= 124 && Number(school.lng) <= 132;
+    if (hasValidCoordinates) continue;
     const address = school.road_address || school.jibun_address || "";
     if (!address) continue;
     try {
@@ -981,7 +988,14 @@ async function drawFullSchoolPoints(schools) {
     }
   }
 
-  fullSchoolPointData = candidates.filter(s => Number.isFinite(Number(s.lat)) && Number.isFinite(Number(s.lng)));
+  fullSchoolPointData = candidates.filter(s =>
+    s.lat !== null && s.lat !== "" &&
+    s.lng !== null && s.lng !== "" &&
+    Number.isFinite(Number(s.lat)) &&
+    Number.isFinite(Number(s.lng)) &&
+    Number(s.lat) >= 33 && Number(s.lat) <= 39 &&
+    Number(s.lng) >= 124 && Number(s.lng) <= 132
+  );
   for (const school of fullSchoolPointData) {
     const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
     const marker = new window.kakao.maps.Marker({ position: pos, title: school.school_name || "학교" });
