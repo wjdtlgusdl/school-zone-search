@@ -1153,3 +1153,34 @@ summary::-webkit-details-marker {
 }
 .schoolzone-map-info strong { font-size:12px; }
 .schoolzone-map-info span { opacity:.68; }
+
+/* 통학구역지도 전용 탭 */
+.segmented-control { grid-template-columns: repeat(3, 1fr); }
+.map-mode-copy { margin-bottom: 10px; }
+.workspace.is-map-mode { grid-template-columns: 1fr; }
+.workspace.is-map-mode .search-panel { position: static; padding-bottom: 0; }
+.workspace.is-map-mode .panel-heading { display: none; }
+.workspace.is-map-mode .notice-card { display: none; }
+.full-map-panel { min-width: 0; }
+.full-map-panel[hidden] { display: none; }
+.full-map-toolbar { display:flex; align-items:end; justify-content:space-between; gap:18px; margin-bottom:12px; }
+.full-map-toolbar h2 { margin:4px 0 0; font-size:clamp(22px,2.5vw,32px); }
+.full-map-search { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.full-map-search input { width:min(320px,42vw); min-height:44px; padding:0 14px; border:1px solid var(--border); border-radius:12px; background:var(--bg-solid); color:var(--text); font:inherit; }
+.secondary-button { min-height:44px; padding:0 15px; border:1px solid var(--border); border-radius:12px; background:var(--bg-solid); color:var(--text); font-weight:700; cursor:pointer; }
+.full-map-legend { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:8px 2px 10px; color:var(--text-muted); font-size:13px; }
+.full-map-legend span { display:inline-flex; align-items:center; gap:6px; }
+.full-map-legend i { display:inline-block; width:22px; height:12px; border-radius:4px; }
+.legend-normal { border:2px solid #2563eb; background:rgba(96,165,250,.18); }
+.legend-shared { border:2px dashed #7c3aed; background:rgba(167,139,250,.18); }
+.full-map-count { margin-left:auto; }
+.full-schoolzone-map { width:100%; height:clamp(560px,72vh,860px); min-height:560px; border:1px solid var(--border); border-radius:18px; overflow:hidden; background:rgba(127,127,127,.08); }
+@media (max-width:720px) {
+  .segmented-control { grid-template-columns:repeat(3,1fr); }
+  .segment { font-size:13px; padding:0 6px; }
+  .full-map-toolbar { align-items:stretch; flex-direction:column; }
+  .full-map-search { justify-content:stretch; }
+  .full-map-search input { width:100%; flex:1 1 100%; }
+  .full-schoolzone-map { height:68vh; min-height:480px; }
+  .full-map-count { margin-left:0; width:100%; }
+}

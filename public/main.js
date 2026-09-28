@@ -56,8 +56,15 @@ function collectElements() {
   els.dataChip = document.querySelector("#dataChip");
   els.addressTab = document.querySelector("#addressTab");
   els.schoolTab = document.querySelector("#schoolTab");
+  els.mapTab = document.querySelector("#mapTab");
   els.addressMode = document.querySelector("#addressMode");
   els.schoolMode = document.querySelector("#schoolMode");
+  els.mapMode = document.querySelector("#mapMode");
+  els.fullMapPanel = document.querySelector("#fullMapPanel");
+  els.zoneSchoolInput = document.querySelector("#zoneSchoolInput");
+  els.zoneSchoolList = document.querySelector("#zoneSchoolList");
+  els.zoneSchoolSearchButton = document.querySelector("#zoneSchoolSearchButton");
+  els.zoneMapResetButton = document.querySelector("#zoneMapResetButton");
   els.citySelect = document.querySelector("#citySelect");
   els.eupSelect = document.querySelector("#eupSelect");
   els.addressInput = document.querySelector("#addressInput");
@@ -75,6 +82,10 @@ function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
   els.schoolTab.addEventListener("click", () => switchMode("school"));
+  els.mapTab?.addEventListener("click", () => switchMode("map"));
+  els.zoneSchoolSearchButton?.addEventListener("click", focusFullMapSchool);
+  els.zoneMapResetButton?.addEventListener("click", resetFullMapView);
+  els.zoneSchoolInput?.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); focusFullMapSchool(); } });
   els.citySelect?.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
   els.eupSelect?.addEventListener("change", () => handleAddressSuggestionInput());
 
@@ -180,18 +191,31 @@ function updateThemeLabel() {
 function switchMode(mode) {
   state.activeMode = mode;
   const isAddress = mode === "address";
+  const isSchool = mode === "school";
+  const isMap = mode === "map";
   hideAddressSuggestions();
   hideSchoolSuggestions();
 
   els.addressTab.classList.toggle("is-active", isAddress);
-  els.schoolTab.classList.toggle("is-active", !isAddress);
+  els.schoolTab.classList.toggle("is-active", isSchool);
+  els.mapTab?.classList.toggle("is-active", isMap);
   els.addressTab.setAttribute("aria-selected", String(isAddress));
-  els.schoolTab.setAttribute("aria-selected", String(!isAddress));
+  els.schoolTab.setAttribute("aria-selected", String(isSchool));
+  els.mapTab?.setAttribute("aria-selected", String(isMap));
   els.addressMode.hidden = !isAddress;
-  els.schoolMode.hidden = isAddress;
+  els.schoolMode.hidden = !isSchool;
+  if (els.mapMode) els.mapMode.hidden = !isMap;
+  if (els.fullMapPanel) els.fullMapPanel.hidden = !isMap;
+  const resultPanel = document.querySelector(".result-panel");
+  if (resultPanel) resultPanel.hidden = isMap;
+  document.querySelector(".workspace")?.classList.toggle("is-map-mode", isMap);
 
+  if (isMap) {
+    window.setTimeout(initFullSchoolZoneMap, 0);
+    return;
+  }
   const input = isAddress ? els.addressInput : els.schoolInput;
-  input.focus({ preventScroll: true });
+  input?.focus({ preventScroll: true });
 }
 
 function updateClearButtons() {
@@ -744,6 +768,144 @@ async function drawSchoolZoneLayer(map, homePos) {
   }
 
   return overlays;
+}
+
+
+let fullZoneMap = null;
+let fullZonePolygons = [];
+let fullZoneFeatures = [];
+let fullZoneInfoOverlay = null;
+
+function featureBoundsPoints(feature) {
+  const points = [];
+  for (const polygon of featurePolygonParts(feature)) {
+    for (const ring of polygon || []) {
+      for (const coord of ring || []) {
+        if (Array.isArray(coord) && coord.length >= 2) points.push(coord);
+      }
+    }
+  }
+  return points;
+}
+
+function schoolNameFromZone(feature) {
+  return String(feature?.properties?.HAKGUDO_NM || "")
+    .replace(/공동통학구역/g, "")
+    .replace(/통학구역/g, "")
+    .trim();
+}
+
+function populateZoneSchoolList(features) {
+  if (!els.zoneSchoolList) return;
+  const names = [...new Set(features.map(schoolNameFromZone).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"));
+  els.zoneSchoolList.innerHTML = names.map(name => `<option value="${escapeHtml(name)}"></option>`).join("");
+}
+
+function fitFullMapToFeatures(features) {
+  if (!fullZoneMap || !features?.length) return;
+  const bounds = new window.kakao.maps.LatLngBounds();
+  let count = 0;
+  for (const feature of features) {
+    for (const [lng, lat] of featureBoundsPoints(feature)) {
+      bounds.extend(new window.kakao.maps.LatLng(Number(lat), Number(lng)));
+      count++;
+    }
+  }
+  if (count) fullZoneMap.setBounds(bounds, 36, 36, 36, 36);
+}
+
+function setFullMapHighlight(matchedFeatures) {
+  const ids = new Set((matchedFeatures || []).map(f => f?.properties?.HAKGUDO_ID));
+  for (const item of fullZonePolygons) {
+    const active = ids.has(item.feature?.properties?.HAKGUDO_ID);
+    const isShared = String(item.feature?.properties?.HAKGUDO_GB || "") === "1" || item.feature?.properties?.zone_type === "공동통학구역";
+    item.polygon.setOptions({
+      strokeWeight: active ? 5 : (isShared ? 3 : 2),
+      strokeOpacity: active ? 1 : 0.72,
+      fillOpacity: active ? 0.30 : (isShared ? 0.10 : 0.07),
+    });
+  }
+}
+
+function resetFullMapView() {
+  if (!fullZoneMap) return;
+  if (els.zoneSchoolInput) els.zoneSchoolInput.value = "";
+  setFullMapHighlight([]);
+  fitFullMapToFeatures(fullZoneFeatures);
+  if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
+}
+
+function focusFullMapSchool() {
+  if (!fullZoneMap) return;
+  const query = normalizeText(els.zoneSchoolInput?.value || "").replace(/초등학교/g,"초");
+  if (!query) return resetFullMapView();
+  const matches = fullZoneFeatures.filter(feature => {
+    const name = normalizeText(feature?.properties?.HAKGUDO_NM || "").replace(/초등학교/g,"초");
+    return name.includes(query) || query.includes(schoolNameFromZone(feature));
+  });
+  const status = document.querySelector("#fullMapStatus");
+  if (!matches.length) {
+    if (status) status.textContent = "해당 학교의 통학구역을 찾지 못했습니다.";
+    return;
+  }
+  setFullMapHighlight(matches);
+  fitFullMapToFeatures(matches);
+  if (status) status.textContent = `${matches.map(f=>f.properties?.HAKGUDO_NM).filter(Boolean).join(", ")} 표시 중`;
+}
+
+async function initFullSchoolZoneMap() {
+  const mapEl = document.querySelector("#fullSchoolZoneMap");
+  const statusEl = document.querySelector("#fullMapStatus");
+  if (!mapEl || !statusEl) return;
+  if (fullZoneMap) {
+    fullZoneMap.relayout();
+    window.setTimeout(() => fitFullMapToFeatures(fullZoneFeatures), 30);
+    return;
+  }
+  try {
+    await loadKakaoMapSdk();
+    const geojson = await loadSchoolZoneGeoJson();
+    fullZoneFeatures = Array.isArray(geojson?.features) ? geojson.features : [];
+    populateZoneSchoolList(fullZoneFeatures);
+    fullZoneMap = new window.kakao.maps.Map(mapEl, {
+      center: new window.kakao.maps.LatLng(37.17, 127.00),
+      level: 9,
+    });
+    fullZoneMap.addControl(new window.kakao.maps.ZoomControl(), window.kakao.maps.ControlPosition.RIGHT);
+    fullZonePolygons = [];
+    for (const feature of fullZoneFeatures) {
+      const props = feature.properties || {};
+      const isShared = String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역";
+      for (const polygonCoords of featurePolygonParts(feature)) {
+        const paths = geoPolygonToKakaoPaths(polygonCoords);
+        if (!paths.length || !paths[0]?.length) continue;
+        const polygon = new window.kakao.maps.Polygon({
+          map: fullZoneMap, path: paths,
+          strokeWeight: isShared ? 3 : 2,
+          strokeColor: isShared ? "#7c3aed" : "#2563eb",
+          strokeOpacity: 0.72,
+          strokeStyle: isShared ? "dash" : "solid",
+          fillColor: isShared ? "#a78bfa" : "#60a5fa",
+          fillOpacity: isShared ? 0.10 : 0.07,
+        });
+        fullZonePolygons.push({ polygon, feature });
+        window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
+          if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
+          fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
+            map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
+            content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"))}</span><span>${escapeHtml(props.city || "")}</span></div>`,
+          });
+        });
+      }
+    }
+    document.querySelector("#zoneMapCount").textContent = `총 ${fullZoneFeatures.length}개 학구`;
+    fullZoneMap.relayout();
+    fitFullMapToFeatures(fullZoneFeatures);
+    statusEl.textContent = "학구를 클릭하면 학구명과 구분을 확인할 수 있습니다.";
+  } catch (error) {
+    console.warn("full schoolzone map load failed", error);
+    statusEl.textContent = "통학구역 지도를 불러오지 못했습니다.";
+  }
 }
 
 async function initResultMap(homeAddress, schoolName, schoolAddress) {
