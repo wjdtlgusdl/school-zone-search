@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-phone-clean-v18";
+const APP_VERSION = "20260928-homepage-fix-v19";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -854,14 +854,33 @@ function ensureAddressMapPopupStyle() {
 
 function bindSchoolPopupClose(overlay) {
   window.setTimeout(() => {
-    document.querySelectorAll(".address-map-school-popup__close").forEach(button => {
-      if (button.dataset.closeBound === "1") return;
-      button.dataset.closeBound = "1";
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        overlay?.setMap(null);
+    document.querySelectorAll(".address-map-school-popup").forEach(card => {
+      if (card.dataset.popupBound === "1") return;
+      card.dataset.popupBound = "1";
+
+      // 팝업 내부 조작이 지도 클릭으로 전달되지 않게 한다.
+      ["click", "mousedown", "touchstart"].forEach(eventName => {
+        card.addEventListener(eventName, event => {
+          event.stopPropagation();
+        });
       });
+
+      const closeButton = card.querySelector(".address-map-school-popup__close");
+      if (closeButton) {
+        closeButton.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          overlay?.setMap(null);
+        });
+      }
+
+      // 홈페이지 링크는 지도 이벤트와 분리해 정상적으로 새 탭에서 연다.
+      const homepageLink = card.querySelector(".address-map-school-popup__link a");
+      if (homepageLink) {
+        homepageLink.addEventListener("click", event => {
+          event.stopPropagation();
+        });
+      }
     });
   }, 0);
 }
@@ -1220,6 +1239,7 @@ async function drawFullSchoolPoints(schools) {
       ensureAddressMapPopupStyle();
       fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
         map: fullZoneMap, position: pos, yAnchor: 1.35,
+        clickable: true,
         content: await fullMapSchoolDetailHtml(school),
       });
       bindSchoolPopupClose(fullZoneInfoOverlay);
@@ -1530,6 +1550,7 @@ async function initResultMap(homeAddress, schoolItems) {
           map,
           position: item.pos,
           yAnchor: 1.35,
+          clickable: true,
           content: markerSchoolInfoHtml(item.name, info, established),
         });
         bindSchoolPopupClose(schoolInfoOverlay);
@@ -3416,6 +3437,7 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
           map,
           position: elementaryPos,
           yAnchor: 1.35,
+          clickable: true,
           content: markerSchoolInfoHtml(elementarySchool, elementaryInfo, point?.established_date || ""),
         });
         bindSchoolPopupClose(infoOverlay);
@@ -3443,6 +3465,7 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
           map,
           position: pos,
           yAnchor: 1.35,
+          clickable: true,
           content: markerSchoolInfoHtml(school.school_name, detail, school.established_date || ""),
         });
         bindSchoolPopupClose(infoOverlay);
