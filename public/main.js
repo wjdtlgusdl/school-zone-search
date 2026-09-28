@@ -1312,7 +1312,7 @@ async function initResultMap(homeAddress, schoolItems) {
       ? `초록 마커 ${locatedSchools.length}곳은 공동학구 배정학교입니다.`
       : "초록 마커는 배정학교입니다.";
     const zoneText = zoneCount
-      ? "색칠된 경계는 검색 주소가 포함된 공공 GIS 통학구역입니다."
+      ? "경계는 검색 주소가 포함된 통학구역입니다."
       : "현재 공공 GIS에 별도 경계가 없는 최신 부서자료 구역은 학교 위치만 표시될 수 있습니다.";
     statusEl.textContent = `파란 마커는 검색 주소, ${schoolText} ${zoneText}`;
   } catch (error) {
@@ -1795,8 +1795,8 @@ function renderResultFooter() {
   const dataYear = state.core?.meta?.dataYear || "현재";
   return `
     <div class="result-footer">
-      <p>자료 기준: ${escapeHtml(dataYear)}학년도 · 최종 확인은 경기도화성오산교육지원청 학생배치과 안내를 따르세요.</p>
-      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색하기</button>
+      <p>자료 기준: ${escapeHtml(dataYear)}학년도</p>
+      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색</button>
     </div>
   `;
 }
