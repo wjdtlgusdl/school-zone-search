@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-zone-click-fix-v21";
+const APP_VERSION = "20260928-middle-marker-v22";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -775,6 +775,28 @@ function ensureAddressMapPopupStyle() {
       overflow-wrap:anywhere;
       word-break:keep-all;
     }
+    #middleResultMap{position:relative;}
+    #middleResultMap .zone-map-marker--elementary-result .zone-map-marker__icon{
+      background:#16a34a !important;
+      border-color:#166534 !important;
+      color:#fff !important;
+    }
+    #middleResultMap .zone-map-marker--middle-result .zone-map-marker__icon{
+      background:#f97316 !important;
+      border-color:#c2410c !important;
+      color:#fff !important;
+    }
+    .middle-result-marker-legend{
+      position:absolute;z-index:5;left:10px;bottom:10px;
+      display:flex;gap:10px;flex-wrap:wrap;padding:7px 9px;
+      border:1px solid #dbe3ef;border-radius:9px;
+      background:rgba(255,255,255,.94);box-shadow:0 2px 8px rgba(15,23,42,.12);
+      color:#334155;font-size:11px;line-height:1;pointer-events:none;
+    }
+    .middle-result-marker-legend span{display:flex;align-items:center;gap:4px;}
+    .middle-result-dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-sizing:border-box;}
+    .middle-result-dot--elementary{background:#16a34a;border:1px solid #166534;}
+    .middle-result-dot--middle{background:#f97316;border:1px solid #c2410c;}
     .legend-normal,.legend-shared,.legend-middle-group,.legend-middle-zone{
       display:inline-block;
       width:14px;
@@ -3404,6 +3426,13 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
       center = new window.kakao.maps.LatLng(Number(schoolPoints[0].lat), Number(schoolPoints[0].lng));
     }
     const map = new window.kakao.maps.Map(mapEl, { center, level: 7 });
+
+    const oldLegend = mapEl.querySelector(".middle-result-marker-legend");
+    if (oldLegend) oldLegend.remove();
+    const markerLegend = document.createElement("div");
+    markerLegend.className = "middle-result-marker-legend";
+    markerLegend.innerHTML = `<span><i class="middle-result-dot middle-result-dot--elementary"></i>현재 초등학교</span><span><i class="middle-result-dot middle-result-dot--middle"></i>배정 대상 중학교</span>`;
+    mapEl.appendChild(markerLegend);
     const bounds = new window.kakao.maps.LatLngBounds();
     let boundCount = 0;
     let infoOverlay = null;
@@ -3453,11 +3482,11 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
       bounds.extend(elementaryPos); boundCount += 1;
       const elemEl = document.createElement("button");
       elemEl.type = "button";
-      elemEl.className = "zone-map-marker zone-map-marker--school";
+      elemEl.className = "zone-map-marker zone-map-marker--school zone-map-marker--elementary-result";
       elemEl.style.border = "0";
       elemEl.style.background = "transparent";
       elemEl.style.cursor = "pointer";
-      elemEl.innerHTML = `<span class="zone-map-marker__icon">E</span><span class="zone-map-marker__label">${escapeHtml(String(elementarySchool).replace(/초등학교$/, "초"))}</span>`;
+      elemEl.innerHTML = `<span class="zone-map-marker__icon">초</span><span class="zone-map-marker__label">${escapeHtml(String(elementarySchool).replace(/초등학교$/, "초"))}</span>`;
       new window.kakao.maps.CustomOverlay({ map, position: elementaryPos, yAnchor: 1, content: elemEl });
       elemEl.addEventListener("click", () => {
         if (infoOverlay) infoOverlay.setMap(null);
@@ -3480,11 +3509,11 @@ async function initMiddleResultMap(elementarySchool, homeAddress) {
 
       const markerEl = document.createElement("button");
       markerEl.type = "button";
-      markerEl.className = "zone-map-marker zone-map-marker--school";
+      markerEl.className = "zone-map-marker zone-map-marker--school zone-map-marker--middle-result";
       markerEl.style.border = "0";
       markerEl.style.background = "transparent";
       markerEl.style.cursor = "pointer";
-      markerEl.innerHTML = `<span class="zone-map-marker__icon">M</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span>`;
+      markerEl.innerHTML = `<span class="zone-map-marker__icon">중</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span>`;
 
       new window.kakao.maps.CustomOverlay({ map, position: pos, yAnchor: 1, content: markerEl });
       markerEl.addEventListener("click", () => {
