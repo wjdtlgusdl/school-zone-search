@@ -933,10 +933,17 @@ function activeFullZoneFeatures() {
 
 function populateZoneSchoolList(features) {
   if (!els.zoneSchoolList) return;
-  const names = [...new Set(features.flatMap(feature => {
+  const zoneNames = features.flatMap(feature => {
     const linked = Array.isArray(feature?.properties?.school_names) ? feature.properties.school_names : [];
     return [...linked, schoolNameFromZone(feature)].filter(Boolean);
-  }))].sort((a,b)=>a.localeCompare(b,"ko"));
+  });
+  // 공공 GIS 학구명뿐 아니라 실제 지도에 표시 중인 학교 마커도 검색 후보에 포함한다.
+  // 다올초처럼 GIS 기준일 이후 개교하여 아직 학구 폴리곤에 없는 학교도 검색 가능해진다.
+  const markerNames = fullSchoolPointData
+    .filter(school => school.school_level === schoolLevelForFullMap())
+    .map(school => school.school_name)
+    .filter(Boolean);
+  const names = [...new Set([...zoneNames, ...markerNames])].sort((a,b)=>a.localeCompare(b,"ko"));
   els.zoneSchoolList.innerHTML = names.map(name => `<option value="${escapeHtml(name)}"></option>`).join("");
 }
 
@@ -1059,19 +1066,45 @@ function focusFullMapSchool() {
   if (!fullZoneMap) return;
   const query = normalizeText(els.zoneSchoolInput?.value || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
   if (!query) return resetFullMapView();
+
   const matches = activeFullZoneFeatures().filter(feature => {
     const name = normalizeText(feature?.properties?.HAKGUDO_NM || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
     const linkedNames = (feature?.properties?.school_names || []).map(name => normalizeText(name).replace(/초등학교/g,"초").replace(/중학교/g,"중"));
     return name.includes(query) || query.includes(normalizeText(schoolNameFromZone(feature))) || linkedNames.some(name => name.includes(query) || query.includes(name));
   });
+
   const status = document.querySelector("#fullMapStatus");
-  if (!matches.length) {
-    if (status) status.textContent = fullZoneMode === "middle" ? "해당 중학교의 학교군·중학구를 찾지 못했습니다." : "해당 학교의 통학구역을 찾지 못했습니다.";
+
+  if (matches.length) {
+    setFullMapHighlight(matches);
+    fitFullMapToFeatures(matches);
+    if (status) status.textContent = `${matches.map(f=>f.properties?.HAKGUDO_NM).filter(Boolean).join(", ")} 표시`;
     return;
   }
-  setFullMapHighlight(matches);
-  fitFullMapToFeatures(matches);
-  if (status) status.textContent = `${matches.map(f=>f.properties?.HAKGUDO_NM).filter(Boolean).join(", ")} 표시 중`;
+
+  // GIS 학구 폴리곤에 아직 없는 신규 학교는 학교 마커 위치로 검색한다.
+  // 예: 2026-03-20 기준일 이후 개교한 다올초.
+  const level = schoolLevelForFullMap();
+  const schoolMatch = fullSchoolPointData.find(school => {
+    if (school.school_level !== level) return false;
+    const name = normalizeText(school.school_name || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
+    return name.includes(query) || query.includes(name);
+  });
+
+  if (schoolMatch) {
+    setFullMapHighlight([]);
+    const position = new window.kakao.maps.LatLng(Number(schoolMatch.lat), Number(schoolMatch.lng));
+    fullZoneMap.setCenter(position);
+    fullZoneMap.setLevel(4);
+    if (status) {
+      status.textContent = `${schoolMatch.school_name} 위치 표시 · 현재 공공 GIS 학구도에는 별도 학구 폴리곤이 없습니다.`;
+    }
+    return;
+  }
+
+  if (status) status.textContent = fullZoneMode === "middle"
+    ? "해당 중학교의 학교군·중학구를 찾지 못했습니다."
+    : "해당 학교의 통학구역 또는 학교 위치를 찾지 못했습니다.";
 }
 
 function updateFullMapModeUI() {
