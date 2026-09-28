@@ -955,7 +955,7 @@ function drawFullSchoolPoints(schools) {
       if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
       fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
         map: fullZoneMap, position: pos, yAnchor: 1.35,
-        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.road_address || school.jibun_address || "")}</span><span>공공데이터 학교 위치</span></div>`,
+        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.road_address || school.jibun_address || "")}</span>${school.established_date ? `<span>설립일: ${escapeHtml(String(school.established_date).replace(/-/g, ". "))}</span>` : ""}</div>`,
       });
     });
   }
