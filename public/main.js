@@ -1,11 +1,11 @@
-const APP_VERSION = "20260928-v21-school-address-fallback";
+const APP_VERSION = "20260928-v22-detail-school-map-test";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
   searchIndex: `/data/search_index.json?v=${APP_VERSION}`,
-  structuredSchoolMap: `/data/structured_school_map_test.json?v=${APP_VERSION}`,
+  structuredSchoolMap: `/data/structured_school_map_v2.json?v=${APP_VERSION}`,
 };
 
 const APT_ALIAS = {
@@ -2197,7 +2197,7 @@ async function searchAddress(address) {
     }
   }
 
-  let school = findSchoolByTongban(tongban);
+  let school = findSchoolByTongban(tongban, roadInfo, original);
   let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
 
   // 같은 통·반 안에서 통학구역이 다시 나뉘는 경우에는 실제 주소의 지번/동 정보를
@@ -2739,52 +2739,93 @@ function schoolAreaContainsBuildingDong(areaText, buildingDong) {
   return singleDongs.includes(target);
 }
 
-function findSchoolByTongban(tongbanResult) {
+function findSchoolByTongban(tongbanResult, roadInfo = null, originalInput = "") {
   if (!Array.isArray(tongbanResult)) return tongbanResult;
 
-  // 시험 적용: 구조화 정제자료를 통리반→학교의 유일한 판정원으로 사용한다.
-  // 사람확인필요 행과 겹치는 통리는 기존 schoolzone/fallback으로 내려가지 않고 조회를 보류한다.
+  // 세부조건 보존 2차 정제자료 시험 적용.
+  // 같은 읍면동·통·반이라도 법정동/지번/아파트동 조건이 다르면 별도 규칙으로 판정한다.
   const structured = state.structuredSchoolMap;
-  if (!structured || !structured.mappings || !structured.blocked) {
+  if (!structured || !structured.rules) {
     return "구조화 통학구역 자료를 불러오지 못했습니다.";
   }
 
-  const blockedRows = Object.values(structured.blocked || {});
-  for (const item of tongbanResult) {
-    const eup = normalizeText(item.eup || "");
-    const tongri = normalizeText(item.tongri || "");
-    const blocked = blockedRows.some((row) =>
-      normalizeText(row.eup || "") === eup && tongriMatches(normalizeText(row.tongri || ""), tongri)
-    );
-    if (blocked) {
-      return "현재 정제 확인이 필요한 통학구역입니다. 원자료 확인 후 조회 결과를 제공할 예정입니다.";
-    }
-  }
+  const exactAddress = parseAddress([
+    roadInfo?.legal || "",
+    roadInfo?.jibun || "",
+    originalInput || "",
+  ].filter(Boolean).join(" "));
+  const buildingDong = extractBuildingDong([originalInput, roadInfo?.building || ""].filter(Boolean).join(" "));
+  const buildingText = looseNormalize([roadInfo?.building || "", originalInput || ""].filter(Boolean).join(" "));
 
-  const finalResults = [];
+  const strictMatches = [];
+  const relaxedApartmentMatches = [];
+  let hasBlockedKey = false;
+
   for (const item of tongbanResult) {
     const key = [item.eup, item.tongri, item.ban].map((v) => normalizeText(v || "")).join("|");
-    const mapped = structured.mappings[key];
-    if (!mapped || !Array.isArray(mapped.schools)) continue;
+    const rules = structured.rules[key] || [];
+    if (structured.blocked && structured.blocked[key]) hasBlockedKey = true;
 
-    for (const schoolName of mapped.schools) {
-      finalResults.push({
-        school: schoolName,
+    for (const rule of rules) {
+      const jibunCondition = cleanText(rule.jibun || "");
+      const apartmentDong = String(rule.apartmentDong || "").replace(/[^0-9]/g, "");
+      const condition = cleanText(rule.condition || "");
+      const isWhole = rule.basis === "통 전체" || (!jibunCondition && !apartmentDong && !condition);
+
+      let jibunOk = true;
+      if (jibunCondition) {
+        jibunOk = Boolean(
+          exactAddress.legalArea && exactAddress.mainNo !== null &&
+          containsJibun(jibunCondition, exactAddress.legalArea, exactAddress.mainNo, exactAddress.subNo, exactAddress.isMountain)
+        );
+      }
+      if (!jibunOk) continue;
+
+      let nameOk = true;
+      if (!jibunCondition && !apartmentDong && condition && !isWhole) {
+        const conditionNorm = looseNormalize(condition);
+        const tokens = splitMeaningfulKeywords(condition).filter((token) => token.length >= 2);
+        nameOk = Boolean(buildingText && (conditionNorm.includes(buildingText) || tokens.some((token) => buildingText.includes(looseNormalize(token)))));
+      }
+      if (!nameOk) continue;
+
+      const result = {
+        school: rule.school,
         sigun: item.sigun || "",
         eup: item.eup,
         tongri: item.tongri,
         ban: item.ban,
         tongbanArea: item.area,
-        schoolArea: "구조화 정제자료",
-        note: mapped.grade === "교차검증확정" ? "통리반 원자료 교차검증" : "통 전체 자동확정",
-        match: "구조화 통리반",
-      });
+        schoolArea: condition || jibunCondition || "세부조건 구조화 자료",
+        note: rule.basis || "세부조건 구조화",
+        match: "구조화 세부조건",
+      };
+
+      if (apartmentDong) {
+        if (buildingDong) {
+          if (String(buildingDong).replace(/[^0-9]/g, "") === apartmentDong) strictMatches.push(result);
+        } else {
+          // 동 번호를 입력하지 않았더라도 같은 지번에서 가능한 규칙이 모두 같은 학교라면
+          // 학교 자체는 확정할 수 있도록 후보로 보관한다.
+          relaxedApartmentMatches.push(result);
+        }
+      } else {
+        strictMatches.push(result);
+      }
     }
   }
 
-  return finalResults.length
-    ? mergeSchoolResults([], finalResults)
-    : "통리반은 확인했지만, 현재 구조화 확정자료에서 배정학교를 확인하지 못했습니다.";
+  if (strictMatches.length) return mergeSchoolResults([], strictMatches);
+
+  if (relaxedApartmentMatches.length) {
+    const relaxedSchools = unique(relaxedApartmentMatches.map((item) => item.school));
+    if (relaxedSchools.length === 1) return mergeSchoolResults([], relaxedApartmentMatches);
+  }
+
+  if (hasBlockedKey) {
+    return "현재 정제 확인이 필요한 통학구역입니다. 원자료 확인 후 조회 결과를 제공할 예정입니다.";
+  }
+  return "통리반은 확인했지만, 현재 세부조건 구조화 자료에서 주소 조건과 일치하는 배정학교를 확인하지 못했습니다.";
 }
 
 function findSchoolsByTongbanAreaKeyword(item) {
