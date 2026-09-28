@@ -2116,8 +2116,8 @@ function renderResultFooter() {
   const dataYear = state.core?.meta?.dataYear || "현재";
   return `
     <div class="result-footer">
-      <p>자료 기준: ${escapeHtml(dataYear)}학년도 · 최종 확인은 경기도화성오산교육지원청 학생배치과 안내를 따르세요.</p>
-      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색하기</button>
+      <p>자료 기준: ${escapeHtml(dataYear)}학년도</p>
+      <button class="secondary-button" type="button" data-action="search-again">다른 주소 검색하기</button>
     </div>
   `;
 }
