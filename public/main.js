@@ -650,7 +650,7 @@ function renderMapCard() {
           <span>위치 확인</span>
           <strong>검색 주소와 배정학교</strong>
         </div>
-        <span class="badge">지도 테스트</span>
+        <span class="badge">지도</span>
       </div>
       <p class="result-note">카카오맵을 활용한 지도입니다.</p>
       <div id="resultMap" class="result-map" aria-label="검색 주소와 배정학교 위치 지도"></div>
