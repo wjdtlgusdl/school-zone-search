@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-address-v14";
+const APP_VERSION = "20260928-fullmap-popup-v16";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -753,18 +753,93 @@ function loadMiddleSchoolInfoForAddressResult() {
   return middleSchoolInfoPromise;
 }
 
+function ensureAddressMapPopupStyle() {
+  if (document.querySelector("#addressMapPopupStyle")) return;
+  const style = document.createElement("style");
+  style.id = "addressMapPopupStyle";
+  style.textContent = `
+    .address-map-school-popup{
+      box-sizing:border-box;
+      width:min(290px,calc(100vw - 48px));
+      max-width:290px;
+      padding:12px 14px;
+      border:1px solid #d9e2ec;
+      border-radius:12px;
+      background:rgba(255,255,255,.98);
+      box-shadow:0 6px 20px rgba(15,23,42,.18);
+      color:#1f2937;
+      font-size:12px;
+      line-height:1.45;
+      text-align:left;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      word-break:keep-all;
+    }
+    .address-map-school-popup__title{
+      display:inline;
+      font-size:14px;
+      line-height:1.35;
+      color:#0f172a;
+    }
+    .address-map-school-popup__type{
+      display:inline-block;
+      margin-left:6px;
+      padding:1px 6px;
+      border-radius:999px;
+      background:#f1f5f9;
+      color:#475569;
+      font-size:10px;
+      vertical-align:1px;
+    }
+    .address-map-school-popup__row{
+      display:block;
+      margin-top:6px;
+      min-width:0;
+    }
+    .address-map-school-popup__row b{
+      display:inline-block;
+      margin-right:6px;
+      color:#475569;
+      font-size:11px;
+    }
+    .address-map-school-popup__phone span{
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    .address-map-school-popup__link{
+      margin-top:8px;
+      padding-top:7px;
+      border-top:1px solid #eef2f7;
+    }
+    .address-map-school-popup__link a{
+      color:#2563eb;
+      font-weight:700;
+      text-decoration:none;
+    }
+    @media(max-width:720px){
+      .address-map-school-popup{
+        width:min(260px,calc(100vw - 36px));
+        max-width:260px;
+        padding:10px 12px;
+        font-size:11px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function markerSchoolInfoHtml(title, info, establishedDate = "") {
   const homepageRaw = info?.homepage || "";
   const homepage = homepageRaw ? normalizeHomepage(homepageRaw) : "";
   const phone = stripHtmlBreaks(info?.phone || "");
   const type = info?.school_type || "";
-  return `<div class="schoolzone-map-info">
-    <strong>${escapeHtml(title)}</strong>
-    ${type ? `<span>설립형태: ${escapeHtml(type)}</span>` : ""}
-    ${info?.address ? `<span>${escapeHtml(info.address)}</span>` : ""}
-    ${establishedDate ? `<span>설립일: ${escapeHtml(establishedDate)}</span>` : ""}
-    ${phone ? `<span>전화번호: ${escapeHtml(phone)}</span>` : ""}
-    ${homepage ? `<span><a href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">홈페이지</a></span>` : ""}
+  return `<div class="address-map-school-popup">
+    <strong class="address-map-school-popup__title">${escapeHtml(title)}</strong>
+    ${type ? `<span class="address-map-school-popup__type">${escapeHtml(type)}</span>` : ""}
+    ${info?.address ? `<div class="address-map-school-popup__row">${escapeHtml(info.address)}</div>` : ""}
+    ${establishedDate ? `<div class="address-map-school-popup__row"><b>설립일</b><span>${escapeHtml(establishedDate)}</span></div>` : ""}
+    ${phone ? `<div class="address-map-school-popup__row address-map-school-popup__phone"><b>전화</b><span>${escapeHtml(phone)}</span></div>` : ""}
+    ${homepage ? `<div class="address-map-school-popup__link"><a href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">홈페이지 바로가기 ↗</a></div>` : ""}
   </div>`;
 }
 
@@ -1000,6 +1075,30 @@ function updateFullSchoolMarkers() {
   updateFullSchoolLabels();
 }
 
+async function fullMapSchoolDetailHtml(school) {
+  const schoolName = school?.school_name || "학교";
+  const established = school?.established_date
+    ? String(school.established_date).replace(/-/g, ". ")
+    : "";
+
+  if (school?.school_level === "중학교") {
+    const middleInfo = await loadMiddleSchoolInfoForAddressResult().catch(() => ({}));
+    const detail = middleInfo?.[schoolName] || {
+      address: school?.current_address || school?.road_address || school?.jibun_address || "",
+      phone: school?.phone || "",
+      homepage: school?.homepage || ""
+    };
+    return markerSchoolInfoHtml(schoolName, detail, established);
+  }
+
+  const detail = getSchoolInfo(schoolName) || {
+    address: school?.current_address || school?.road_address || school?.jibun_address || "",
+    phone: school?.phone || "",
+    homepage: school?.homepage || ""
+  };
+  return markerSchoolInfoHtml(schoolName, detail, established);
+}
+
 async function drawFullSchoolPoints(schools) {
   const candidates = (schools || []).filter(s => ["초등학교", "중학교"].includes(s.school_level));
   const geocoder = new window.kakao.maps.services.Geocoder();
@@ -1043,11 +1142,12 @@ async function drawFullSchoolPoints(schools) {
       content: `<div class="full-school-label">${escapeHtml(school.school_name || "")}</div>`,
     });
     fullSchoolLabels.push({ overlay: label, school });
-    window.kakao.maps.event.addListener(marker, "click", () => {
+    window.kakao.maps.event.addListener(marker, "click", async () => {
       if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
+      ensureAddressMapPopupStyle();
       fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
         map: fullZoneMap, position: pos, yAnchor: 1.35,
-        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.current_address || school.road_address || school.jibun_address || "")}</span>${school.established_date ? `<span>설립일: ${escapeHtml(String(school.established_date).replace(/-/g, ". "))}</span>` : ""}</div>`,
+        content: await fullMapSchoolDetailHtml(school),
       });
     });
   }
@@ -1237,6 +1337,7 @@ async function initFullSchoolZoneMap() {
 }
 
 async function initResultMap(homeAddress, schoolItems) {
+  ensureAddressMapPopupStyle();
   const mapEl = document.querySelector("#resultMap");
   const statusEl = document.querySelector("#mapStatus");
   if (!mapEl || !statusEl) return;
@@ -3092,6 +3193,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
 }
 
 async function initMiddleResultMap(elementarySchool, homeAddress) {
+  ensureAddressMapPopupStyle();
   const mapEl = document.querySelector("#middleResultMap");
   const statusEl = document.querySelector("#middleMapStatus");
   if (!mapEl || !statusEl) return;
