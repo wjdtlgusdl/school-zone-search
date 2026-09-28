@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-middle-marker-v22";
+const APP_VERSION = "20260928-zone-popup-v23";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -797,6 +797,17 @@ function ensureAddressMapPopupStyle() {
     .middle-result-dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-sizing:border-box;}
     .middle-result-dot--elementary{background:#16a34a;border:1px solid #166534;}
     .middle-result-dot--middle{background:#f97316;border:1px solid #c2410c;}
+    .schoolzone-map-info.zone-area-popup{
+      width:auto;min-width:0;max-width:260px;padding:9px 12px;
+      border-radius:10px;white-space:normal;word-break:keep-all;
+      overflow-wrap:anywhere;box-sizing:border-box;
+    }
+    .schoolzone-map-info.zone-area-popup strong{
+      display:block;margin:0;font-size:13px;line-height:1.35;
+    }
+    .schoolzone-map-info.zone-area-popup .zone-area-popup__schools{
+      display:block;margin-top:5px;font-size:11px;line-height:1.4;color:#475569;
+    }
     .legend-normal,.legend-shared,.legend-middle-group,.legend-middle-zone{
       display:inline-block;
       width:14px;
@@ -1437,7 +1448,7 @@ function drawFullZonePolygons(features, mode) {
         const linked = (props.school_names || []).join(", ");
         fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
           map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
-          content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(isMiddleMode ? (isMiddleGroup ? "중학교 학교군" : "중학교 중학구") : (props.zone_type || (isShared ? "공동통학구역" : "통학구역")))}</span><span>${escapeHtml(linked || props.city || "")}</span></div>`,
+          content: `<div class="schoolzone-map-info zone-area-popup"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong>${isMiddleMode && linked ? `<span class="zone-area-popup__schools">${escapeHtml(linked)}</span>` : ""}</div>`,
         });
       });
     }
