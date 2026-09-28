@@ -7,7 +7,53 @@
     <meta name="description" content="화성·오산 초등학교 통학구역을 도로명주소 또는 지번으로 조회합니다.">
     <title>화성·오산 통학구역 조회</title>
     <link rel="stylesheet" href="/style.css?v=20260928-full-map1">
-  </head>
+  
+<style id="v28-map-ui-fix">
+  /* 통학구역지도 제목: '지도' 한 글자/단어만 다음 줄로 떨어지는 현상 방지 */
+  #fullMapTitle {
+    white-space: nowrap;
+    word-break: keep-all;
+    font-size: clamp(20px, 3vw, 32px);
+    line-height: 1.25;
+  }
+
+  /* 범례 색상칩은 외부/동적 스타일과 무관하게 항상 보이도록 고정 */
+  .full-map-legend i.legend-normal,
+  .full-map-legend i.legend-shared,
+  .full-map-legend i.legend-middle-zone,
+  .full-map-legend i.legend-middle-shared {
+    display: inline-block !important;
+    width: 14px !important;
+    height: 10px !important;
+    margin-right: 5px !important;
+    border-radius: 3px !important;
+    vertical-align: -1px !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+  }
+  .full-map-legend i.legend-normal {
+    background: #60a5fa !important;
+    border: 2px solid #1d4ed8 !important;
+  }
+  .full-map-legend i.legend-shared {
+    background: #c084fc !important;
+    border: 2px dashed #7e22ce !important;
+  }
+  .full-map-legend i.legend-middle-zone {
+    background: #34d399 !important;
+    border: 2px solid #047857 !important;
+  }
+  .full-map-legend i.legend-middle-shared {
+    background: #fb7185 !important;
+    border: 2px dashed #be123c !important;
+  }
+
+  @media (max-width: 720px) {
+    #fullMapTitle { font-size: clamp(17px, 5vw, 24px); }
+  }
+</style>
+
+</head>
   <body>
     <div class="app-shell">
       <header class="topbar" aria-label="서비스 정보">
@@ -115,6 +161,6 @@
 
     <script src="/middle-data.js?v=20260917-integrated1" defer></script>
     <script src="/map-config.js?v=20260922-mapfix2" defer></script>
-    <script src="/main.js?v=20260928-result-card-clean-v27" defer></script>
+    <script src="/main.js?v=20260928-map-ui-v28" defer></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-result-card-clean-v27";
+const APP_VERSION = "20260928-map-ui-v28";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
