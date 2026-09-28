@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-zone-popup-width-v25";
+const APP_VERSION = "20260928-label-v26";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1395,11 +1395,11 @@ function updateFullMapModeUI() {
   document.querySelector("#elementaryZoneButton")?.setAttribute("aria-pressed", String(!isMiddle));
   document.querySelector("#middleZoneButton")?.setAttribute("aria-pressed", String(isMiddle));
   const title = document.querySelector("#fullMapTitle");
-  if (title) title.textContent = isMiddle ? "화성·오산 중학교 학교군·중학구 지도" : "화성·오산 초등학교 통학구역 지도";
+  if (title) title.textContent = isMiddle ? "화성·오산 중학군(구) 지도" : "화성·오산 초등학교 통학구역 지도";
   if (els.zoneSchoolInput) els.zoneSchoolInput.placeholder = isMiddle ? "중학교명 검색 (예: 동탄중)" : "학교명 검색 (예: 솔빛초)";
   const legend = document.querySelector("#fullMapLegend");
   if (legend) legend.innerHTML = isMiddle
-    ? `<span><i class="legend-middle-group"></i>학교군</span><span><i class="legend-middle-zone"></i>중학구</span><span><i class="legend-middle-shared"></i>공동학구</span><span>📍 중학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`
+    ? `<span><i class="legend-middle-zone"></i>중학군(구)</span><span><i class="legend-middle-shared"></i>공동학구</span><span>📍 중학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`
     : `<span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span>📍 초등학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`;
   const countEl = document.querySelector("#zoneMapCount");
   const schoolCount = fullSchoolPointData.filter(s => s.school_level === schoolLevelForFullMap()).length;
@@ -3372,7 +3372,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
   const compare = matched
     ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
     : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중학교 학교군·중학구 지도</h3><div id="middleResultMap" class="result-map" aria-label="중학교 학교군·중학구 경계와 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">중학군 지도를 불러오는 중입니다.</p></div>`;
+  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중학군(구) 지도</h3><div id="middleResultMap" class="result-map" aria-label="중학군(구) 경계와 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">중학군 지도를 불러오는 중입니다.</p></div>`;
 }
 
 async function initMiddleResultMap(elementarySchool, homeAddress) {
