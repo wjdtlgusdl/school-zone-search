@@ -1,10 +1,9 @@
-const APP_VERSION = "20260928-no-public-zone-v32";
+const APP_VERSION = "20260707-road-only-1";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
   roads: `/data/roads.json?v=${APP_VERSION}`,
   suggestions: `/data/suggestions.json?v=${APP_VERSION}`,
-  searchIndex: `/data/search_index.json?v=${APP_VERSION}`,
 };
 
 const APT_ALIAS = {
@@ -21,8 +20,6 @@ const state = {
   roadsPromise: null,
   suggestions: null,
   suggestionsPromise: null,
-  searchIndex: null,
-  searchIndexPromise: null,
   addressSuggestionMatches: [],
   schoolSuggestionMatches: [],
   activeSuggestionIndex: -1,
@@ -56,15 +53,8 @@ function collectElements() {
   els.dataChip = document.querySelector("#dataChip");
   els.addressTab = document.querySelector("#addressTab");
   els.schoolTab = document.querySelector("#schoolTab");
-  els.mapTab = document.querySelector("#mapTab");
   els.addressMode = document.querySelector("#addressMode");
   els.schoolMode = document.querySelector("#schoolMode");
-  els.mapMode = document.querySelector("#mapMode");
-  els.fullMapPanel = document.querySelector("#fullMapPanel");
-  els.zoneSchoolInput = document.querySelector("#zoneSchoolInput");
-  els.zoneSchoolList = document.querySelector("#zoneSchoolList");
-  els.zoneSchoolSearchButton = document.querySelector("#zoneSchoolSearchButton");
-  els.zoneMapResetButton = document.querySelector("#zoneMapResetButton");
   els.citySelect = document.querySelector("#citySelect");
   els.eupSelect = document.querySelector("#eupSelect");
   els.addressInput = document.querySelector("#addressInput");
@@ -80,14 +70,10 @@ function collectElements() {
 
 function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
-  els.addressTab?.addEventListener("click", () => switchMode("address"));
-  els.schoolTab?.addEventListener("click", () => switchMode("school"));
-  els.mapTab?.addEventListener("click", () => switchMode("map"));
-  els.zoneSchoolSearchButton?.addEventListener("click", focusFullMapSchool);
-  els.zoneMapResetButton?.addEventListener("click", resetFullMapView);
-  els.zoneSchoolInput?.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); focusFullMapSchool(); } });
-  els.citySelect?.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
-  els.eupSelect?.addEventListener("change", () => handleAddressSuggestionInput());
+  els.addressTab.addEventListener("click", () => switchMode("address"));
+  els.schoolTab.addEventListener("click", () => switchMode("school"));
+  els.citySelect.addEventListener("change", () => { populateEupOptions(); handleAddressSuggestionInput(); });
+  els.eupSelect.addEventListener("change", () => handleAddressSuggestionInput());
 
   els.addressMode.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -112,19 +98,19 @@ function bindEvents() {
     selectAddressSuggestion(Number(option.dataset.suggestionIndex));
   });
 
-  els.schoolMode?.addEventListener("submit", async (event) => {
+  els.schoolMode.addEventListener("submit", async (event) => {
     event.preventDefault();
     hideSchoolSuggestions();
     await handleSchoolSearch(els.schoolInput.value);
   });
 
-  els.schoolInput?.addEventListener("input", () => {
+  els.schoolInput.addEventListener("input", () => {
     updateClearButtons();
     handleSchoolSuggestionInput();
   });
-  els.schoolInput?.addEventListener("focus", handleSchoolSuggestionInput);
-  els.schoolInput?.addEventListener("keydown", handleSchoolSuggestionKeys);
-  els.schoolInput?.addEventListener("blur", () => {
+  els.schoolInput.addEventListener("focus", handleSchoolSuggestionInput);
+  els.schoolInput.addEventListener("keydown", handleSchoolSuggestionKeys);
+  els.schoolInput.addEventListener("blur", () => {
     window.setTimeout(hideSchoolSuggestions, 120);
   });
 
@@ -142,7 +128,7 @@ function bindEvents() {
     els.schoolInput.focus({ preventScroll: true });
   });
 
-  els.schoolSuggestions?.addEventListener("mousedown", (event) => {
+  els.schoolSuggestions.addEventListener("mousedown", (event) => {
     event.preventDefault();
     const option = event.target.closest("[data-school-suggestion-index]");
     if (!option) return;
@@ -152,8 +138,8 @@ function bindEvents() {
   els.results.addEventListener("click", (event) => {
     const action = event.target.closest("[data-action]")?.dataset.action;
     if (action === "search-again") {
-      const targetInput = state.activeMode === "school" && els.schoolInput ? els.schoolInput : els.addressInput;
-      targetInput?.focus({ preventScroll: true });
+      const targetInput = state.activeMode === "school" ? els.schoolInput : els.addressInput;
+      targetInput.focus({ preventScroll: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
@@ -191,31 +177,18 @@ function updateThemeLabel() {
 function switchMode(mode) {
   state.activeMode = mode;
   const isAddress = mode === "address";
-  const isSchool = mode === "school";
-  const isMap = mode === "map";
   hideAddressSuggestions();
   hideSchoolSuggestions();
 
   els.addressTab.classList.toggle("is-active", isAddress);
-  els.schoolTab?.classList.toggle("is-active", isSchool);
-  els.mapTab?.classList.toggle("is-active", isMap);
+  els.schoolTab.classList.toggle("is-active", !isAddress);
   els.addressTab.setAttribute("aria-selected", String(isAddress));
-  els.schoolTab?.setAttribute("aria-selected", String(isSchool));
-  els.mapTab?.setAttribute("aria-selected", String(isMap));
+  els.schoolTab.setAttribute("aria-selected", String(!isAddress));
   els.addressMode.hidden = !isAddress;
-  if (els.schoolMode) els.schoolMode.hidden = !isSchool;
-  if (els.mapMode) els.mapMode.hidden = !isMap;
-  if (els.fullMapPanel) els.fullMapPanel.hidden = !isMap;
-  const resultPanel = document.querySelector(".result-panel");
-  if (resultPanel) resultPanel.hidden = isMap;
-  document.querySelector(".workspace")?.classList.toggle("is-map-mode", isMap);
+  els.schoolMode.hidden = isAddress;
 
-  if (isMap) {
-    window.setTimeout(initFullSchoolZoneMap, 0);
-    return;
-  }
   const input = isAddress ? els.addressInput : els.schoolInput;
-  input?.focus({ preventScroll: true });
+  input.focus({ preventScroll: true });
 }
 
 function updateClearButtons() {
@@ -251,15 +224,6 @@ async function loadRoads() {
   }
   state.roads = await state.roadsPromise;
   return state.roads;
-}
-
-async function loadSearchIndex() {
-  if (state.searchIndex) return state.searchIndex;
-  if (!state.searchIndexPromise) {
-    state.searchIndexPromise = fetchJson(DATA_PATHS.searchIndex).then((payload) => payload.index || payload || {});
-  }
-  state.searchIndex = await state.searchIndexPromise;
-  return state.searchIndex;
 }
 
 async function loadSuggestions() {
@@ -402,6 +366,7 @@ function findAddressSuggestions(query, suggestions) {
   const normalizedQuery = normalizeSearchKey(query);
   const region = getSelectedRegion();
   const kindWeight = {
+    건물명: 0,
     도로명: 1,
     읍면동: 2,
     지번지역: 3,
@@ -409,8 +374,6 @@ function findAddressSuggestions(query, suggestions) {
 
   return suggestions
     .map((item) => {
-      // 주소 조회에서는 건물명 추천을 표시하지 않는다.
-      if (item.k === "건물명") return null;
       const value = item.v || "";
       if (region.sigun && value.includes("시") && !value.includes(region.sigun)) return null;
       if (region.eup && /[가-힣0-9]+(?:읍|면|동)/.test(value) && !value.includes(region.eup) && (item.k === "읍면동" || item.k === "지번지역")) return null;
@@ -575,7 +538,7 @@ function selectSchoolSuggestion(index) {
 async function handleAddressSearch(rawQuery) {
   const query = cleanText(rawQuery);
   if (!query) {
-    renderWarning("도로명주소 또는 지번주소를 입력해 주세요.");
+    renderWarning("주소를 입력해 주세요.", ["도로명주소, 지번주소, 아파트명 중 하나로 검색할 수 있습니다."]);
     return;
   }
 
@@ -628,989 +591,25 @@ function renderAddressResult(result) {
   const primarySchool = schoolNames.length === 1 ? schoolNames[0] : `${schoolNames.length || 0}개 후보`;
   const matchLabel = result.road ? "도로명주소 매칭" : "입력값 기반 검색";
 
-  let html = renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
-  html += renderAddressTongbanCard(tongban, result.input);
-
-  // 주소 매칭 정보 카드는 화면에서 제거한다.
-  // 학교가 하나 이상 확정되면 공동학구를 포함해 결과 지도를 표시한다.
-  const canShowMap = schoolNames.length >= 1 && Boolean(result.road || result.input);
-  if (canShowMap) html += renderMapCard();
-
-  showResults(html);
-
-  if (canShowMap) {
-    const schoolItems = schoolNames.map((name) => {
-      const info = getSchoolInfo(name);
-      return { name, address: info?.mapAddress || info?.address || "" };
-    });
-    window.setTimeout(() => initResultMap(result.road || result.input, schoolItems), 0);
-  }
-}
-
-function renderMapCard() {
-  return `
-    <div class="result-card map-result-card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>위치 확인</span>
-          <strong>검색 주소와 배정학교 위치</strong>
-        </div>
-        <span class="badge">지도</span>
-      </div>
-      <p class="result-note">카카오맵을 활용한 지도입니다.</p>
-      <div id="resultMap" class="result-map" aria-label="검색 주소와 배정학교 위치 지도"></div>
-      <p id="mapStatus" class="map-status">지도를 불러오는 중입니다.</p>
+  let html = `
+    <div class="summary-grid">
+      ${summaryTile("배정 초등학교", schoolNames.length ? primarySchool : "확인 필요", schoolNames.length > 1 ? "복수 후보가 있어 상세 확인이 필요합니다." : "")}
+      ${summaryTile("매칭 방식", matchLabel, result.road ? result.road : result.input)}
+      ${summaryTile("검색 지역", result.regionLabel || "전체 지역", "선택 필터 기준")}
     </div>
   `;
-}
 
-function cleanGeocodeAddress(value) {
-  return cleanText(String(value || "")
-    .replace(/^\(\d{5}\)\s*/, "")
-    .replace(/\([^)]*\)\s*$/, "")
-    .replace(/[.]/g, " "));
-}
-
-function loadKakaoMapSdk() {
-  if (window.kakao?.maps?.services) return Promise.resolve();
-  if (window.__kakaoMapSdkPromise) return window.__kakaoMapSdkPromise;
-
-  const key = String(window.MAP_CONFIG?.kakaoJavaScriptKey || "").trim();
-  if (!key || key === "여기에_JAVASCRIPT_키를_붙여넣으세요") {
-    return Promise.reject(new Error("KAKAO_KEY_MISSING"));
+  html += renderMatchedAddressCard(result);
+  if (result.needsDetail) {
+    html += alertCard("warning", "상세 주소를 입력해 주세요.", [
+      "같은 도로명주소 안에서 동·호수 또는 세부 동에 따라 통학구역이 달라질 수 있습니다.",
+      "예: 도로명주소 뒤에 1451동, 101동 1203호처럼 상세 주소를 함께 입력해 주세요.",
+    ]);
   }
+  html += renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
+  html += renderAddressTongbanCard(tongban, result.input);
 
-  window.__kakaoMapSdkPromise = new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(key)}&libraries=services&autoload=false`;
-    script.onload = () => {
-      if (!window.kakao?.maps) return reject(new Error("KAKAO_SDK_LOAD_FAILED"));
-      window.kakao.maps.load(() => resolve());
-    };
-    script.onerror = () => reject(new Error("KAKAO_SDK_LOAD_FAILED"));
-    document.head.appendChild(script);
-  });
-  return window.__kakaoMapSdkPromise;
-}
-
-function geocodeAddressOnce(geocoder, address) {
-  return new Promise((resolve, reject) => {
-    geocoder.addressSearch(address, (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK && result?.length) {
-        resolve(new window.kakao.maps.LatLng(Number(result[0].y), Number(result[0].x)));
-      } else {
-        reject(new Error(`GEOCODE_FAILED:${address}`));
-      }
-    });
-  });
-}
-
-async function geocodeAddress(geocoder, address) {
-  const original = cleanText(address);
-  const candidates = unique([
-    original,
-    // 읍면동+지번만 입력한 경우(예: 신동 874) 화성시 주소로 한 번 더 조회한다.
-    /^[가-힣]+(?:동|읍|면|리)\s+산?\s*\d/.test(original) ? `경기도 화성시 ${original}` : "",
-    // 2026년 신설 구 명칭이 카카오 주소 DB에 아직 반영되지 않은 경우를 대비.
-    original.replace(/(경기도\s+화성시)\s+(?:동탄구|만세구|효행구|병점구)\s+/, "$1 "),
-    original.replace(/(화성시)\s+(?:동탄구|만세구|효행구|병점구)\s+/, "$1 "),
-  ].filter(Boolean));
-
-  let lastError = null;
-  for (const candidate of candidates) {
-    try {
-      return await geocodeAddressOnce(geocoder, candidate);
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError || new Error(`GEOCODE_FAILED:${original}`);
-}
-
-let schoolZoneGeoJsonPromise = null;
-let middleZoneGeoJsonPromise = null;
-let publicSchoolPointsPromise = null;
-
-function loadPublicSchoolPoints() {
-  if (!publicSchoolPointsPromise) {
-    publicSchoolPointsPromise = fetch(`/data/schools_hwaseong_osan_20260320.json?v=${APP_VERSION}`)
-      .then((response) => {
-        if (!response.ok) throw new Error("PUBLIC_SCHOOL_POINTS_LOAD_FAILED");
-        return response.json();
-      });
-  }
-  return publicSchoolPointsPromise;
-}
-
-let middleSchoolInfoPromise = null;
-function loadMiddleSchoolInfoForAddressResult() {
-  if (!middleSchoolInfoPromise) {
-    middleSchoolInfoPromise = fetch(`/data/middle_school_info_2026.json?v=${APP_VERSION}`)
-      .then((response) => {
-        if (!response.ok) throw new Error("MIDDLE_SCHOOL_INFO_LOAD_FAILED");
-        return response.json();
-      });
-  }
-  return middleSchoolInfoPromise;
-}
-
-function ensureAddressMapPopupStyle() {
-  if (document.querySelector("#addressMapPopupStyle")) return;
-  const style = document.createElement("style");
-  style.id = "addressMapPopupStyle";
-  style.textContent = `
-    .address-map-school-popup{
-      box-sizing:border-box;
-      width:min(290px,calc(100vw - 48px));
-      max-width:290px;
-      padding:12px 14px;
-      border:1px solid #d9e2ec;
-      border-radius:12px;
-      background:rgba(255,255,255,.98);
-      box-shadow:0 6px 20px rgba(15,23,42,.18);
-      color:#1f2937;
-      font-size:12px;
-      line-height:1.45;
-      text-align:left;
-      white-space:normal;
-      overflow-wrap:anywhere;
-      word-break:keep-all;
-    }
-    #middleResultMap{position:relative;}
-    #middleResultMap .zone-map-marker--elementary-result .zone-map-marker__icon{
-      background:#16a34a !important;
-      border-color:#166534 !important;
-      color:#fff !important;
-    }
-    #middleResultMap .zone-map-marker--middle-result .zone-map-marker__icon{
-      background:#f97316 !important;
-      border-color:#c2410c !important;
-      color:#fff !important;
-    }
-    .middle-result-marker-legend{
-      position:absolute;z-index:5;left:10px;bottom:10px;
-      display:flex;gap:10px;flex-wrap:wrap;padding:7px 9px;
-      border:1px solid #dbe3ef;border-radius:9px;
-      background:rgba(255,255,255,.94);box-shadow:0 2px 8px rgba(15,23,42,.12);
-      color:#334155;font-size:11px;line-height:1;pointer-events:none;
-    }
-    .middle-result-marker-legend span{display:flex;align-items:center;gap:4px;}
-    .middle-result-dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-sizing:border-box;}
-    .middle-result-dot--elementary{background:#16a34a;border:1px solid #166534;}
-    .middle-result-dot--middle{background:#f97316;border:1px solid #c2410c;}
-    .schoolzone-map-info.zone-area-popup{
-      width:max-content;min-width:150px;max-width:320px;padding:9px 12px;
-      border-radius:10px;white-space:normal;word-break:keep-all;
-      overflow-wrap:normal;box-sizing:border-box;
-    }
-    .schoolzone-map-info.zone-area-popup strong{
-      display:block;margin:0;font-size:13px;line-height:1.35;
-      white-space:nowrap;word-break:keep-all;
-    }
-    .schoolzone-map-info.zone-area-popup .zone-area-popup__schools{
-      display:block;margin-top:5px;font-size:11px;line-height:1.4;color:#475569;
-    }
-    .legend-normal,.legend-shared,.legend-middle-group,.legend-middle-zone,.legend-middle-shared{
-      display:inline-block;
-      width:14px;
-      height:10px;
-      margin-right:5px;
-      border-radius:3px;
-      vertical-align:-1px;
-      box-sizing:border-box;
-    }
-    .legend-normal{background:#60a5fa;border:2px solid #1d4ed8;}
-    .legend-shared{background:#c084fc;border:2px dashed #7e22ce;}
-    .legend-middle-group{background:#fb923c;border:2px dashed #c2410c;}
-    .legend-middle-zone{background:#34d399;border:2px solid #047857;}
-    .legend-middle-shared{background:#fb7185;border:2px dashed #be123c;}
-    .address-map-school-popup__close{
-      position:absolute;
-      top:7px;
-      right:8px;
-      width:24px;
-      height:24px;
-      padding:0;
-      border:0;
-      border-radius:50%;
-      background:#f1f5f9;
-      color:#64748b;
-      font-size:18px;
-      line-height:22px;
-      text-align:center;
-      cursor:pointer;
-    }
-    .address-map-school-popup__close:hover{
-      background:#e2e8f0;
-      color:#0f172a;
-    }
-    .address-map-school-popup{
-      position:relative;
-      padding-right:40px;
-    }
-    .address-map-school-popup__title{
-      display:inline;
-      font-size:14px;
-      line-height:1.35;
-      color:#0f172a;
-    }
-    .address-map-school-popup__type{
-      display:inline-block;
-      margin-left:6px;
-      padding:1px 6px;
-      border-radius:999px;
-      background:#f1f5f9;
-      color:#475569;
-      font-size:10px;
-      vertical-align:1px;
-    }
-    .address-map-school-popup__row{
-      display:block;
-      margin-top:6px;
-      min-width:0;
-    }
-    .address-map-school-popup__row b{
-      display:inline-block;
-      margin-right:6px;
-      color:#475569;
-      font-size:11px;
-    }
-    .address-map-school-popup__phone span{
-      overflow-wrap:anywhere;
-      word-break:break-word;
-    }
-    .address-map-school-popup__link{
-      margin-top:8px;
-      padding-top:7px;
-      border-top:1px solid #eef2f7;
-    }
-    .address-map-school-popup__link a{
-      color:#2563eb;
-      font-weight:700;
-      text-decoration:none;
-    }
-    @media(max-width:720px){
-      .address-map-school-popup{
-        width:min(260px,calc(100vw - 36px));
-        max-width:260px;
-        padding:10px 12px;
-        font-size:11px;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-function bindSchoolPopupClose(overlay) {
-  window.setTimeout(() => {
-    document.querySelectorAll(".address-map-school-popup").forEach(card => {
-      if (card.dataset.popupBound === "1") return;
-      card.dataset.popupBound = "1";
-
-      // 팝업 내부 조작이 지도 클릭으로 전달되지 않게 한다.
-      ["click", "mousedown", "touchstart"].forEach(eventName => {
-        card.addEventListener(eventName, event => {
-          event.stopPropagation();
-        });
-      });
-
-      const closeButton = card.querySelector(".address-map-school-popup__close");
-      if (closeButton) {
-        closeButton.addEventListener("click", event => {
-          event.preventDefault();
-          event.stopPropagation();
-          overlay?.setMap(null);
-        });
-      }
-
-      // 홈페이지 링크는 지도 이벤트와 분리해 정상적으로 새 탭에서 연다.
-      const homepageLink = card.querySelector(".address-map-school-popup__link a");
-      if (homepageLink) {
-        homepageLink.addEventListener("click", event => {
-          event.stopPropagation();
-        });
-      }
-    });
-  }, 0);
-}
-
-
-function compactSchoolPhone(rawPhone) {
-  const raw = stripHtmlBreaks(rawPhone || "")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!raw) return "";
-
-  const phonePattern = /0\d{1,2}[-)\s]?\d{3,4}[-\s]?\d{4}/g;
-  const normalizeNumber = value => String(value || "")
-    .replace(/\)/g, "-")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
-
-  // FAX/팩스가 붙은 구간은 표시 대상에서 제외한다.
-  const withoutFax = raw
-    .replace(/(?:FAX|팩스)\s*[:：]?\s*0\d{1,2}[-)\s]?\d{3,4}[-\s]?\d{4}/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const labeled = [];
-  for (const label of ["교무실", "행정실"]) {
-    const rx = new RegExp(label + "\\s*[:：]?\\s*(0\\\\d{1,2}[-)\\\\s]?\\\\d{3,4}[-\\\\s]?\\\\d{4})", "i");
-    const match = withoutFax.match(rx);
-    if (match?.[1]) labeled.push(`${label} ${normalizeNumber(match[1])}`);
-  }
-  if (labeled.length) return labeled.join(" · ");
-
-  // 라벨이 없는 자료는 중복을 제거한 뒤 첫 전화번호 하나만 표시한다.
-  const numbers = [...new Set((withoutFax.match(phonePattern) || []).map(normalizeNumber))];
-  return numbers[0] || "";
-}
-
-
-function markerSchoolInfoHtml(title, info, establishedDate = "") {
-  const homepageRaw = info?.homepage || "";
-  const homepage = homepageRaw ? normalizeHomepage(homepageRaw) : "";
-  const phone = compactSchoolPhone(info?.phone || "");
-  const type = info?.school_type || "";
-  return `<div class="address-map-school-popup">
-    <button type="button" class="address-map-school-popup__close" aria-label="학교 정보 닫기">×</button>
-    <strong class="address-map-school-popup__title">${escapeHtml(title)}</strong>
-    ${type ? `<span class="address-map-school-popup__type">${escapeHtml(type)}</span>` : ""}
-    ${info?.address ? `<div class="address-map-school-popup__row">${escapeHtml(info.address)}</div>` : ""}
-    ${establishedDate ? `<div class="address-map-school-popup__row"><b>설립일</b><span>${escapeHtml(establishedDate)}</span></div>` : ""}
-    ${phone ? `<div class="address-map-school-popup__row address-map-school-popup__phone"><b>전화</b><span>${escapeHtml(phone)}</span></div>` : ""}
-    ${homepage ? `<div class="address-map-school-popup__link"><a href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">홈페이지 바로가기 ↗</a></div>` : ""}
-  </div>`;
-}
-
-function loadSchoolZoneGeoJson() {
-  if (!schoolZoneGeoJsonPromise) {
-    schoolZoneGeoJsonPromise = fetch("/data/schoolzones_map_20260320.geojson")
-      .then((response) => {
-        if (!response.ok) throw new Error("SCHOOLZONE_GEOJSON_LOAD_FAILED");
-        return response.json();
-      });
-  }
-  return schoolZoneGeoJsonPromise;
-}
-
-function loadMiddleZoneGeoJson() {
-  if (!middleZoneGeoJsonPromise) {
-    middleZoneGeoJsonPromise = fetch("/data/middlezones_map_20260320.geojson")
-      .then((response) => {
-        if (!response.ok) throw new Error("MIDDLEZONE_GEOJSON_LOAD_FAILED");
-        return response.json();
-      });
-  }
-  return middleZoneGeoJsonPromise;
-}
-
-function geoRingToKakaoPath(ring) {
-  return (ring || []).map(([lng, lat]) => new window.kakao.maps.LatLng(Number(lat), Number(lng)));
-}
-
-function geoPolygonToKakaoPaths(coordinates) {
-  return (coordinates || []).map(geoRingToKakaoPath);
-}
-
-function featurePolygonParts(feature) {
-  const geometry = feature?.geometry;
-  if (!geometry) return [];
-  if (geometry.type === "Polygon") return [geometry.coordinates];
-  if (geometry.type === "MultiPolygon") return geometry.coordinates || [];
-  return [];
-}
-
-
-function pointInRing(lng, lat, ring) {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const xi = Number(ring[i]?.[0]);
-    const yi = Number(ring[i]?.[1]);
-    const xj = Number(ring[j]?.[0]);
-    const yj = Number(ring[j]?.[1]);
-    if (![xi, yi, xj, yj].every(Number.isFinite)) continue;
-    const intersects = ((yi > lat) !== (yj > lat)) &&
-      (lng < ((xj - xi) * (lat - yi)) / ((yj - yi) || Number.EPSILON) + xi);
-    if (intersects) inside = !inside;
-  }
-  return inside;
-}
-
-function pointInPolygonCoordinates(lng, lat, polygonCoords) {
-  if (!Array.isArray(polygonCoords) || !polygonCoords.length) return false;
-  if (!pointInRing(lng, lat, polygonCoords[0] || [])) return false;
-  for (let i = 1; i < polygonCoords.length; i += 1) {
-    if (pointInRing(lng, lat, polygonCoords[i] || [])) return false;
-  }
-  return true;
-}
-
-function featureContainsPoint(feature, lng, lat) {
-  const geometry = feature?.geometry;
-  if (!geometry) return false;
-  if (geometry.type === "Polygon") return pointInPolygonCoordinates(lng, lat, geometry.coordinates);
-  if (geometry.type === "MultiPolygon") {
-    return (geometry.coordinates || []).some((coords) => pointInPolygonCoordinates(lng, lat, coords));
-  }
-  return false;
-}
-
-function shortElementarySchoolName(value) {
-  return cleanText(String(value || "")).replace(/초등학교$/, "초").replace(/초교$/, "초");
-}
-
-async function findElementarySchoolsByGis(address) {
-  try {
-    await loadKakaoMapSdk();
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(address));
-    const lat = Number(pos.getLat());
-    const lng = Number(pos.getLng());
-    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-
-    const geojson = await loadSchoolZoneGeoJson();
-    const features = (geojson?.features || []).filter((feature) => featureContainsPoint(feature, lng, lat));
-    if (!features.length) return { lat, lng, features: [], schools: [] };
-
-    const schools = [];
-    const seen = new Set();
-    for (const feature of features) {
-      const props = feature.properties || {};
-      for (const linked of props.schools || []) {
-        const school = shortElementarySchoolName(linked.school_name || "");
-        if (!school || seen.has(school)) continue;
-        seen.add(school);
-        schools.push({
-          school,
-          sigun: props.city || "",
-          eup: "",
-          tongri: "",
-          ban: "",
-          tongbanArea: "",
-          schoolArea: props.HAKGUDO_NM || props.zone_type || "공공 학구도",
-          note: `공공 학구도 GIS · ${props.base_date || "2026-03-20"} 기준`,
-          match: "GIS",
-        });
-      }
-    }
-    return { lat, lng, features, schools };
-  } catch (error) {
-    console.warn("GIS school-zone lookup failed", error);
-    return null;
-  }
-}
-
-async function drawSchoolZoneLayer(map, homePos) {
-  const geojson = await loadSchoolZoneGeoJson();
-  const features = Array.isArray(geojson?.features) ? geojson.features : [];
-  const overlays = [];
-  let infoOverlay = null;
-
-  for (const feature of features) {
-    const props = feature.properties || {};
-    const isShared = String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역";
-    for (const polygonCoords of featurePolygonParts(feature)) {
-      const paths = geoPolygonToKakaoPaths(polygonCoords);
-      if (!paths.length || !paths[0]?.length) continue;
-      const polygon = new window.kakao.maps.Polygon({
-        map,
-        path: paths,
-        strokeWeight: isShared ? 3 : 2,
-        strokeColor: isShared ? "#7c3aed" : "#2563eb",
-        strokeOpacity: 0.72,
-        strokeStyle: isShared ? "dash" : "solid",
-        fillColor: isShared ? "#a78bfa" : "#60a5fa",
-        fillOpacity: isShared ? 0.10 : 0.07,
-      });
-      overlays.push(polygon);
-
-      window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
-        if (infoOverlay) infoOverlay.setMap(null);
-        const name = escapeHtml(props.HAKGUDO_NM || "학구 정보");
-        const type = escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"));
-        infoOverlay = new window.kakao.maps.CustomOverlay({
-          map,
-          position: mouseEvent.latLng,
-          yAnchor: 1.15,
-          content: `<div class="schoolzone-map-info"><strong>${name}</strong><span>${type}</span></div>`,
-        });
-      });
-    }
-  }
-
-  return overlays;
-}
-
-
-let fullZoneMap = null;
-let fullZoneMode = "elementary";
-let fullZoneFeaturesByMode = { elementary: [], middle: [] };
-let fullZonePolygonsByMode = { elementary: [], middle: [] };
-let fullZoneInfoOverlay = null;
-let fullZonePolygonClickAt = 0;
-let fullSchoolMarkers = [];
-let fullSchoolLabels = [];
-let fullSchoolPointData = [];
-
-function featureBoundsPoints(feature) {
-  const points = [];
-  for (const polygon of featurePolygonParts(feature)) {
-    for (const ring of polygon || []) {
-      for (const coord of ring || []) {
-        if (Array.isArray(coord) && coord.length >= 2) points.push(coord);
-      }
-    }
-  }
-  return points;
-}
-
-function schoolNameFromZone(feature) {
-  return String(feature?.properties?.HAKGUDO_NM || "")
-    .replace(/공동통학구역/g, "")
-    .replace(/통학구역/g, "")
-    .replace(/학교군/g, "")
-    .replace(/중학구/g, "")
-    .trim();
-}
-
-function activeFullZoneFeatures() {
-  return fullZoneFeaturesByMode[fullZoneMode] || [];
-}
-
-function populateZoneSchoolList(features) {
-  if (!els.zoneSchoolList) return;
-  const zoneNames = features.flatMap(feature => {
-    const linked = Array.isArray(feature?.properties?.school_names) ? feature.properties.school_names : [];
-    return [...linked, schoolNameFromZone(feature)].filter(Boolean);
-  });
-  // 공공 GIS 학구명뿐 아니라 실제 지도에 표시 중인 학교 마커도 검색 후보에 포함한다.
-  // 다올초처럼 GIS 기준일 이후 개교하여 아직 학구 폴리곤에 없는 학교도 검색 가능해진다.
-  const markerNames = fullSchoolPointData
-    .filter(school => school.school_level === schoolLevelForFullMap())
-    .map(school => school.school_name)
-    .filter(Boolean);
-  const names = [...new Set([...zoneNames, ...markerNames])].sort((a,b)=>a.localeCompare(b,"ko"));
-  els.zoneSchoolList.innerHTML = names.map(name => `<option value="${escapeHtml(name)}"></option>`).join("");
-}
-
-function schoolLevelForFullMap() {
-  return fullZoneMode === "middle" ? "중학교" : "초등학교";
-}
-
-function updateFullSchoolLabels() {
-  if (!fullZoneMap) return;
-  const show = fullZoneMap.getLevel() <= 5;
-  const level = schoolLevelForFullMap();
-  for (const item of fullSchoolLabels) {
-    item.overlay.setMap(show && item.school.school_level === level ? fullZoneMap : null);
-  }
-}
-
-function updateFullSchoolMarkers() {
-  if (!fullZoneMap) return;
-  const level = schoolLevelForFullMap();
-  for (const item of fullSchoolMarkers) {
-    item.marker.setMap(item.school.school_level === level ? fullZoneMap : null);
-  }
-  updateFullSchoolLabels();
-}
-
-async function fullMapSchoolDetailHtml(school) {
-  const schoolName = school?.school_name || "학교";
-  const established = school?.established_date
-    ? String(school.established_date).replace(/-/g, ". ")
-    : "";
-
-  if (school?.school_level === "중학교") {
-    const middleInfo = await loadMiddleSchoolInfoForAddressResult().catch(() => ({}));
-    const detail = middleInfo?.[schoolName] || {
-      address: school?.current_address || school?.road_address || school?.jibun_address || "",
-      phone: school?.phone || "",
-      homepage: school?.homepage || ""
-    };
-    return markerSchoolInfoHtml(schoolName, detail, established);
-  }
-
-  const detail = getSchoolInfo(schoolName) || {
-    address: school?.current_address || school?.road_address || school?.jibun_address || "",
-    phone: school?.phone || "",
-    homepage: school?.homepage || ""
-  };
-  return markerSchoolInfoHtml(schoolName, detail, established);
-}
-
-async function drawFullSchoolPoints(schools) {
-  const candidates = (schools || []).filter(s => ["초등학교", "중학교"].includes(s.school_level));
-  const geocoder = new window.kakao.maps.services.Geocoder();
-
-  // 2026-03-20 공공 학교위치 자료 이후 개교한 학교(예: 다올초)는
-  // 좌표가 비어 있어도 최신 도로명주소를 이용해 지도 표시 좌표를 보완한다.
-  for (const school of candidates) {
-    const hasValidCoordinates =
-      school.lat !== null && school.lat !== "" &&
-      school.lng !== null && school.lng !== "" &&
-      Number.isFinite(Number(school.lat)) &&
-      Number.isFinite(Number(school.lng)) &&
-      Number(school.lat) >= 33 && Number(school.lat) <= 39 &&
-      Number(school.lng) >= 124 && Number(school.lng) <= 132;
-    if (hasValidCoordinates) continue;
-    const address = school.road_address || school.jibun_address || "";
-    if (!address) continue;
-    try {
-      const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(address));
-      school.lat = Number(pos.getLat());
-      school.lng = Number(pos.getLng());
-    } catch (error) {
-      console.warn("school marker geocode failed", school.school_name, error);
-    }
-  }
-
-  fullSchoolPointData = candidates.filter(s =>
-    s.lat !== null && s.lat !== "" &&
-    s.lng !== null && s.lng !== "" &&
-    Number.isFinite(Number(s.lat)) &&
-    Number.isFinite(Number(s.lng)) &&
-    Number(s.lat) >= 33 && Number(s.lat) <= 39 &&
-    Number(s.lng) >= 124 && Number(s.lng) <= 132
-  );
-  for (const school of fullSchoolPointData) {
-    const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
-    const marker = new window.kakao.maps.Marker({ position: pos, title: school.school_name || "학교" });
-    fullSchoolMarkers.push({ marker, school });
-    const label = new window.kakao.maps.CustomOverlay({
-      position: pos, yAnchor: -0.45, clickable: false,
-      content: `<div class="full-school-label">${escapeHtml(school.school_name || "")}</div>`,
-    });
-    fullSchoolLabels.push({ overlay: label, school });
-    window.kakao.maps.event.addListener(marker, "click", async () => {
-      if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
-      ensureAddressMapPopupStyle();
-      fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
-        map: fullZoneMap, position: pos, yAnchor: 1.35,
-        clickable: true,
-        content: await fullMapSchoolDetailHtml(school),
-      });
-      bindSchoolPopupClose(fullZoneInfoOverlay);
-    });
-  }
-  window.kakao.maps.event.addListener(fullZoneMap, "zoom_changed", updateFullSchoolLabels);
-  updateFullSchoolMarkers();
-}
-
-function fitFullMapToFeatures(features) {
-  if (!fullZoneMap || !features?.length) return;
-  const bounds = new window.kakao.maps.LatLngBounds();
-  let count = 0;
-  for (const feature of features) {
-    for (const [lng, lat] of featureBoundsPoints(feature)) {
-      bounds.extend(new window.kakao.maps.LatLng(Number(lat), Number(lng)));
-      count++;
-    }
-  }
-  if (count) fullZoneMap.setBounds(bounds, 36, 36, 36, 36);
-}
-
-function setFullMapHighlight(matchedFeatures) {
-  const ids = new Set((matchedFeatures || []).map(f => f?.properties?.HAKGUDO_ID));
-  for (const mode of ["elementary", "middle"]) {
-    for (const item of fullZonePolygonsByMode[mode]) {
-      const active = ids.has(item.feature?.properties?.HAKGUDO_ID);
-      const props = item.feature?.properties || {};
-      const isShared = mode === "elementary" && (String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역");
-      const isMiddleShared = mode === "middle" && (
-        String(props.HAKGUDO_GB || "") === "1" ||
-        String(props.zone_type || "").includes("공동") ||
-        String(props.HAKGUDO_NM || "").includes("공동")
-      );
-      const isMiddleGroup = mode === "middle" && !isMiddleShared && String(props.HAKGUDO_NM || "").includes("학교군");
-      item.polygon.setOptions({
-        strokeWeight: active ? 5 : (isMiddleShared ? 4 : (isShared ? 4 : (isMiddleGroup ? 3 : 2))),
-        strokeOpacity: active ? 1 : ((isShared || isMiddleShared) ? 0.95 : 0.82),
-        fillOpacity: active ? 0.36 : ((isShared || isMiddleShared) ? 0.30 : (isMiddleGroup ? 0.22 : 0.10)),
-      });
-    }
-  }
-}
-
-function resetFullMapView() {
-  if (!fullZoneMap) return;
-  if (els.zoneSchoolInput) els.zoneSchoolInput.value = "";
-  setFullMapHighlight([]);
-  fitFullMapToFeatures(activeFullZoneFeatures());
-  if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
-  const status = document.querySelector("#fullMapStatus");
-  if (status) status.textContent = fullZoneMode === "middle" ? "학교군·중학구를 클릭하면 연결된 중학교를 확인할 수 있습니다." : "학구를 클릭하면 학구명과 연결된 초등학교를 확인할 수 있습니다.";
-}
-
-function focusFullMapSchool() {
-  if (!fullZoneMap) return;
-  const query = normalizeText(els.zoneSchoolInput?.value || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
-  if (!query) return resetFullMapView();
-
-  const matches = activeFullZoneFeatures().filter(feature => {
-    const name = normalizeText(feature?.properties?.HAKGUDO_NM || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
-    const linkedNames = (feature?.properties?.school_names || []).map(name => normalizeText(name).replace(/초등학교/g,"초").replace(/중학교/g,"중"));
-    return name.includes(query) || query.includes(normalizeText(schoolNameFromZone(feature))) || linkedNames.some(name => name.includes(query) || query.includes(name));
-  });
-
-  const status = document.querySelector("#fullMapStatus");
-
-  if (matches.length) {
-    setFullMapHighlight(matches);
-    fitFullMapToFeatures(matches);
-    if (status) status.textContent = `${matches.map(f=>f.properties?.HAKGUDO_NM).filter(Boolean).join(", ")} 표시`;
-    return;
-  }
-
-  // GIS 학구 폴리곤에 아직 없는 신규 학교는 학교 마커 위치로 검색한다.
-  // 예: 2026-03-20 기준일 이후 개교한 다올초.
-  const level = schoolLevelForFullMap();
-  const schoolMatch = fullSchoolPointData.find(school => {
-    if (school.school_level !== level) return false;
-    const name = normalizeText(school.school_name || "").replace(/초등학교/g,"초").replace(/중학교/g,"중");
-    return name.includes(query) || query.includes(name);
-  });
-
-  if (schoolMatch) {
-    setFullMapHighlight([]);
-    const position = new window.kakao.maps.LatLng(Number(schoolMatch.lat), Number(schoolMatch.lng));
-    fullZoneMap.setCenter(position);
-    fullZoneMap.setLevel(4);
-    if (status) {
-      status.textContent = `${schoolMatch.school_name} 위치 표시 · 현재 공공 GIS 학구도에는 별도 학구 폴리곤이 없습니다.`;
-    }
-    return;
-  }
-
-  if (status) status.textContent = fullZoneMode === "middle"
-    ? "해당 중학교의 학교군·중학구를 찾지 못했습니다."
-    : "해당 학교의 통학구역 또는 학교 위치를 찾지 못했습니다.";
-}
-
-function updateFullMapModeUI() {
-  const isMiddle = fullZoneMode === "middle";
-  document.querySelector("#elementaryZoneButton")?.classList.toggle("is-active", !isMiddle);
-  document.querySelector("#middleZoneButton")?.classList.toggle("is-active", isMiddle);
-  document.querySelector("#elementaryZoneButton")?.setAttribute("aria-pressed", String(!isMiddle));
-  document.querySelector("#middleZoneButton")?.setAttribute("aria-pressed", String(isMiddle));
-  const title = document.querySelector("#fullMapTitle");
-  if (title) title.textContent = isMiddle ? "화성·오산 중학군(구) 지도" : "화성·오산 초등학교 통학구역 지도";
-  if (els.zoneSchoolInput) els.zoneSchoolInput.placeholder = isMiddle ? "중학교명 검색 (예: 동탄중)" : "학교명 검색 (예: 솔빛초)";
-  const legend = document.querySelector("#fullMapLegend");
-  if (legend) legend.innerHTML = isMiddle
-    ? `<span><i class="legend-middle-zone"></i>중학군(구)</span><span><i class="legend-middle-shared"></i>공동학구</span><span>📍 중학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`
-    : `<span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span>📍 초등학교 위치</span><span class="full-map-count" id="zoneMapCount"></span>`;
-  const countEl = document.querySelector("#zoneMapCount");
-  const schoolCount = fullSchoolPointData.filter(s => s.school_level === schoolLevelForFullMap()).length;
-  if (countEl) countEl.textContent = isMiddle ? `총 ${activeFullZoneFeatures().length}개 학교군·중학구 · 중학교 ${schoolCount}개` : `총 ${activeFullZoneFeatures().length}개 학구 · 초등학교 ${schoolCount}개`;
-  populateZoneSchoolList(activeFullZoneFeatures());
-}
-
-function switchFullZoneMode(mode) {
-  if (!fullZoneMap || !["elementary", "middle"].includes(mode)) return;
-  fullZoneMode = mode;
-  if (els.zoneSchoolInput) els.zoneSchoolInput.value = "";
-  if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
-  setFullMapHighlight([]);
-  for (const item of fullZonePolygonsByMode.elementary) item.polygon.setMap(mode === "elementary" ? fullZoneMap : null);
-  for (const item of fullZonePolygonsByMode.middle) item.polygon.setMap(mode === "middle" ? fullZoneMap : null);
-  updateFullSchoolMarkers();
-  updateFullMapModeUI();
-  fitFullMapToFeatures(activeFullZoneFeatures());
-  const status = document.querySelector("#fullMapStatus");
-  if (status) status.textContent = mode === "middle" ? "학교군·중학구를 클릭하면 연결된 중학교를 확인할 수 있습니다." : "학구를 클릭하면 학구명과 연결된 초등학교를 확인할 수 있습니다.";
-}
-
-function drawFullZonePolygons(features, mode) {
-  const isMiddleMode = mode === "middle";
-  for (const feature of features) {
-    const props = feature.properties || {};
-    const isShared = !isMiddleMode && (String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역");
-    const middleName = String(props.HAKGUDO_NM || "");
-    // 중학교 자료의 공식 명칭을 기준으로 학교군과 중학구를 구분한다.
-    // 학교군은 여러 중학교가 연결되는 영역이므로 중학구와 시각적으로 확실히 분리한다.
-    const isMiddleShared = isMiddleMode && (
-      String(props.HAKGUDO_GB || "") === "1" ||
-      String(props.zone_type || "").includes("공동") ||
-      middleName.includes("공동")
-    );
-    const isMiddleGroup = isMiddleMode && !isMiddleShared && middleName.includes("학교군");
-    const isMiddleZone = isMiddleMode && !isMiddleShared && !isMiddleGroup;
-    for (const polygonCoords of featurePolygonParts(feature)) {
-      const paths = geoPolygonToKakaoPaths(polygonCoords);
-      if (!paths.length || !paths[0]?.length) continue;
-      const polygon = new window.kakao.maps.Polygon({
-        map: mode === fullZoneMode ? fullZoneMap : null, path: paths,
-        strokeWeight: isMiddleShared ? 4 : (isShared ? 4 : (isMiddleGroup ? 3 : 2)),
-        strokeColor: isMiddleMode
-          ? (isMiddleShared ? "#be123c" : (isMiddleGroup ? "#c2410c" : "#047857"))
-          : (isShared ? "#7e22ce" : "#1d4ed8"),
-        strokeOpacity: (isShared || isMiddleShared) ? 0.95 : 0.82,
-        strokeStyle: (isShared || isMiddleShared || isMiddleGroup) ? "dash" : "solid",
-        fillColor: isMiddleMode
-          ? (isMiddleShared ? "#fb7185" : (isMiddleGroup ? "#fb923c" : "#34d399"))
-          : (isShared ? "#c084fc" : "#60a5fa"),
-        fillOpacity: (isShared || isMiddleShared) ? 0.30 : (isMiddleGroup ? 0.22 : 0.10),
-      });
-      fullZonePolygonsByMode[mode].push({ polygon, feature });
-      window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
-        fullZonePolygonClickAt = Date.now();
-        if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
-        const linked = (props.school_names || []).join(", ");
-        fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
-          map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
-          content: `<div class="schoolzone-map-info zone-area-popup"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong>${isMiddleMode && linked ? `<span class="zone-area-popup__schools">${escapeHtml(linked)}</span>` : ""}</div>`,
-        });
-      });
-    }
-  }
-}
-
-async function initFullSchoolZoneMap() {
-  const mapEl = document.querySelector("#fullSchoolZoneMap");
-  const statusEl = document.querySelector("#fullMapStatus");
-  if (!mapEl || !statusEl) return;
-  if (fullZoneMap) {
-    fullZoneMap.relayout();
-    window.setTimeout(() => fitFullMapToFeatures(activeFullZoneFeatures()), 30);
-    return;
-  }
-  try {
-    await loadKakaoMapSdk();
-    const [elementaryGeojson, middleGeojson, schoolPointJson] = await Promise.all([loadSchoolZoneGeoJson(), loadMiddleZoneGeoJson(), loadPublicSchoolPoints()]);
-    fullZoneFeaturesByMode.elementary = Array.isArray(elementaryGeojson?.features) ? elementaryGeojson.features : [];
-    fullZoneFeaturesByMode.middle = Array.isArray(middleGeojson?.features) ? middleGeojson.features : [];
-    fullZoneMap = new window.kakao.maps.Map(mapEl, {
-      center: new window.kakao.maps.LatLng(37.17, 127.00),
-      level: 9,
-    });
-  window.kakao.maps.event.addListener(fullZoneMap, "click", () => {
-    // 폴리곤을 누른 동일 클릭 이벤트가 지도까지 전달된 경우에는
-    // 방금 연 학구정보 팝업을 닫지 않는다.
-    if (Date.now() - fullZonePolygonClickAt < 250) return;
-    if (fullZoneInfoOverlay) {
-      fullZoneInfoOverlay.setMap(null);
-      fullZoneInfoOverlay = null;
-    }
-  });
-    fullZoneMap.addControl(new window.kakao.maps.ZoomControl(), window.kakao.maps.ControlPosition.RIGHT);
-    drawFullZonePolygons(fullZoneFeaturesByMode.elementary, "elementary");
-    drawFullZonePolygons(fullZoneFeaturesByMode.middle, "middle");
-    await drawFullSchoolPoints(Array.isArray(schoolPointJson?.schools) ? schoolPointJson.schools : []);
-    document.querySelector("#elementaryZoneButton")?.addEventListener("click", () => switchFullZoneMode("elementary"));
-    document.querySelector("#middleZoneButton")?.addEventListener("click", () => switchFullZoneMode("middle"));
-    updateFullMapModeUI();
-    fullZoneMap.relayout();
-    fitFullMapToFeatures(activeFullZoneFeatures());
-    statusEl.textContent = "학구를 클릭하면 학구명과 연결된 초등학교를 확인할 수 있습니다.";
-  } catch (error) {
-    console.warn("full schoolzone map load failed", error);
-    statusEl.textContent = "통학구역 지도를 불러오지 못했습니다.";
-  }
-}
-
-async function initResultMap(homeAddress, schoolItems) {
-  ensureAddressMapPopupStyle();
-  const mapEl = document.querySelector("#resultMap");
-  const statusEl = document.querySelector("#mapStatus");
-  if (!mapEl || !statusEl) return;
-
-  const schools = Array.isArray(schoolItems) ? schoolItems.filter(item => item?.name) : [];
-  mapEl.hidden = false;
-  mapEl.style.display = "block";
-  mapEl.style.width = "100%";
-  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "340px" : "460px";
-  mapEl.style.minHeight = window.matchMedia("(max-width: 720px)").matches ? "340px" : "420px";
-
-  try {
-    await loadKakaoMapSdk();
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    const homeQuery = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
-    const homePos = await geocodeAddress(geocoder, homeQuery);
-
-    const locatedSchools = [];
-    for (const item of schools) {
-      if (!item.address) continue;
-      try {
-        const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(item.address));
-        locatedSchools.push({ ...item, pos });
-      } catch (error) {
-        console.warn("school geocode failed", item.name, error);
-      }
-    }
-
-    const map = new window.kakao.maps.Map(mapEl, { center: homePos, level: 5 });
-    const bounds = new window.kakao.maps.LatLngBounds();
-    bounds.extend(homePos);
-
-    // 공공 통학구역 폴리곤은 사용하지 않고 주소와 학교 위치만 표시한다.
-
-    new window.kakao.maps.CustomOverlay({
-      map,
-      position: homePos,
-      yAnchor: 1,
-      content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
-    });
-
-    let schoolInfoOverlay = null;
-    for (const item of locatedSchools) {
-      bounds.extend(item.pos);
-      const markerEl = document.createElement("button");
-      markerEl.type = "button";
-      markerEl.className = "zone-map-marker zone-map-marker--school";
-      markerEl.style.border = "0";
-      markerEl.style.background = "transparent";
-      markerEl.style.cursor = "pointer";
-      markerEl.innerHTML = `<span class="zone-map-marker__icon">S</span><span class="zone-map-marker__label">${escapeHtml(item.name)}</span>`;
-
-      const markerOverlay = new window.kakao.maps.CustomOverlay({
-        map,
-        position: item.pos,
-        yAnchor: 1,
-        content: markerEl,
-      });
-
-      markerEl.addEventListener("click", () => {
-        if (schoolInfoOverlay) schoolInfoOverlay.setMap(null);
-        const info = getSchoolInfo(item.name);
-        const established = "";
-        schoolInfoOverlay = new window.kakao.maps.CustomOverlay({
-          map,
-          position: item.pos,
-          yAnchor: 1.35,
-          clickable: true,
-          content: markerSchoolInfoHtml(item.name, info, established),
-        });
-        bindSchoolPopupClose(schoolInfoOverlay);
-      });
-    }
-
-    map.setBounds(bounds, 70, 70, 70, 70);
-    window.setTimeout(() => {
-      map.relayout();
-      map.setBounds(bounds, 70, 70, 70, 70);
-    }, 0);
-
-    window.kakao.maps.event.addListener(map, "click", () => {
-      if (schoolInfoOverlay) {
-        schoolInfoOverlay.setMap(null);
-        schoolInfoOverlay = null;
-      }
-    });
-
-    const schoolText = locatedSchools.length > 1
-      ? `초록 마커 ${locatedSchools.length}곳은 공동학구 배정학교입니다.`
-      : "초록 마커는 배정학교입니다.";
-    statusEl.textContent = `파란 마커는 검색 주소, ${schoolText}`;
-  } catch (error) {
-    console.warn("map load failed", error);
-    mapEl.hidden = true;
-    statusEl.textContent = error?.message === "KAKAO_KEY_MISSING"
-      ? "지도 테스트용 JavaScript 키가 아직 입력되지 않았습니다."
-      : "지도 정보를 불러오지 못했습니다. 통학구역 조회 결과에는 영향이 없습니다.";
-  }
+  showResults(html);
 }
 
 function renderSchoolAreaResult(query, result) {
@@ -1664,16 +663,15 @@ function renderMatchedAddressCard(result) {
 
 function renderAddressSchoolCard(schools, message, matchMethod, tongban = []) {
   if (!schools.length) {
-    return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.");
+    return alertCard("warning", typeof message === "string" ? message : "통학구역 자료에서 학교를 찾지 못했습니다.", [
+      "주소에 읍면동 또는 아파트명을 함께 입력해 보세요.",
+      "검색 결과는 자료 기준에 따라 달라질 수 있습니다.",
+    ]);
   }
 
   const groupedSchools = groupAddressSchools(schools);
   const names = groupedSchools.map((group) => group.school);
-  // 여러 세부주소/통리반이 매칭되더라도 최종 배정학교가 하나뿐이면
-  // 정상 확정 결과로 처리한다. "유사 매칭" 플래그는 복수 학교 후보가
-  // 실제로 남아 있을 때만 세부 확인 필요로 표시한다.
-  const isCandidate = groupedSchools.length > 1 &&
-    (schools.some((item) => item.score) || String(matchMethod || "").includes("유사"));
+  const isCandidate = schools.some((item) => item.score) || String(matchMethod || "").includes("유사");
   const matchedCount = Array.isArray(tongban) ? tongban.length : 0;
   const duplicateNotice = matchedCount > groupedSchools.length
     ? `<p class="result-note">같은 학교로 배정되는 여러 동·통리반 결과를 하나로 묶어 표시했습니다.${matchedCount ? ` 원자료 기준 ${formatNumber(matchedCount)}건이 확인되었습니다.` : ""}</p>`
@@ -1799,9 +797,24 @@ function renderTongbanCard(tongban, message) {
 }
 
 function renderAddressSchoolRow(item) {
-  // 주소조회 상단에 이미 배정 초등학교명이 표시되고,
-  // 지도 마커에서 학교 상세정보를 확인할 수 있으므로 중복 학교 카드는 표시하지 않는다.
-  return "";
+  const info = getSchoolInfo(item.school);
+  const areaCount = Array.isArray(item.items) ? item.items.length : 1;
+  const notes = unique((item.items || [item]).map((row) => row.note).filter(Boolean));
+  return `
+    <article class="compact-row">
+      <div class="compact-row-title">
+        <strong>${escapeHtml(item.school)}</strong>
+      </div>
+      ${areaCount > 1 ? `<div class="meta-line">같은 학교로 배정되는 세부 주소 ${formatNumber(areaCount)}건을 묶어서 표시했습니다.</div>` : ""}
+      <details>
+        <summary>학교 관련 정보 보기</summary>
+        <div class="details-body">
+          ${renderSchoolInfoDetails(info)}
+          ${notes.length ? `<div><strong>비고</strong><br>${escapeHtml(notes.join(" / "))}</div>` : ""}
+        </div>
+      </details>
+    </article>
+  `;
 }
 
 function groupAddressSchools(schools) {
@@ -2066,224 +1079,61 @@ function renderResultFooter() {
   const dataYear = state.core?.meta?.dataYear || "현재";
   return `
     <div class="result-footer">
-      <p>자료 기준: ${escapeHtml(dataYear)}학년도</p>
-      <button class="secondary-button" type="button" data-action="search-again">다른 주소 검색하기</button>
+      <p>자료 기준: ${escapeHtml(dataYear)}학년도 · 최종 확인은 경기도화성오산교육지원청 학생배치과 안내를 따르세요.</p>
+      <button class="secondary-button" type="button" data-action="search-again">다른 주소·학교 다시 검색하기</button>
     </div>
   `;
 }
 
 async function searchAddress(address) {
   const original = cleanText(address);
+  const selectedRegion = getSelectedRegion();
 
-  // 통학구역 판정은 도로명주소 또는 지번주소만 허용한다.
-  // 건물명-only 입력은 과거 문자열/fuzzy 매칭으로 잘못된 학교가 반환될 수 있으므로
-  // 주소 판정 로직에 진입시키지 않는다.
-  const normalizedInput = normalizeSearchKey(original);
-  const hasAddressNumber = /\d/.test(normalizedInput);
-  if (!hasAddressNumber) {
-    return {
-      input: original,
-      regionLabel: selectedRegionLabel(),
-      road: "",
-      jibun: original,
-      building: "",
-      admin: "",
-      legal: "",
-      tongban: [],
-      school: "도로명주소 또는 지번주소를 입력해 주세요.",
-      matchMethod: "",
-    };
+  // 2026-07 정확도 우선 정책:
+  // 아파트명/블록명/건물명 유사검색은 오탐이 많아 주소 조회에서는 사용하지 않는다.
+  // 반드시 도로명주소(도로명 + 건물번호)를 roads.json에서 찾은 뒤,
+  // 그 결과의 지번/건물명으로만 통리반과 학교를 연결한다.
+  if (!isLikelyRoadAddress(original)) {
+    return roadOnlyNoResult(original, selectedRegion, "아파트명·건물명·블록명만으로는 조회하지 않습니다. 도로명주소와 건물번호를 입력해 주세요.");
   }
 
-  await loadSearchIndex();
   let roadInfo = null;
-
   try {
     roadInfo = await roadToJibun(original);
   } catch (error) {
     console.warn("roads lookup failed", error);
   }
 
-  const road = roadInfo?.road || "";
-  const jibun = roadInfo?.jibun || "";
-  const building = roadInfo?.building || "";
-  const admin = roadInfo?.admin || "";
-  const legal = roadInfo?.legal || "";
-  const selectedRegion = getSelectedRegion();
-  const sigun = road ? road.split(" ")[0] : selectedRegion.sigun;
-
-  const searchQuery = roadInfo
-    ? [sigun, admin, jibun, legal, building, original].filter(Boolean).join(" ")
-    : original;
-
-  // 학교 판정은 통리반·부서 통학구역 자료만 사용한다. 공공 학구도 GIS 판정은 사용하지 않는다.
-
-  let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
-  if (Array.isArray(tongban) && roadInfo) {
-    tongban = filterTongbanByRoadContext(tongban, roadInfo);
-  }
-  if (typeof tongban === "string") {
-    tongban = findTongban(searchQuery);
+  if (!roadInfo) {
+    return roadOnlyNoResult(original, selectedRegion, "도로명주소 DB에서 일치하는 주소를 찾지 못했습니다. 도로명과 건물번호를 다시 확인해 주세요.");
   }
 
-  // 도로명 주소만 입력한 경우(예: 동탄반석로 277) 같은 도로명 주소 안에
-  // 여러 동이 있는 아파트는 기존 키워드 매칭만으로 누락될 수 있다.
-  // 도로명 DB가 지번/건물명을 알려주면, 해당 지번과 건물명 기준으로
-  // 통리반 자료를 한 번 더 찾아 대표 후보를 보여준다.
-  if (roadInfo) {
-    const roadTongban = findTongbanByRoadInfo(roadInfo, original);
-    if (Array.isArray(roadTongban) && roadTongban.length) {
-      // 도로명 DB에서 지번/행정동까지 확인된 결과는 통리반 카드에도 반드시 사용한다.
-      // 기존 검색 결과가 없으면 그대로 사용하고, 있으면 중복 없이 병합한다.
-      if (!Array.isArray(tongban) || !tongban.length) {
-        tongban = roadTongban;
-      } else {
-        const merged = [...tongban];
-        const seen = new Set(merged.map((row) => [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|")));
-        for (const row of roadTongban) {
-          const key = [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|");
-          if (!seen.has(key)) { seen.add(key); merged.push(row); }
-        }
-        tongban = filterTongbanByRoadContext(merged, roadInfo);
-      }
-    }
+  const road = roadInfo.road || "";
+  const jibun = roadInfo.jibun || "";
+  const building = roadInfo.building || "";
+  const admin = roadInfo.admin || "";
+  const legal = roadInfo.legal || "";
+
+  let tongban = findTongbanByRoadInfo(roadInfo, original);
+  if (!Array.isArray(tongban) || !tongban.length) {
+    tongban = "도로명주소는 확인했지만, 통리반 자료에서 해당 주소를 찾지 못했습니다. 상세 주소 또는 원자료 보완이 필요할 수 있습니다.";
   }
 
   let school = findSchoolByTongban(tongban);
-  let matchMethod = Array.isArray(school) ? "통리반 매칭" : "";
-
-  // 같은 통·반 안에서 통학구역이 다시 나뉘는 경우에는 실제 주소의 지번/동 정보를
-  // 통학구역표의 관할구역과 한 번 더 비교한다.
-  // 예: 동탄2동 4통 1반은 쌍용예가 441동(솔빛초)과 반송동 219~221(반송초)이 함께 있으므로
-  //     반송동 219 주소는 통·반만으로 후보를 남기지 않고 반송초로 좁힌다.
-  if (Array.isArray(school) && unique(school.map((item) => item.school)).length > 1) {
-    const refinedSchool = refineSchoolsByExactAddress(school, roadInfo, original);
-    if (refinedSchool.length && unique(refinedSchool.map((item) => item.school)).length < unique(school.map((item) => item.school)).length) {
-      school = refinedSchool;
-      matchMethod = "통리반·세부주소 매칭";
-    }
-  }
-
-  // A21처럼 같은 블록명이 여러 지역/자료 행에 동시에 존재하는 경우,
-  // 통리반 매칭이 먼저 성공하면 기존 로직은 키워드 매칭 결과를 더 보지 않아
-  // 통학구역표에만 있는 향남읍 A21 같은 항목이 누락될 수 있다.
-  // 블록 코드 검색에서는 통리반 결과와 통학구역 키워드 결과를 함께 보여준다.
-  if (Array.isArray(school) && extractBlockCode(original)) {
-    const keywordSchool = findSchoolByKeyword(original);
-    if (Array.isArray(keywordSchool)) {
-      school = mergeSchoolResults(school, keywordSchool);
-      matchMethod = "통리반·키워드 병합 매칭";
-    }
-  }
-
-  if (typeof school === "string" && building) {
-    school = findSchoolByKeyword(building);
-    matchMethod = Array.isArray(school) ? "건물명 유사 매칭" : "";
-  }
-
-  if (typeof school === "string") {
-    const looksLikeAddressInput = /\d/.test(normalizeSearchKey(original));
-    if (roadInfo || looksLikeAddressInput) {
-      school = findSchoolByKeyword(original);
-      matchMethod = Array.isArray(school) ? "키워드 유사 매칭" : "";
-    } else {
-      school = "건물명만으로 주소를 특정할 수 없습니다. 도로명주소 또는 지번주소를 입력해 주세요.";
-      matchMethod = "";
-    }
-  }
+  let matchMethod = Array.isArray(school) ? "도로명주소 기반 통리반 정확 매칭" : "";
 
   if (Array.isArray(school)) {
     school = filterResultsBySelectedRegion(school);
     if (!school.length) {
       school = "선택한 지역 안에서는 검색 결과가 없습니다.";
       matchMethod = "";
+    } else if (Array.isArray(tongban) && tongban.length > 1 && unique(school.map((item) => item.school)).length > 1) {
+      // 같은 주소에서 통리반 후보가 둘 이상이고 배정학교도 서로 다르면
+      // 어느 한 학교도 확정하지 않는다. 상세 주소로 통리반이 하나로 좁혀져야 한다.
+      school = "같은 도로명주소에서 서로 다른 배정학교가 확인되어 학교를 확정하지 않았습니다. 동·호수 등 상세 주소를 입력해 주세요.";
+      matchMethod = "세부 확인 필요";
     }
   }
-
-  // 2026.8.20 다올초 조기 개교 반영.
-  // 2026-03-20 공공 GIS에는 다올초가 없으므로, 최신 부서 통학구역 자료에서
-  // 다올초 관할로 확인되는 주소는 공공 GIS보다 우선한다.
-  // A61(힐스테이트 동탄포레)은 화성신동초와 공동학구이므로 두 학교를 함께 유지한다.
-  let hasLatestDepartmentOverride = false;
-  if (Array.isArray(school)) {
-    const daolRows = school.filter((item) => item.school === "다올초");
-    if (daolRows.length) {
-      const isA61Shared = daolRows.some((item) => /A-?61|힐스테이트.*포레/i.test(String(item.schoolArea || item.area || "")));
-      const latest = [...daolRows];
-      if (isA61Shared) {
-        const sindong = school.filter((item) => item.school === "화성신동초");
-        latest.push(...sindong);
-      }
-      school = mergeSchoolResults([], latest);
-      matchMethod = isA61Shared ? "최신 부서자료 공동학구 보정" : "최신 부서자료 다올초 보정";
-      hasLatestDepartmentOverride = true;
-    }
-  }
-
-  // 2026년 다올초 개교 후 최신 부서자료 전체 보정.
-  // 2026-03-20 공공 GIS는 개교 전 자료이므로 아래 5개 단지는
-  // 도로명/지번 어느 형식으로 입력해도 최신 부서자료를 우선한다.
-  const daolAddressKey = normalizeText([original, road, jibun].filter(Boolean).join(" "));
-
-  const daolSingleRules = [
-    // A57-1 행복주택(동탄2 LH40단지) : 신동 818 / 동탄신리천로8길 15
-    { re: /(?:신동818|동탄신리천로8길15)/, tongri: "신3통", area: "A57-1블록 행복주택" },
-    // A60 제일풍경채 퍼스티어 : 신동 874 / 동탄신리천로 618
-    { re: /(?:신동874|동탄신리천로618)/, tongri: "신10통", area: "A60블록 제일풍경채 퍼스티어" },
-    // A57-2 금강펜테리움7차 센트럴파크 : 신동 820 / 동탄신리천로8길 17
-    { re: /(?:신동820|동탄신리천로8길17)/, tongri: "", area: "A57-2블록 금강펜테리움7차 센트럴파크" },
-    // A59 금강펜테리움6차 센트럴파크 : 신동 822 / 동탄신리천로8길 46
-    { re: /(?:신동822|동탄신리천로8길46)/, tongri: "신19통", area: "A59블록 금강펜테리움6차 센트럴파크" },
-  ];
-
-  const daolSingleRule = daolSingleRules.find((rule) => rule.re.test(daolAddressKey));
-  if (daolSingleRule) {
-    school = [{
-      school: "다올초",
-      sigun: "화성시",
-      eup: "동탄9동",
-      tongri: daolSingleRule.tongri,
-      ban: "",
-      tongbanArea: daolSingleRule.area,
-      schoolArea: daolSingleRule.area,
-      note: "2026.8.20 다올초 조기 개교 반영",
-      match: "최신 부서자료",
-    }];
-    matchMethod = "최신 부서자료 다올초 보정";
-    hasLatestDepartmentOverride = true;
-  }
-
-  // A61 힐스테이트 동탄포레 공동학구 :
-  // 신동 880 / 동탄신리천로4길 47 → 다올초 + 화성신동초
-  if (/(?:신동880|동탄신리천로4길47)/.test(daolAddressKey)) {
-    school = [
-      {
-        school: "다올초",
-        sigun: "화성시",
-        eup: "동탄9동",
-        tongri: "신9통",
-        ban: "",
-        tongbanArea: "A61블록 힐스테이트 동탄포레",
-        schoolArea: "A61블록 힐스테이트 동탄포레",
-        note: "화성신동초 공동학구",
-        match: "최신 부서자료",
-      },
-      {
-        school: "화성신동초",
-        sigun: "화성시",
-        eup: "동탄9동",
-        tongri: "신9통",
-        ban: "",
-        tongbanArea: "A61블록 힐스테이트 동탄포레",
-        schoolArea: "A61블록 힐스테이트 동탄포레",
-        note: "다올초 공동학구",
-        match: "최신 부서자료",
-      },
-    ];
-    matchMethod = "최신 부서자료 공동학구 보정";
-    hasLatestDepartmentOverride = true;
-  }
-
 
   return {
     input: original,
@@ -2296,42 +1146,68 @@ async function searchAddress(address) {
     tongban,
     school,
     matchMethod,
+    roadOnly: true,
+    needsDetail: shouldAskDetailedAddress(tongban, school, original),
   };
+}
+
+
+function roadOnlyNoResult(original, selectedRegion, message) {
+  return {
+    input: original,
+    regionLabel: selectedRegionLabel(),
+    road: "",
+    jibun: original,
+    building: "",
+    admin: "",
+    legal: "",
+    tongban: "도로명주소 확인 후 조회할 수 있습니다.",
+    school: message,
+    matchMethod: "도로명주소 전용",
+    roadOnly: true,
+  };
+}
+
+function isLikelyRoadAddress(value) {
+  const text = cleanText(value);
+  // 예: 동탄순환대로21길 53, 동탄반석로 277, 오산로 123-4
+  return /[가-힣0-9]+(?:대로|로|길)\s*\d+(?:-\d+)?/.test(text);
+}
+
+function hasDetailedUnitInput(value) {
+  const text = normalizeForApartment(value);
+  return /\d{2,4}동/.test(text) || /\d{1,4}호/.test(text) || /\d{1,2}층/.test(text);
+}
+
+function shouldAskDetailedAddress(tongban, school, original) {
+  if (!Array.isArray(tongban) || tongban.length <= 1) return false;
+  if (hasDetailedUnitInput(original)) return false;
+  if (!Array.isArray(school) || !school.length) return false;
+
+  // 도로명주소 하나 안에 통반은 여러 개여도 배정학교가 모두 같으면 바로 보여준다.
+  // 배정학교가 갈리면 사용자가 동·호수 등 상세 주소를 입력하도록 안내한다.
+  return unique(school.map((item) => item.school)).length > 1;
 }
 
 async function roadToJibun(address) {
   const query = normalizeSearchKey(address);
-  if (query.length < 2) return null;
+  if (query.length < 4) return null;
 
   const roads = await loadRoads();
-  const direct = roads.filter((row) => {
-    const key = normalizeSearchKey(row.k || "");
-    const building = normalizeSearchKey(row.b || "");
-    return (key && key.includes(query)) || (building && building.includes(query));
+  // 도로명 + 건물번호만 추출하여 정확히 일치하는 주소만 허용한다.
+  // 토큰 점수로 비슷한 다른 주소를 고르는 fallback은 사용하지 않는다.
+  const roadNumberMatch = cleanText(address).match(/([가-힣0-9]+(?:대로|로|길))\s*(\d+(?:-\d+)?)/);
+  if (!roadNumberMatch) return null;
+  const roadNumberKey = normalizeSearchKey(`${roadNumberMatch[1]} ${roadNumberMatch[2]}`);
+
+  const candidates = roads.filter((row) => {
+    const roadKey = normalizeSearchKey(row.r || "");
+    return roadKey.endsWith(roadNumberKey);
   });
 
-  const looksLikeAddress = /\d/.test(query);
-  let row = null;
-
-  // 건물명-only 검색은 후보가 딱 하나일 때만 주소로 변환한다.
-  if (direct.length === 1) {
-    row = direct[0];
-  } else if (direct.length > 1 && looksLikeAddress) {
-    row = direct.find((item) => normalizeSearchKey(item.k || "") === query)
-      || direct.find((item) => normalizeSearchKey(item.k || "").includes(query))
-      || null;
-  }
-
-  // 기존 fuzzy 토큰 검색은 주소형 입력에서만 허용한다.
-  if (!row && looksLikeAddress) {
-    const reverse = roads.find((item) => {
-      const key = normalizeSearchKey(item.k || "");
-      return key && query.includes(key) && key.length >= 5;
-    });
-    row = reverse || findRoadByTokens(roads, query);
-  }
-
-  if (!row) return null;
+  // 동일 도로명+건물번호가 둘 이상이면 임의 선택하지 않는다.
+  if (candidates.length !== 1) return null;
+  const row = candidates[0];
   return {
     jibun: row.j || "",
     road: row.r || "",
@@ -2410,81 +1286,6 @@ function parseAddress(address) {
   };
 }
 
-
-function findTongbanBySearchIndex(values) {
-  if (!state.searchIndex) return "검색 결과가 없습니다. 예외 규칙 추가가 필요할 수 있습니다.";
-  const queries = Array.isArray(values) ? values : [values];
-  const ids = new Set();
-
-  for (const value of queries) {
-    const raw = cleanText(value || "");
-    const candidates = makeSearchIndexCandidates(raw);
-    for (const candidate of candidates) {
-      const key = normalizeSearchKey(candidate);
-      if (!key || key.length < 2) continue;
-      const matched = state.searchIndex[key];
-      if (Array.isArray(matched)) {
-        matched.forEach((id) => ids.add(Number(id)));
-      }
-    }
-  }
-
-  if (!ids.size) return "검색 결과가 없습니다. 예외 규칙 추가가 필요할 수 있습니다.";
-
-  let rows = Array.from(ids)
-    .map((id) => (state.core.tongban || [])[id])
-    .filter(Boolean);
-
-  const selectedRows = applySelectedRegionToTongban(rows);
-  if (selectedRows.length) rows = selectedRows;
-
-  return rows.length ? rows : "선택한 지역 안에서는 검색 결과가 없습니다.";
-}
-
-function makeSearchIndexCandidates(value) {
-  const text = cleanText(value || "");
-  const candidates = new Set();
-  if (!text) return [];
-  candidates.add(text);
-
-  const roadMatches = text.match(/(?:화성시|오산시)?\s*[가-힣0-9]+(?:로|길|대로|번길)\s*\d+(?:-\d+)?/g) || [];
-  roadMatches.forEach((item) => candidates.add(item));
-
-  const jibunMatches = text.match(/[가-힣0-9]+(?:읍|면|동|리)\s+(?:산\s*)?\d+(?:-\d+)?/g) || [];
-  jibunMatches.forEach((item) => candidates.add(item));
-
-  const parts = text.split(/[|,;/\n]+/).map((item) => item.trim()).filter(Boolean);
-  parts.forEach((item) => candidates.add(item));
-
-  return Array.from(candidates);
-}
-
-
-function filterTongbanByRoadContext(rows, roadInfo) {
-  if (!Array.isArray(rows) || rows.length <= 1 || !roadInfo) return rows;
-
-  const admin = normalizeText(roadInfo.admin || "");
-  const legal = cleanText(roadInfo.legal || "");
-  const parsed = parseAddress([legal, roadInfo.jibun || ""].filter(Boolean).join(" "));
-
-  // 행정동은 후보를 좁히는 용도로만 사용하고, 도로명 DB에서 지번까지 확인된 경우에는
-  // 실제 지번이 관할구역에 포함되는지까지 확인해야 통리반으로 확정한다.
-  let candidates = rows;
-  if (admin) {
-    const byAdmin = candidates.filter((row) => normalizeText(row.eup || "") === admin);
-    if (byAdmin.length) candidates = byAdmin;
-  }
-
-  if (parsed.legalArea && parsed.mainNo !== null) {
-    const byJibun = candidates.filter((row) => containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain));
-    // 지번이 확인됐는데 후보 관할구역 어디에도 그 지번이 없으면 행정동만 같은 후보를
-    // 확정 결과로 사용하지 않는다. (엉뚱한 통·반 fallback 방지)
-    return byJibun;
-  }
-
-  return candidates;
-}
-
 function findTongban(address) {
   const parsed = parseAddress(address);
   let rows = applySelectedRegionToTongban(state.core.tongban || []);
@@ -2528,7 +1329,6 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
   if (!roadInfo) return [];
 
   const jibun = cleanText(roadInfo.jibun || "");
-  const building = cleanText(roadInfo.building || "");
   const admin = cleanText(roadInfo.admin || "");
   const legal = cleanText(roadInfo.legal || "");
   const originalDong = extractBuildingDong(originalInput);
@@ -2540,38 +1340,20 @@ function findTongbanByRoadInfo(roadInfo, originalInput = "") {
     rows = rows.filter((row) => normalizeText(row.eup || "").includes(adminNorm));
   }
 
-  const aliasTexts = getApartmentAliases(building);
-  const buildingTokens = unique(
-    [building, ...aliasTexts]
-      .flatMap((value) => splitMeaningfulKeywords(value))
-      .filter((token) => token.length >= 2)
-  );
-  const blockCodes = unique([building, ...aliasTexts].flatMap((value) => extractBlockCodes(value)));
-  const buildingNorm = looseNormalize([building, ...aliasTexts].join(" "));
-  const results = [];
+  // 도로명주소 DB가 제공한 지번과 통리반 원자료가 직접 일치하는 경우만 인정한다.
+  // 건물명/별칭/블록명 유사도만으로 통리반을 추정하지 않는다.
+  let matched = rows.filter((row) => {
+    if (!(parsed.legalArea && parsed.mainNo !== null)) return false;
+    return containsJibun(row.area || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain);
+  });
 
-  for (const row of rows) {
-    const area = row.area || "";
-    const areaNorm = looseNormalize(area);
-
-    const jibunMatch = parsed.legalArea && parsed.mainNo !== null
-      ? containsJibun(area, parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
-      : false;
-
-    const blockMatch = blockCodes.length ? blockCodes.some((code) => areaNorm.includes(looseNormalize(code))) : false;
-    const tokenMatches = buildingTokens.filter((token) => areaNorm.includes(token));
-    const buildingMatch = tokenMatches.length >= 2 || blockMatch || hasSharedApartmentBrand(areaNorm, buildingNorm);
-    const dongMatch = originalDong ? normalizeForApartment(area).includes(originalDong) : true;
-
-    if (dongMatch && (jibunMatch || buildingMatch)) {
-      results.push({ row, score: (blockMatch ? 100 : 0) + (jibunMatch ? 50 : 0) + tokenMatches.length * 10 });
-    }
+  // 사용자가 동 번호를 입력했다면 그 동이 원자료에 명시된 행으로만 더 좁힌다.
+  if (originalDong) {
+    const dongMatched = matched.filter((row) => normalizeForApartment(row.area || "").includes(originalDong));
+    if (dongMatched.length) matched = dongMatched;
   }
 
-  return results
-    .sort((a, b) => b.score - a.score)
-    .filter((item, _index, array) => !array.length || item.score >= Math.max(20, array[0].score - 10))
-    .map((item) => item.row);
+  return matched;
 }
 
 function getApartmentAliases(name) {
@@ -2620,79 +1402,6 @@ function mergeSchoolResults(primary, secondary) {
   return merged;
 }
 
-function refineSchoolsByExactAddress(schools, roadInfo, originalInput = "") {
-  if (!Array.isArray(schools) || schools.length <= 1) return schools || [];
-
-  const parsed = parseAddress([roadInfo?.jibun || "", roadInfo?.legal || ""].filter(Boolean).join(" "));
-
-  // 1순위: 통학구역 관할구역에 실제 지번이 명시되어 있으면 가장 강한 근거로 사용한다.
-  // "반송동 219~221"처럼 범위로 적힌 경우도 containsJibun이 처리한다.
-  if (parsed.legalArea && parsed.mainNo !== null) {
-    const jibunMatched = schools.filter((item) =>
-      containsJibun(item.schoolArea || "", parsed.legalArea, parsed.mainNo, parsed.subNo, parsed.isMountain)
-    );
-    if (jibunMatched.length) return mergeSchoolResults([], jibunMatched);
-  }
-
-  // 2순위: 매칭된 통리반 관할구역에 아파트 동이 명시되어 있으면 그 동을
-  // 통학구역의 세부 동 범위와 대조한다.
-  // 예: 동탄반석로 71 -> 반송동 135 -> 4통 1반 관할구역의 441동
-  //     -> 솔빛초 관할구역의 441~448동과 일치 -> 솔빛초.
-  const tongbanDongMatched = schools.filter((item) => {
-    const dongs = extractExplicitBuildingDongs(item.tongbanArea || "");
-    return dongs.some((dong) => schoolAreaContainsBuildingDong(item.schoolArea || "", dong));
-  });
-  if (tongbanDongMatched.length) return mergeSchoolResults([], tongbanDongMatched);
-
-  // 3순위: 사용자가 아파트 동까지 직접 입력했거나 도로명주소 건물명에 동 정보가 있는 경우
-  // 통학구역의 "441~448동" 같은 세부 동 조건과 비교한다.
-  const detailText = [originalInput, roadInfo?.building || ""].filter(Boolean).join(" ");
-  const buildingDong = extractBuildingDong(detailText);
-  if (buildingDong) {
-    const dongMatched = schools.filter((item) => schoolAreaContainsBuildingDong(item.schoolArea || "", buildingDong));
-    if (dongMatched.length) return mergeSchoolResults([], dongMatched);
-  }
-
-  return schools;
-}
-
-function extractExplicitBuildingDongs(text) {
-  const value = cleanText(text || "");
-  const found = [];
-
-  // 지번 숫자를 아파트 동으로 오인하지 않도록 반드시 '동'이 붙은 숫자만 사용한다.
-  for (const match of value.matchAll(/(\d{2,4})\s*동/g)) {
-    found.push(Number(match[1]));
-  }
-
-  // "441~448동"처럼 범위가 통리반 관할구역에 직접 적힌 경우도 펼쳐서 사용한다.
-  for (const match of value.matchAll(/(\d{2,4})\s*(?:~|∼|〜|－|–|—)\s*(\d{2,4})\s*동/g)) {
-    const start = Number(match[1]);
-    const end = Number(match[2]);
-    if (start > 0 && end >= start && end - start <= 200) {
-      for (let dong = start; dong <= end; dong += 1) found.push(dong);
-    }
-  }
-
-  return unique(found.filter(Boolean));
-}
-
-function schoolAreaContainsBuildingDong(areaText, buildingDong) {
-  const target = Number(String(buildingDong).replace(/[^0-9]/g, ""));
-  if (!target) return false;
-
-  const text = cleanText(areaText || "");
-  const rangePattern = /(\d{2,4})\s*(?:~|∼|〜|－|–|—)\s*(\d{2,4})\s*동/g;
-  for (const match of text.matchAll(rangePattern)) {
-    const start = Number(match[1]);
-    const end = Number(match[2]);
-    if (start <= target && target <= end) return true;
-  }
-
-  const singleDongs = [...text.matchAll(/(\d{2,4})\s*동/g)].map((match) => Number(match[1]));
-  return singleDongs.includes(target);
-}
-
 function findSchoolByTongban(tongbanResult) {
   if (!Array.isArray(tongbanResult)) return tongbanResult;
 
@@ -2724,11 +1433,8 @@ function findSchoolByTongban(tongbanResult) {
     // 이때는 같은 읍면동 안에서 관할구역 설명(블록명, 단지명, 행복주택 등)을
     // 통학구역표의 관할구역/비고와 다시 비교해 후보 학교를 보완한다.
     if (!matchedForItem) {
-      const areaOnlySchools = findSchoolsByTongbanAreaKeyword(item);
-      for (const areaOnly of areaOnlySchools) {
-        finalResults.push(areaOnly);
-      }
-
+      // 관할구역 설명의 단어/유사도 점수만으로 학교를 추정하지 않는다.
+      // 명시적으로 관리하는 예외 규칙만 허용한다.
       const specialSchools = findSpecialSchoolsForTongban(item);
       for (const special of specialSchools) {
         finalResults.push(special);
@@ -3189,15 +1895,21 @@ function extractBlockCodes(value) {
   const text = normalizeForApartment(value).toUpperCase().replaceAll("블럭", "블록");
   const codes = [];
   const patterns = [
-    /([A-Z])[-\s]?(\d{1,2})\s*(?:블록|BL)?/g,
+    /([A-Z])[-\s]?(\d{1,2})(?:[-\s]?(\d{1,2}))?\s*(?:블록|BL)?/g,
   ];
   for (const pattern of patterns) {
     let match;
     while ((match = pattern.exec(text)) !== null) {
-      codes.push(`${match[1]}${Number(match[2])}블록`);
+      const suffix = match[3] ? `-${Number(match[3])}` : "";
+      codes.push(`${match[1]}${Number(match[2])}${suffix}블록`);
     }
   }
   return unique(codes);
+}
+
+function hasExactBlockCode(areaText, code) {
+  if (!code) return false;
+  return extractBlockCodes(areaText).includes(code);
 }
 
 function hasSharedApartmentBrand(areaNorm, addrNorm) {
@@ -3266,259 +1978,3 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
-// ===== 2026 초등 통학구역 + 중입배정 통합 조회 =====
-function normalizeIntegratedSchool(value) {
-  return String(value || "").replace(/\s/g, "").replace(/초등학교$/, "초");
-}
-
-function populateCurrentSchoolList() {
-  const list = document.querySelector("#currentSchoolList");
-  if (!list || typeof GROUPS === "undefined") return;
-  const names = [...new Set(GROUPS.flatMap((g) => g[3] || []))].sort((a,b)=>a.localeCompare(b,"ko"));
-  list.innerHTML = names.map((s) => `<option value="${escapeHtml(String(s).replace(/초등학교$/, "초"))}"></option>`).join("");
-}
-
-document.addEventListener("DOMContentLoaded", () => window.setTimeout(populateCurrentSchoolList, 0));
-
-function canonicalIntegratedSchool(value) {
-  if (typeof GROUPS === "undefined") return "";
-  const all = [...new Set(GROUPS.flatMap((g) => g[3] || []))];
-  const q = normalizeIntegratedSchool(value);
-  return all.find((s) => normalizeIntegratedSchool(s) === q) || "";
-}
-
-function middleGroupsForSchool(school) {
-  if (typeof GROUPS === "undefined") return [];
-  const q = normalizeIntegratedSchool(school);
-  return GROUPS.filter((g) => (g[3] || []).some((s) => normalizeIntegratedSchool(s) === q));
-}
-
-function integratedAreaRule(school) {
-  if (typeof AREA_RULES === "undefined") return null;
-  const key = Object.keys(AREA_RULES).find((k) => normalizeIntegratedSchool(k) === normalizeIntegratedSchool(school));
-  return key ? AREA_RULES[key] : null;
-}
-
-function renderMiddleAssignmentForIntegrated(school) {
-  const groups = middleGroupsForSchool(school);
-  const rule = integratedAreaRule(school);
-  if (!groups.length) {
-    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2026 중입배정 V7 원자료를 확인해 주세요.</span></div>`;
-  }
-
-  if (rule?.type === "fixed") {
-    const allowed = new Set(rule.schools || []);
-    const blocks = groups.filter(g => (g[2] || []).some(m => allowed.has(m))).map(g => {
-      const schools = (g[2] || []).filter(m => allowed.has(m));
-      return `<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${schools.map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div></div>`;
-    }).join("");
-    return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(String(school).replace(/초등학교$/, "초"))} 혼합지원 규칙</strong><span>${escapeHtml(rule.text || "혼합지원")}</span></div>${blocks}${rule.deny?.length?`<p class="integrated-note">지원 제한: ${escapeHtml(rule.deny.join(", "))}</p>`:""}`;
-  }
-
-  if (groups.length === 1) {
-    const g = groups[0];
-    return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])} 기준</span></div><div class="integrated-middle-group"><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`;
-  }
-
-  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, V7 기준으로 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
-}
-
-function renderEnrollmentComparison(addressSchoolNames) {
-  const input = document.querySelector("#currentSchoolInput");
-  if (!input) return "";
-  const entered = input.value.trim();
-  if (!entered) {
-    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>현재 재학 중인 초등학교를 입력해 주세요.</strong></div></div><p class="result-note">재학학교를 입력하면 주소상 통학구역과 비교하고 중입배정 범위를 이어서 확인합니다.</p></div>`;
-  }
-  const current = canonicalIntegratedSchool(entered);
-  if (!current) {
-    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>등록된 초등학교명을 확인해 주세요.</strong></div></div><div class="integrated-alert integrated-warn"><strong>${escapeHtml(entered)}</strong><span>2026 중입배정 V7 학교 목록에서 정확히 일치하는 학교를 찾지 못했습니다.</span></div></div>`;
-  }
-  const addressSet = new Set((addressSchoolNames || []).map(normalizeIntegratedSchool));
-  const matched = addressSet.has(normalizeIntegratedSchool(current));
-  const addressText = addressSchoolNames.length ? addressSchoolNames.map(s=>String(s).replace(/초등학교$/, "초")).join(", ") : "확인 필요";
-  const compare = matched
-    ? `<div class="integrated-alert integrated-ok"><strong>통학구역 일치</strong><span>학구 일치로 판단됩니다.</span></div>`
-    : `<div class="integrated-alert integrated-warn"><strong>통학구역 불일치 · 학구위반 여부 확인 필요</strong><span>학구 위반으로 판단됩니다.</span></div>`;
-  return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>통합 확인</span><strong>재학학교 비교 → 중입배정</strong></div></div><div class="integrated-compare"><div><small>주소상 초등학교</small><strong>${escapeHtml(addressText)}</strong></div><div><small>현재 재학학교</small><strong>${escapeHtml(String(current).replace(/초등학교$/, "초"))}</strong></div></div>${compare}<h3 class="integrated-heading">현재 재학학교 기준 중입배정 범위</h3>${renderMiddleAssignmentForIntegrated(current)}<h3 class="integrated-heading">중입 배정 학교 위치</h3><div id="middleResultMap" class="result-map" aria-label="검색 주소와 재학 초등학교 및 배정 대상 중학교 위치 지도"></div><p id="middleMapStatus" class="map-status">학교 위치 지도를 불러오는 중입니다.</p></div>`;
-}
-
-async function initMiddleResultMap(elementarySchool, homeAddress) {
-  ensureAddressMapPopupStyle();
-  const mapEl = document.querySelector("#middleResultMap");
-  const statusEl = document.querySelector("#middleMapStatus");
-  if (!mapEl || !statusEl) return;
-
-  const groups = middleGroupsForSchool(elementarySchool);
-  if (!groups.length) {
-    mapEl.hidden = true;
-    statusEl.textContent = "표시할 중학교 학교군·중학구 자료가 없습니다.";
-    return;
-  }
-
-  mapEl.hidden = false;
-  mapEl.style.display = "block";
-  mapEl.style.width = "100%";
-  mapEl.style.height = window.matchMedia("(max-width: 720px)").matches ? "340px" : "460px";
-  mapEl.style.minHeight = window.matchMedia("(max-width: 720px)").matches ? "340px" : "420px";
-
-  try {
-    await loadKakaoMapSdk();
-    const [pointJson, middleInfo] = await Promise.all([
-      loadPublicSchoolPoints(),
-      loadMiddleSchoolInfoForAddressResult().catch(() => ({}))
-    ]);
-    const geocoder = new window.kakao.maps.services.Geocoder();
-
-    const rule = integratedAreaRule(elementarySchool);
-    const allowed = rule?.type === "fixed" ? new Set(rule.schools || []) : null;
-    const wantedSchools = new Set(groups.flatMap(g => g[2] || []).filter(name => !allowed || allowed.has(name)));
-
-    const schoolRows = Array.isArray(pointJson) ? pointJson : (pointJson?.schools || []);
-    const schoolPoints = schoolRows.filter(s => {
-      if (s.school_level !== "중학교" || !wantedSchools.has(s.school_name)) return false;
-      const lat = Number(s.lat), lng = Number(s.lng);
-      return s.lat !== null && s.lng !== null && s.lat !== "" && s.lng !== "" &&
-        Number.isFinite(lat) && Number.isFinite(lng) && lat >= 33 && lat <= 39 && lng >= 124 && lng <= 132;
-    });
-
-    let homePos = null;
-    if (homeAddress) {
-      try {
-        const q = cleanGeocodeAddress(homeAddress).replace(/^(화성시|오산시)\s/, "경기도 $1 ");
-        homePos = await geocodeAddress(geocoder, q);
-      } catch (error) {
-        console.warn("middle map home geocode failed", error);
-      }
-    }
-
-    let elementaryPos = null;
-    const elementaryInfo = getSchoolInfo(elementarySchool);
-    const elementaryAddress = elementaryInfo?.mapAddress || elementaryInfo?.address || "";
-    if (elementaryAddress) {
-      try {
-        elementaryPos = await geocodeAddress(geocoder, cleanGeocodeAddress(elementaryAddress));
-      } catch (error) {
-        console.warn("middle map elementary geocode failed", error);
-      }
-    }
-
-    let center = homePos || elementaryPos || new window.kakao.maps.LatLng(37.15, 127.05);
-    if (!homePos && !elementaryPos && schoolPoints.length) {
-      center = new window.kakao.maps.LatLng(Number(schoolPoints[0].lat), Number(schoolPoints[0].lng));
-    }
-    const map = new window.kakao.maps.Map(mapEl, { center, level: 7 });
-
-    const oldLegend = mapEl.querySelector(".middle-result-marker-legend");
-    if (oldLegend) oldLegend.remove();
-    const markerLegend = document.createElement("div");
-    markerLegend.className = "middle-result-marker-legend";
-    markerLegend.innerHTML = `<span><i class="middle-result-dot middle-result-dot--elementary"></i>현재 초등학교</span><span><i class="middle-result-dot middle-result-dot--middle"></i>배정 대상 중학교</span>`;
-    mapEl.appendChild(markerLegend);
-    const bounds = new window.kakao.maps.LatLngBounds();
-    let boundCount = 0;
-    let infoOverlay = null;
-
-    // 공공 중학교 학교군·중학구 폴리곤은 표시하지 않는다.
-
-    // 입력 주소
-    if (homePos) {
-      bounds.extend(homePos); boundCount += 1;
-      new window.kakao.maps.CustomOverlay({
-        map,
-        position: homePos,
-        yAnchor: 1,
-        content: '<div class="zone-map-marker zone-map-marker--home"><span class="zone-map-marker__icon">⌂</span><span class="zone-map-marker__label">검색 주소</span></div>',
-      });
-    }
-
-    // 현재 재학 중인 초등학교
-    if (elementaryPos) {
-      bounds.extend(elementaryPos); boundCount += 1;
-      const elemEl = document.createElement("button");
-      elemEl.type = "button";
-      elemEl.className = "zone-map-marker zone-map-marker--school zone-map-marker--elementary-result";
-      elemEl.style.border = "0";
-      elemEl.style.background = "transparent";
-      elemEl.style.cursor = "pointer";
-      elemEl.innerHTML = `<span class="zone-map-marker__icon">초</span><span class="zone-map-marker__label">${escapeHtml(String(elementarySchool).replace(/초등학교$/, "초"))}</span>`;
-      new window.kakao.maps.CustomOverlay({ map, position: elementaryPos, yAnchor: 1, content: elemEl });
-      elemEl.addEventListener("click", () => {
-        if (infoOverlay) infoOverlay.setMap(null);
-        const point = schoolRows.find(s => normalizeSchoolName(s.school_name) === normalizeSchoolName(elementarySchool));
-        infoOverlay = new window.kakao.maps.CustomOverlay({
-          map,
-          position: elementaryPos,
-          yAnchor: 1.35,
-          clickable: true,
-          content: markerSchoolInfoHtml(elementarySchool, elementaryInfo, point?.established_date || ""),
-        });
-        bindSchoolPopupClose(infoOverlay);
-      });
-    }
-
-    // 배정 대상 중학교: 클릭하면 업로드된 학교현황 정보 표시
-    for (const school of schoolPoints) {
-      const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
-      bounds.extend(pos); boundCount += 1;
-
-      const markerEl = document.createElement("button");
-      markerEl.type = "button";
-      markerEl.className = "zone-map-marker zone-map-marker--school zone-map-marker--middle-result";
-      markerEl.style.border = "0";
-      markerEl.style.background = "transparent";
-      markerEl.style.cursor = "pointer";
-      markerEl.innerHTML = `<span class="zone-map-marker__icon">중</span><span class="zone-map-marker__label">${escapeHtml(school.school_name)}</span>`;
-
-      new window.kakao.maps.CustomOverlay({ map, position: pos, yAnchor: 1, content: markerEl });
-      markerEl.addEventListener("click", () => {
-        if (infoOverlay) infoOverlay.setMap(null);
-        const detail = middleInfo?.[school.school_name] || {};
-        infoOverlay = new window.kakao.maps.CustomOverlay({
-          map,
-          position: pos,
-          yAnchor: 1.35,
-          clickable: true,
-          content: markerSchoolInfoHtml(school.school_name, detail, school.established_date || ""),
-        });
-        bindSchoolPopupClose(infoOverlay);
-      });
-    }
-
-    if (boundCount) map.setBounds(bounds, 70, 70, 70, 70);
-    window.setTimeout(() => {
-      map.relayout();
-      if (boundCount) map.setBounds(bounds, 70, 70, 70, 70);
-    }, 0);
-
-    window.kakao.maps.event.addListener(map, "click", () => {
-      if (infoOverlay) {
-        infoOverlay.setMap(null);
-        infoOverlay = null;
-      }
-    });
-
-    const groupText = groups.map(g => g[0]).join(", ");
-    statusEl.textContent = `검색 주소 · 재학 초등학교 · 해당 중학교 ${schoolPoints.length}곳을 표시합니다. 학교 마커를 누르면 상세정보를 확인할 수 있습니다.`;
-  } catch (error) {
-    console.warn("middle result map load failed", error);
-    mapEl.hidden = true;
-    statusEl.textContent = "중학교 학교군·중학구 지도를 불러오지 못했습니다.";
-  }
-}
-
-// 기존 주소 결과 렌더링을 감싸 통합 비교 카드를 추가한다.
-const originalRenderAddressResultIntegrated = renderAddressResult;
-renderAddressResult = function(result) {
-  const schools = Array.isArray(result.school) ? result.school : [];
-  const schoolNames = unique(schools.map((item) => item.school));
-  originalRenderAddressResultIntegrated(result);
-  if (els.results && !els.results.hidden) {
-    els.results.insertAdjacentHTML("beforeend", renderEnrollmentComparison(schoolNames));
-    const current = canonicalIntegratedSchool(document.querySelector("#currentSchoolInput")?.value?.trim() || "");
-    if (current && document.querySelector("#middleResultMap")) {
-      window.setTimeout(() => initMiddleResultMap(current, result.road || result.input || ""), 0);
-    }
-  }
-};
