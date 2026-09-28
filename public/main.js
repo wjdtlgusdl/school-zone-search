@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-zone-colors-v20";
+const APP_VERSION = "20260928-zone-click-fix-v21";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -1113,6 +1113,7 @@ let fullZoneMode = "elementary";
 let fullZoneFeaturesByMode = { elementary: [], middle: [] };
 let fullZonePolygonsByMode = { elementary: [], middle: [] };
 let fullZoneInfoOverlay = null;
+let fullZonePolygonClickAt = 0;
 let fullSchoolMarkers = [];
 let fullSchoolLabels = [];
 let fullSchoolPointData = [];
@@ -1409,6 +1410,7 @@ function drawFullZonePolygons(features, mode) {
       });
       fullZonePolygonsByMode[mode].push({ polygon, feature });
       window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
+        fullZonePolygonClickAt = Date.now();
         if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
         const linked = (props.school_names || []).join(", ");
         fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
@@ -1439,6 +1441,9 @@ async function initFullSchoolZoneMap() {
       level: 9,
     });
   window.kakao.maps.event.addListener(fullZoneMap, "click", () => {
+    // 폴리곤을 누른 동일 클릭 이벤트가 지도까지 전달된 경우에는
+    // 방금 연 학구정보 팝업을 닫지 않는다.
+    if (Date.now() - fullZonePolygonClickAt < 250) return;
     if (fullZoneInfoOverlay) {
       fullZoneInfoOverlay.setMap(null);
       fullZoneInfoOverlay = null;
