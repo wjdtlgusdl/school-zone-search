@@ -753,6 +753,86 @@ function featurePolygonParts(feature) {
   return [];
 }
 
+
+function pointInRing(lng, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = Number(ring[i]?.[0]);
+    const yi = Number(ring[i]?.[1]);
+    const xj = Number(ring[j]?.[0]);
+    const yj = Number(ring[j]?.[1]);
+    if (![xi, yi, xj, yj].every(Number.isFinite)) continue;
+    const intersects = ((yi > lat) !== (yj > lat)) &&
+      (lng < ((xj - xi) * (lat - yi)) / ((yj - yi) || Number.EPSILON) + xi);
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygonCoordinates(lng, lat, polygonCoords) {
+  if (!Array.isArray(polygonCoords) || !polygonCoords.length) return false;
+  if (!pointInRing(lng, lat, polygonCoords[0] || [])) return false;
+  for (let i = 1; i < polygonCoords.length; i += 1) {
+    if (pointInRing(lng, lat, polygonCoords[i] || [])) return false;
+  }
+  return true;
+}
+
+function featureContainsPoint(feature, lng, lat) {
+  const geometry = feature?.geometry;
+  if (!geometry) return false;
+  if (geometry.type === "Polygon") return pointInPolygonCoordinates(lng, lat, geometry.coordinates);
+  if (geometry.type === "MultiPolygon") {
+    return (geometry.coordinates || []).some((coords) => pointInPolygonCoordinates(lng, lat, coords));
+  }
+  return false;
+}
+
+function shortElementarySchoolName(value) {
+  return cleanText(String(value || "")).replace(/초등학교$/, "초").replace(/초교$/, "초");
+}
+
+async function findElementarySchoolsByGis(address) {
+  try {
+    await loadKakaoMapSdk();
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const pos = await geocodeAddress(geocoder, cleanGeocodeAddress(address));
+    const lat = Number(pos.getLat());
+    const lng = Number(pos.getLng());
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+
+    const geojson = await loadSchoolZoneGeoJson();
+    const features = (geojson?.features || []).filter((feature) => featureContainsPoint(feature, lng, lat));
+    if (!features.length) return { lat, lng, features: [], schools: [] };
+
+    const schools = [];
+    const seen = new Set();
+    for (const feature of features) {
+      const props = feature.properties || {};
+      for (const linked of props.schools || []) {
+        const school = shortElementarySchoolName(linked.school_name || "");
+        if (!school || seen.has(school)) continue;
+        seen.add(school);
+        schools.push({
+          school,
+          sigun: props.city || "",
+          eup: "",
+          tongri: "",
+          ban: "",
+          tongbanArea: "",
+          schoolArea: props.HAKGUDO_NM || props.zone_type || "공공 학구도",
+          note: `공공 학구도 GIS · ${props.base_date || "2026-03-20"} 기준`,
+          match: "GIS",
+        });
+      }
+    }
+    return { lat, lng, features, schools };
+  } catch (error) {
+    console.warn("GIS school-zone lookup failed", error);
+    return null;
+  }
+}
+
 async function drawSchoolZoneLayer(map, homePos) {
   const geojson = await loadSchoolZoneGeoJson();
   const features = Array.isArray(geojson?.features) ? geojson.features : [];
@@ -1610,6 +1690,11 @@ async function searchAddress(address) {
     ? [sigun, admin, jibun, legal, building, original].filter(Boolean).join(" ")
     : original;
 
+  // 2026-03-20 공공 학구도 GIS를 이용한 좌표 기반 판정.
+  // 도로명주소를 카카오 주소검색으로 좌표화한 뒤 실제 학구 폴리곤에 포함되는지 확인한다.
+  // 정확히 한 학교로 연결되면 기존 문자열/통리반 fallback보다 우선 사용한다.
+  const gisLookup = await findElementarySchoolsByGis(road || original);
+
   let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
   if (Array.isArray(tongban) && roadInfo) {
     tongban = filterTongbanByRoadContext(tongban, roadInfo);
@@ -1684,6 +1769,20 @@ async function searchAddress(address) {
       school = "선택한 지역 안에서는 검색 결과가 없습니다.";
       matchMethod = "";
     }
+  }
+
+  // GIS에서 한 학교만 확정되면 그것을 주소 검색의 우선 판정으로 사용한다.
+  // 기존 통리반 결과가 잘못 살아남아 엉뚱한 학교를 확정하는 문제를 차단한다.
+  const gisSchoolNames = unique((gisLookup?.schools || []).map((item) => item.school));
+  if (gisSchoolNames.length === 1) {
+    school = gisLookup.schools;
+    matchMethod = "공공 학구도 GIS 좌표 매칭";
+    // GIS 판정과 충돌할 수 있는 기존 통리반 카드는 숨긴다.
+    tongban = [];
+  } else if (gisSchoolNames.length > 1) {
+    school = gisLookup.schools;
+    matchMethod = "공공 학구도 GIS 공동·중첩구역 매칭";
+    tongban = [];
   }
 
   return {
