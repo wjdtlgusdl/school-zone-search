@@ -81,7 +81,7 @@ function collectElements() {
 function bindEvents() {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.addressTab.addEventListener("click", () => switchMode("address"));
-  els.schoolTab.addEventListener("click", () => switchMode("school"));
+  els.schoolTab?.addEventListener("click", () => switchMode("school"));
   els.mapTab?.addEventListener("click", () => switchMode("map"));
   els.zoneSchoolSearchButton?.addEventListener("click", focusFullMapSchool);
   els.zoneMapResetButton?.addEventListener("click", resetFullMapView);
@@ -112,19 +112,19 @@ function bindEvents() {
     selectAddressSuggestion(Number(option.dataset.suggestionIndex));
   });
 
-  els.schoolMode.addEventListener("submit", async (event) => {
+  els.schoolMode?.addEventListener("submit", async (event) => {
     event.preventDefault();
     hideSchoolSuggestions();
     await handleSchoolSearch(els.schoolInput.value);
   });
 
-  els.schoolInput.addEventListener("input", () => {
+  els.schoolInput?.addEventListener("input", () => {
     updateClearButtons();
     handleSchoolSuggestionInput();
   });
-  els.schoolInput.addEventListener("focus", handleSchoolSuggestionInput);
-  els.schoolInput.addEventListener("keydown", handleSchoolSuggestionKeys);
-  els.schoolInput.addEventListener("blur", () => {
+  els.schoolInput?.addEventListener("focus", handleSchoolSuggestionInput);
+  els.schoolInput?.addEventListener("keydown", handleSchoolSuggestionKeys);
+  els.schoolInput?.addEventListener("blur", () => {
     window.setTimeout(hideSchoolSuggestions, 120);
   });
 
@@ -142,7 +142,7 @@ function bindEvents() {
     els.schoolInput.focus({ preventScroll: true });
   });
 
-  els.schoolSuggestions.addEventListener("mousedown", (event) => {
+  els.schoolSuggestions?.addEventListener("mousedown", (event) => {
     event.preventDefault();
     const option = event.target.closest("[data-school-suggestion-index]");
     if (!option) return;
@@ -152,8 +152,8 @@ function bindEvents() {
   els.results.addEventListener("click", (event) => {
     const action = event.target.closest("[data-action]")?.dataset.action;
     if (action === "search-again") {
-      const targetInput = state.activeMode === "school" ? els.schoolInput : els.addressInput;
-      targetInput.focus({ preventScroll: true });
+      const targetInput = state.activeMode === "school" && els.schoolInput ? els.schoolInput : els.addressInput;
+      targetInput?.focus({ preventScroll: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
@@ -197,13 +197,13 @@ function switchMode(mode) {
   hideSchoolSuggestions();
 
   els.addressTab.classList.toggle("is-active", isAddress);
-  els.schoolTab.classList.toggle("is-active", isSchool);
+  els.schoolTab?.classList.toggle("is-active", isSchool);
   els.mapTab?.classList.toggle("is-active", isMap);
   els.addressTab.setAttribute("aria-selected", String(isAddress));
-  els.schoolTab.setAttribute("aria-selected", String(isSchool));
+  els.schoolTab?.setAttribute("aria-selected", String(isSchool));
   els.mapTab?.setAttribute("aria-selected", String(isMap));
   els.addressMode.hidden = !isAddress;
-  els.schoolMode.hidden = !isSchool;
+  if (els.schoolMode) els.schoolMode.hidden = !isSchool;
   if (els.mapMode) els.mapMode.hidden = !isMap;
   if (els.fullMapPanel) els.fullMapPanel.hidden = !isMap;
   const resultPanel = document.querySelector(".result-panel");
