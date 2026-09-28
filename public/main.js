@@ -701,6 +701,18 @@ function geocodeAddress(geocoder, address) {
 }
 
 let schoolZoneGeoJsonPromise = null;
+let publicSchoolPointsPromise = null;
+
+function loadPublicSchoolPoints() {
+  if (!publicSchoolPointsPromise) {
+    publicSchoolPointsPromise = fetch("/data/schools_hwaseong_osan_20260320.json")
+      .then((response) => {
+        if (!response.ok) throw new Error("PUBLIC_SCHOOL_POINTS_LOAD_FAILED");
+        return response.json();
+      });
+  }
+  return publicSchoolPointsPromise;
+}
 
 function loadSchoolZoneGeoJson() {
   if (!schoolZoneGeoJsonPromise) {
@@ -775,6 +787,9 @@ let fullZoneMap = null;
 let fullZonePolygons = [];
 let fullZoneFeatures = [];
 let fullZoneInfoOverlay = null;
+let fullSchoolMarkers = [];
+let fullSchoolLabels = [];
+let fullSchoolPointData = [];
 
 function featureBoundsPoints(feature) {
   const points = [];
@@ -797,8 +812,40 @@ function schoolNameFromZone(feature) {
 
 function populateZoneSchoolList(features) {
   if (!els.zoneSchoolList) return;
-  const names = [...new Set(features.map(schoolNameFromZone).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"));
+  const names = [...new Set(features.flatMap(feature => {
+    const linked = Array.isArray(feature?.properties?.school_names) ? feature.properties.school_names : [];
+    return [...linked, schoolNameFromZone(feature)].filter(Boolean);
+  }))].sort((a,b)=>a.localeCompare(b,"ko"));
   els.zoneSchoolList.innerHTML = names.map(name => `<option value="${escapeHtml(name)}"></option>`).join("");
+}
+
+function updateFullSchoolLabels() {
+  if (!fullZoneMap) return;
+  const show = fullZoneMap.getLevel() <= 5;
+  for (const item of fullSchoolLabels) item.overlay.setMap(show ? fullZoneMap : null);
+}
+
+function drawFullSchoolPoints(schools) {
+  fullSchoolPointData = (schools || []).filter(s => s.school_level === "초등학교" && Number.isFinite(Number(s.lat)) && Number.isFinite(Number(s.lng)));
+  for (const school of fullSchoolPointData) {
+    const pos = new window.kakao.maps.LatLng(Number(school.lat), Number(school.lng));
+    const marker = new window.kakao.maps.Marker({ map: fullZoneMap, position: pos, title: school.school_name || "초등학교" });
+    fullSchoolMarkers.push({ marker, school });
+    const label = new window.kakao.maps.CustomOverlay({
+      position: pos, yAnchor: -0.45, clickable: false,
+      content: `<div class="full-school-label">${escapeHtml(school.school_name || "")}</div>`,
+    });
+    fullSchoolLabels.push({ overlay: label, school });
+    window.kakao.maps.event.addListener(marker, "click", () => {
+      if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
+      fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
+        map: fullZoneMap, position: pos, yAnchor: 1.35,
+        content: `<div class="schoolzone-map-info"><strong>${escapeHtml(school.school_name || "학교")}</strong><span>${escapeHtml(school.road_address || school.jibun_address || "")}</span><span>공공데이터 학교 위치</span></div>`,
+      });
+    });
+  }
+  window.kakao.maps.event.addListener(fullZoneMap, "zoom_changed", updateFullSchoolLabels);
+  updateFullSchoolLabels();
 }
 
 function fitFullMapToFeatures(features) {
@@ -841,7 +888,8 @@ function focusFullMapSchool() {
   if (!query) return resetFullMapView();
   const matches = fullZoneFeatures.filter(feature => {
     const name = normalizeText(feature?.properties?.HAKGUDO_NM || "").replace(/초등학교/g,"초");
-    return name.includes(query) || query.includes(schoolNameFromZone(feature));
+    const linkedNames = (feature?.properties?.school_names || []).map(name => normalizeText(name).replace(/초등학교/g,"초"));
+    return name.includes(query) || query.includes(normalizeText(schoolNameFromZone(feature))) || linkedNames.some(name => name.includes(query) || query.includes(name));
   });
   const status = document.querySelector("#fullMapStatus");
   if (!matches.length) {
@@ -864,7 +912,7 @@ async function initFullSchoolZoneMap() {
   }
   try {
     await loadKakaoMapSdk();
-    const geojson = await loadSchoolZoneGeoJson();
+    const [geojson, schoolPointJson] = await Promise.all([loadSchoolZoneGeoJson(), loadPublicSchoolPoints()]);
     fullZoneFeatures = Array.isArray(geojson?.features) ? geojson.features : [];
     populateZoneSchoolList(fullZoneFeatures);
     fullZoneMap = new window.kakao.maps.Map(mapEl, {
@@ -893,12 +941,13 @@ async function initFullSchoolZoneMap() {
           if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
           fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
             map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
-            content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"))}</span><span>${escapeHtml(props.city || "")}</span></div>`,
+            content: `<div class="schoolzone-map-info"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong><span>${escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"))}</span><span>${escapeHtml((props.school_names || []).join(", ") || props.city || "")}</span></div>`,
           });
         });
       }
     }
-    document.querySelector("#zoneMapCount").textContent = `총 ${fullZoneFeatures.length}개 학구`;
+    drawFullSchoolPoints(Array.isArray(schoolPointJson?.schools) ? schoolPointJson.schools : []);
+    document.querySelector("#zoneMapCount").textContent = `총 ${fullZoneFeatures.length}개 학구 · 초등학교 ${fullSchoolPointData.length}개`;
     fullZoneMap.relayout();
     fitFullMapToFeatures(fullZoneFeatures);
     statusEl.textContent = "학구를 클릭하면 학구명과 구분을 확인할 수 있습니다.";

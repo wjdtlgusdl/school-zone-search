@@ -80,12 +80,7 @@
 
           <div class="mode-panel map-mode-copy" id="mapMode" hidden>
             <p class="field-hint">화성·오산 초등학교 통학구역을 큰 지도에서 확인할 수 있습니다. 지도에서 학구를 클릭하거나 학교명을 검색해 보세요.</p>
-          
-            <p class="schoolzone-source">
-    통학구역 지도 데이터 출처: 한국교육시설안전원 학구도안내서비스 「초등학교 통학구역」 공공데이터(SHP)<br>
-    ※ 웹 지도 표시를 위해 GeoJSON 형식으로 가공하였습니다. 데이터 기준일: 2026. 3. 20.
-  </p>
-</div>
+          </div>
 
           <div class="notice-card" role="note">
             <strong>입력한 주소는 저장하지 않습니다.</strong>
@@ -121,9 +116,10 @@
               <button class="secondary-button" type="button" id="zoneMapResetButton">전체보기</button>
             </div>
           </div>
-          <div class="full-map-legend"><span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span class="full-map-count" id="zoneMapCount"></span></div>
+          <div class="full-map-legend"><span><i class="legend-normal"></i>일반 통학구역</span><span><i class="legend-shared"></i>공동통학구역</span><span>📍 초등학교 위치</span><span class="full-map-count" id="zoneMapCount"></span></div>
           <div id="fullSchoolZoneMap" class="full-schoolzone-map" aria-label="화성·오산 통학구역 전체 지도"></div>
           <p class="map-status" id="fullMapStatus">지도를 불러오는 중입니다.</p>
+          <p class="schoolzone-source">통학구역 지도 및 학교 위치 데이터 출처: 한국교육시설안전원 학구도안내서비스 공공데이터(SHP·CSV)<br>※ 웹 지도 표시를 위해 GeoJSON/JSON 형식으로 가공하였습니다. 데이터 기준일: 2026. 3. 20.</p>
         </section>
       </main>
 
