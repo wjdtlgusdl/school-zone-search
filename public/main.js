@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-daol-v6";
+const APP_VERSION = "20260928-github-v10";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
