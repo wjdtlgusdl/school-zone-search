@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-popup-close-v17";
+const APP_VERSION = "20260928-phone-clean-v18";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -867,10 +867,43 @@ function bindSchoolPopupClose(overlay) {
 }
 
 
+function compactSchoolPhone(rawPhone) {
+  const raw = stripHtmlBreaks(rawPhone || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!raw) return "";
+
+  const phonePattern = /0\d{1,2}[-)\s]?\d{3,4}[-\s]?\d{4}/g;
+  const normalizeNumber = value => String(value || "")
+    .replace(/\)/g, "-")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+
+  // FAX/팩스가 붙은 구간은 표시 대상에서 제외한다.
+  const withoutFax = raw
+    .replace(/(?:FAX|팩스)\s*[:：]?\s*0\d{1,2}[-)\s]?\d{3,4}[-\s]?\d{4}/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const labeled = [];
+  for (const label of ["교무실", "행정실"]) {
+    const rx = new RegExp(label + "\\s*[:：]?\\s*(0\\\\d{1,2}[-)\\\\s]?\\\\d{3,4}[-\\\\s]?\\\\d{4})", "i");
+    const match = withoutFax.match(rx);
+    if (match?.[1]) labeled.push(`${label} ${normalizeNumber(match[1])}`);
+  }
+  if (labeled.length) return labeled.join(" · ");
+
+  // 라벨이 없는 자료는 중복을 제거한 뒤 첫 전화번호 하나만 표시한다.
+  const numbers = [...new Set((withoutFax.match(phonePattern) || []).map(normalizeNumber))];
+  return numbers[0] || "";
+}
+
+
 function markerSchoolInfoHtml(title, info, establishedDate = "") {
   const homepageRaw = info?.homepage || "";
   const homepage = homepageRaw ? normalizeHomepage(homepageRaw) : "";
-  const phone = stripHtmlBreaks(info?.phone || "");
+  const phone = compactSchoolPhone(info?.phone || "");
   const type = info?.school_type || "";
   return `<div class="address-map-school-popup">
     <button type="button" class="address-map-school-popup__close" aria-label="학교 정보 닫기">×</button>
