@@ -172,10 +172,13 @@ def contains_jibun(area_text: str, legal_area: str, main_no: int, sub_no: Option
     if not legal_area or legal_area not in area:
         return False
     area = re.sub(r"\([^)]*\)", " ", area)
-    text = area.replace(legal_area, "")
+    text = area
+    text = re.sub(r"\d+\s*(?:[~∼〜－–—])\s*\d+\s*호", " ", text)
     text = re.sub(r"\d+\s*호", " ", text)
-    text = re.sub(r"\d{3,4}\s*동", " ", text)
+    text = re.sub(r"\d+\s*(?:[~∼〜－–—])\s*\d+\s*층", " ", text)
     text = re.sub(r"\d+\s*층", " ", text)
+    text = re.sub(r"\d{2,4}\s*동(?![가-힣])", " ", text)
+    text = text.replace(legal_area, "")
 
     target = {"main": int(main_no), "sub": int(sub_no) if sub_no is not None else None}
     for raw_part in re.split(r"[,，/ㆍ]", text):
@@ -221,10 +224,13 @@ def extract_jibun_specs(area_text: str, legal_area: str) -> List[Tuple[bool, Dic
     if not legal_area or legal_area not in area:
         return []
     area = re.sub(r"\([^)]*\)", " ", area)
-    text = area.replace(legal_area, "")
+    text = area
+    text = re.sub(r"\d+\s*(?:[~∼〜－–—])\s*\d+\s*호", " ", text)
     text = re.sub(r"\d+\s*호", " ", text)
-    text = re.sub(r"\d{3,4}\s*동", " ", text)
+    text = re.sub(r"\d+\s*(?:[~∼〜－–—])\s*\d+\s*층", " ", text)
     text = re.sub(r"\d+\s*층", " ", text)
+    text = re.sub(r"\d{2,4}\s*동(?![가-힣])", " ", text)
+    text = text.replace(legal_area, "")
     specs: List[Tuple[bool, Dict[str, Optional[int]], Dict[str, Optional[int]]]] = []
     range_pattern = re.compile(r"(\d+(?:-\d+)?)\s*(?:[~∼〜－–—]|부터)\s*(\d+(?:-\d+)?)(?:\s*까지)?")
 
