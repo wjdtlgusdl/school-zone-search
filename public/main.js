@@ -1,4 +1,4 @@
-const APP_VERSION = "20260928-source-first-v30";
+const APP_VERSION = "20260929-v34-jibun-parser-fix";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -2157,7 +2157,6 @@ function renderResultFooter() {
 
 async function searchAddress(address) {
   const original = cleanText(address);
-  await loadSearchIndex();
   let roadInfo = null;
 
   try {
@@ -2385,11 +2384,15 @@ async function searchAddress(address) {
           containsJibun(row.area || "", resolvedRoadParsed.legalArea, resolvedRoadParsed.mainNo, resolvedRoadParsed.subNo, resolvedRoadParsed.isMountain)
         )
       : true);
-  if (roadInfo && resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null && !hasExactTongbanCoverage && !hasLatestDepartmentOverride) {
+  if (roadInfo && resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null && !hasExactTongbanCoverage) {
+    // 통학구역표에 직접 지번 조건이 있더라도 tongban 원자료에 주소가 없으면
+    // 사용자가 요청한 정책상 '확정'으로 보지 않는다.
+    // 학교는 GIS 참고 결과로만 보여주고 통리반 미확인 경고를 반드시 표시한다.
     tongban = [];
     school = [];
     matchMethod = "";
     tongbanSourceUnconfirmed = true;
+    hasLatestDepartmentOverride = false;
   }
 
   const sourceSchoolNames = Array.isArray(school) ? unique(school.map((item) => item.school).filter(Boolean)) : [];
@@ -3055,10 +3058,20 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
   if (!legalArea || !area.includes(legalArea)) return false;
 
   area = area.replace(/\([^)]*\)/g, " ");
-  let text = area.replaceAll(legalArea, "");
+  let text = area;
+
+  // 호수/층수 범위를 '전체' 제거한 뒤 지번 범위를 해석한다.
+  // 기존처럼 끝의 "2006호"만 지우면 "106∼2006호 920-1"이
+  // "106∼ 920-1"로 변해 865-1 같은 전혀 다른 지번이 범위 안으로 오인될 수 있다.
+  text = text.replace(/\d+\s*(?:[~∼〜－–—])\s*\d+\s*호/g, " ");
   text = text.replace(/\d+\s*호/g, " ");
-  text = text.replace(/\d{3,4}\s*동/g, " ");
+  text = text.replace(/\d+\s*(?:[~∼〜－–—])\s*\d+\s*층/g, " ");
   text = text.replace(/\d+\s*층/g, " ");
+
+  // 아파트 동번호만 제거한다. 뒤에 한글이 이어지는 "135 동탄..."은
+  // 지번 135 + 단지명 시작이므로 절대 '135동'으로 지우지 않는다.
+  text = text.replace(/\d{2,4}\s*동(?![가-힣])/g, " ");
+  text = text.replaceAll(legalArea, "");
 
   const target = { main: Number(mainNo), sub: subNo === null ? null : Number(subNo) };
   const parts = text.split(/[,，/ㆍ]/);
