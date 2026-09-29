@@ -2185,34 +2185,20 @@ async function searchAddress(address) {
   const gisAddress = roadInfo?.road || roadInfo?.jibun || original;
   const gisLookup = await findElementarySchoolsByGis(gisAddress);
 
-  let tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
-  if (Array.isArray(tongban) && roadInfo) {
-    tongban = filterTongbanByRoadContext(tongban, roadInfo);
-  }
-  if (typeof tongban === "string") {
-    tongban = findTongban(searchQuery);
-  }
+  let tongban;
+  if (roadInfo?.jibun) {
+    // roads.json에서 실제 지번을 확정한 주소는 그 지번을 최우선으로 사용한다.
+    // search_index의 건물명/유사키가 엉뚱한 통리반을 가리켜도 섞지 않는다.
+    // 예: 역광장로 90 -> 오산동 540-15, 동탄반석로 71 -> 반송동 135.
+    const exactRoadTongban = findTongbanByRoadInfo(roadInfo, original);
+    tongban = Array.isArray(exactRoadTongban) ? exactRoadTongban : [];
 
-  // 도로명 주소만 입력한 경우(예: 동탄반석로 277) 같은 도로명 주소 안에
-  // 여러 동이 있는 아파트는 기존 키워드 매칭만으로 누락될 수 있다.
-  // 도로명 DB가 지번/건물명을 알려주면, 해당 지번과 건물명 기준으로
-  // 통리반 자료를 한 번 더 찾아 대표 후보를 보여준다.
-  if (roadInfo) {
-    const roadTongban = findTongbanByRoadInfo(roadInfo, original);
-    if (Array.isArray(roadTongban) && roadTongban.length) {
-      // 도로명 DB에서 지번/행정동까지 확인된 결과는 통리반 카드에도 반드시 사용한다.
-      // 기존 검색 결과가 없으면 그대로 사용하고, 있으면 중복 없이 병합한다.
-      if (!Array.isArray(tongban) || !tongban.length) {
-        tongban = roadTongban;
-      } else {
-        const merged = [...tongban];
-        const seen = new Set(merged.map((row) => [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|")));
-        for (const row of roadTongban) {
-          const key = [row.sigun,row.eup,row.tongri,row.ban,row.area].map((v)=>normalizeText(v||"")).join("|");
-          if (!seen.has(key)) { seen.add(key); merged.push(row); }
-        }
-        tongban = filterTongbanByRoadContext(merged, roadInfo);
-      }
+    // 지번은 확인됐지만 tongban 원자료에 실제 지번이 없는 경우에는
+    // search_index로 되돌아가지 않는다. 이후 GIS 참고 판정으로 넘긴다.
+  } else {
+    tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
+    if (typeof tongban === "string") {
+      tongban = findTongban(searchQuery);
     }
   }
 
@@ -2386,11 +2372,13 @@ async function searchAddress(address) {
   // 대표 사례: 오산동 540-15.
   let tongbanSourceUnconfirmed = false;
   const resolvedRoadParsed = parseAddress([legal, jibun].filter(Boolean).join(" "));
-  const hasExactTongbanCoverage = resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null
-    ? applySelectedRegionToTongban(state.core.tongban || []).some((row) =>
-        containsJibun(row.area || "", resolvedRoadParsed.legalArea, resolvedRoadParsed.mainNo, resolvedRoadParsed.subNo, resolvedRoadParsed.isMountain)
-      )
-    : true;
+  const hasExactTongbanCoverage = Array.isArray(tongban) && tongban.length
+    ? true
+    : (resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null
+      ? applySelectedRegionToTongban(state.core.tongban || []).some((row) =>
+          containsJibun(row.area || "", resolvedRoadParsed.legalArea, resolvedRoadParsed.mainNo, resolvedRoadParsed.subNo, resolvedRoadParsed.isMountain)
+        )
+      : true);
   if (roadInfo && resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null && !hasExactTongbanCoverage && !hasLatestDepartmentOverride) {
     tongban = [];
     school = [];
