@@ -1,4 +1,4 @@
-const APP_VERSION = "20260929-v34-jibun-parser-fix";
+const APP_VERSION = "20260929-v35-gis-mismatch-notice";
 
 const DATA_PATHS = {
   core: `/data/core.json?v=${APP_VERSION}`,
@@ -641,6 +641,21 @@ function renderAddressResult(result) {
         <p class="result-note">해당 주소는 통리반 원자료에서 확인되지 않아 배정학교를 확정할 수 없습니다. 위 학교는 현재 공공 학구도 GIS에서 검색 주소가 포함되는 통학구역을 기준으로 표시한 참고 결과입니다.</p>
       </div>`;
   }
+
+  if (result.sourceOverridesGisBoundary && !result.tongbanSourceUnconfirmed) {
+    html += `
+      <div class="result-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>지도 안내</span>
+            <strong>통학구역 경계 미표시</strong>
+          </div>
+          <span class="badge">원자료 우선</span>
+        </div>
+        <p class="result-note">현재 공공데이터의 통학구역 경계와 2026학년도 통학구역 원자료가 일치하지 않아 지도에 통학구역 경계를 표시하지 않습니다. 배정학교는 2026학년도 통학구역 원자료를 기준으로 확인해 주세요.</p>
+      </div>`;
+  }
+
   html += renderAddressTongbanCard(tongban, result.input);
 
   // 주소 매칭 정보 카드는 화면에서 제거한다.
