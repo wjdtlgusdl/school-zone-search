@@ -628,6 +628,19 @@ function renderAddressResult(result) {
   const matchLabel = result.road ? "도로명주소 매칭" : "입력값 기반 검색";
 
   let html = renderAddressSchoolCard(schools, result.school, result.matchMethod, tongban);
+  if (result.tongbanSourceUnconfirmed && schoolNames.length) {
+    html += `
+      <div class="result-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>확인 필요</span>
+            <strong>통리반 원자료 미확인 주소</strong>
+          </div>
+          <span class="badge">참고</span>
+        </div>
+        <p class="result-note">해당 주소는 통리반 원자료에서 확인되지 않아 배정학교를 확정할 수 없습니다. 위 학교는 현재 공공 학구도 GIS에서 검색 주소가 포함되는 통학구역을 기준으로 표시한 참고 결과입니다.</p>
+      </div>`;
+  }
   html += renderAddressTongbanCard(tongban, result.input);
 
   // 주소 매칭 정보 카드는 화면에서 제거한다.
@@ -1113,6 +1126,7 @@ async function drawSchoolZoneLayer(map, homePos) {
   let infoOverlay = null;
 
   for (const feature of features) {
+    if (!isMiddleMode && isSourceConflictElementaryZone(feature)) continue;
     const props = feature.properties || {};
     const isShared = String(props.HAKGUDO_GB || "") === "1" || props.zone_type === "공동통학구역";
     for (const polygonCoords of featurePolygonParts(feature)) {
@@ -1180,7 +1194,9 @@ function schoolNameFromZone(feature) {
 }
 
 function activeFullZoneFeatures() {
-  return fullZoneFeaturesByMode[fullZoneMode] || [];
+  const features = fullZoneFeaturesByMode[fullZoneMode] || [];
+  if (fullZoneMode !== "elementary") return features;
+  return features.filter((feature) => !isSourceConflictElementaryZone(feature));
 }
 
 function populateZoneSchoolList(features) {
@@ -2368,7 +2384,7 @@ async function searchAddress(address) {
   // 도로명 DB에서 지번까지 정확히 확인됐지만 통리반 원자료에는 그 지번이 전혀 없으면
   // 검색색인/유사매칭이나 오래된 GIS만으로 학교를 확정하지 않는다.
   // 대표 사례: 오산동 540-15.
-  let suppressGisFallback = false;
+  let tongbanSourceUnconfirmed = false;
   const resolvedRoadParsed = parseAddress([legal, jibun].filter(Boolean).join(" "));
   const hasExactTongbanCoverage = resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null
     ? applySelectedRegionToTongban(state.core.tongban || []).some((row) =>
@@ -2377,9 +2393,9 @@ async function searchAddress(address) {
     : true;
   if (roadInfo && resolvedRoadParsed.legalArea && resolvedRoadParsed.mainNo !== null && !hasExactTongbanCoverage && !hasLatestDepartmentOverride) {
     tongban = [];
-    school = "통리반 원자료에서 해당 지번을 확인하지 못했습니다. 세부 확인이 필요합니다.";
+    school = [];
     matchMethod = "";
-    suppressGisFallback = true;
+    tongbanSourceUnconfirmed = true;
   }
 
   const sourceSchoolNames = Array.isArray(school) ? unique(school.map((item) => item.school).filter(Boolean)) : [];
@@ -2398,13 +2414,13 @@ async function searchAddress(address) {
     (hasLatestDepartmentOverride || has2026SourceDecision) &&
     normalizeSchoolSetForBoundary(sourceSchoolNames) !== normalizeSchoolSetForBoundary(gisSchoolNames);
 
-  if (!suppressGisFallback && !hasLatestDepartmentOverride && !has2026SourceDecision && gisSchoolNames.length === 1) {
+  if (!hasLatestDepartmentOverride && !has2026SourceDecision && gisSchoolNames.length === 1) {
     school = gisLookup.schools;
-    matchMethod = "공공 학구도 GIS 좌표 매칭";
+    matchMethod = tongbanSourceUnconfirmed ? "공공 학구도 GIS 참고 결과 · 통리반 미확인" : "공공 학구도 GIS 좌표 매칭";
     tongban = [];
-  } else if (!suppressGisFallback && !hasLatestDepartmentOverride && !has2026SourceDecision && gisSchoolNames.length > 1) {
+  } else if (!hasLatestDepartmentOverride && !has2026SourceDecision && gisSchoolNames.length > 1) {
     school = gisLookup.schools;
-    matchMethod = "공공 학구도 GIS 공동·중첩구역 매칭";
+    matchMethod = tongbanSourceUnconfirmed ? "공공 학구도 GIS 참고 결과 · 통리반 미확인" : "공공 학구도 GIS 공동·중첩구역 매칭";
     tongban = [];
   }
 
@@ -2420,6 +2436,7 @@ async function searchAddress(address) {
     school,
     matchMethod,
     sourceOverridesGisBoundary,
+    tongbanSourceUnconfirmed,
   };
 }
 
