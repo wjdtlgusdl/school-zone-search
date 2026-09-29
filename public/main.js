@@ -3094,10 +3094,16 @@ function containsJibun(areaText, legalArea, mainNo, subNo = null, isMountain = f
     part = part.trim();
     if (!part) continue;
 
-    const partHasMountain = part.includes("산");
+    // 산번지는 "산"이 실제 지번 숫자 바로 앞에 붙는 경우만 인정한다.
+    // "부산동", "고산아트빌라"처럼 명칭 안에 들어 있는 '산'을
+    // 산번지 표지로 오인하면 일반지번이 통리반 0건으로 빠질 수 있다.
+    const mountainMarkerPattern = /(^|[^가-힣0-9])산\s*(?=\d)/;
+    const partHasMountain = mountainMarkerPattern.test(part);
     if (isMountain !== partHasMountain) continue;
 
-    part = part.replaceAll("산", "").trim();
+    if (partHasMountain) {
+      part = part.replace(mountainMarkerPattern, "$1").trim();
+    }
     if (jibunPartMatches(part, target)) return true;
   }
 
