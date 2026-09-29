@@ -2185,20 +2185,26 @@ async function searchAddress(address) {
   const gisAddress = roadInfo?.road || roadInfo?.jibun || original;
   const gisLookup = await findElementarySchoolsByGis(gisAddress);
 
-  let tongban;
+  let tongban = [];
   if (roadInfo?.jibun) {
-    // roads.json에서 실제 지번을 확정한 주소는 그 지번을 최우선으로 사용한다.
-    // search_index의 건물명/유사키가 엉뚱한 통리반을 가리켜도 섞지 않는다.
-    // 예: 역광장로 90 -> 오산동 540-15, 동탄반석로 71 -> 반송동 135.
-    const exactRoadTongban = findTongbanByRoadInfo(roadInfo, original);
+    // 도로명주소는 roads.json이 확정한 지번만 사용한다.
+    // 원래 입력 문자열/건물명/search_index로 통리반을 다시 찾지 않는다.
+    const exactRoadTongban = findTongbanByRoadInfo(roadInfo, roadInfo.jibun);
     tongban = Array.isArray(exactRoadTongban) ? exactRoadTongban : [];
-
-    // 지번은 확인됐지만 tongban 원자료에 실제 지번이 없는 경우에는
-    // search_index로 되돌아가지 않는다. 이후 GIS 참고 판정으로 넘긴다.
   } else {
-    tongban = findTongbanBySearchIndex([road, jibun, building, original, searchQuery].filter(Boolean));
-    if (typeof tongban === "string") {
-      tongban = findTongban(searchQuery);
+    // 지번주소는 입력된 지번 자체로만 통리반을 찾는다.
+    // search_index의 부분키/건물명/행정동 후보는 학교 판정에 사용하지 않는다.
+    const parsedDirect = parseAddress(jibun || original || searchQuery);
+    if (parsedDirect.legalArea && parsedDirect.mainNo !== null) {
+      tongban = applySelectedRegionToTongban(state.core.tongban || []).filter((row) =>
+        containsJibun(
+          row.area || "",
+          parsedDirect.legalArea,
+          parsedDirect.mainNo,
+          parsedDirect.subNo,
+          parsedDirect.isMountain
+        )
+      );
     }
   }
 
