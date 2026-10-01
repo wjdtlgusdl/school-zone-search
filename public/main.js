@@ -648,11 +648,11 @@ function renderAddressResult(result) {
         <div class="card-header">
           <div class="card-title">
             <span>지도 안내</span>
-            <strong>통학구역 경계 미표시</strong>
+            <strong>통학구역 경계 보정 테스트</strong>
           </div>
           <span class="badge">원자료 우선</span>
         </div>
-        <p class="result-note">현재 공공데이터의 통학구역 경계와 2026학년도 통학구역 원자료가 일치하지 않아 지도에 통학구역 경계를 표시하지 않습니다. 배정학교는 2026학년도 통학구역 원자료를 기준으로 확인해 주세요.</p>
+        <p class="result-note">현재 공공데이터의 통학구역 경계와 2026학년도 통학구역 원자료가 일치하지 않습니다. 반송초 지적도 기반 1차 보정안이 확인된 주소는 지도에 보정 경계를 표시하며, 그 외 충돌 주소는 기존 GIS 경계를 표시하지 않습니다. 배정학교는 2026학년도 통학구역 원자료를 기준으로 확인해 주세요.</p>
       </div>`;
   }
 
@@ -760,6 +760,7 @@ async function geocodeAddress(geocoder, address) {
 }
 
 let schoolZoneGeoJsonPromise = null;
+let correctedElementaryZoneGeoJsonPromise = null;
 let middleZoneGeoJsonPromise = null;
 let publicSchoolPointsPromise = null;
 
@@ -1027,6 +1028,17 @@ function loadSchoolZoneGeoJson() {
   return schoolZoneGeoJsonPromise;
 }
 
+function loadCorrectedElementaryZoneGeoJson() {
+  if (!correctedElementaryZoneGeoJsonPromise) {
+    correctedElementaryZoneGeoJsonPromise = fetch(`/data/bansong_corrected_overlay_v1.geojson?v=${APP_VERSION}`)
+      .then((response) => {
+        if (!response.ok) throw new Error("CORRECTED_ELEMENTARY_GEOJSON_LOAD_FAILED");
+        return response.json();
+      });
+  }
+  return correctedElementaryZoneGeoJsonPromise;
+}
+
 function loadMiddleZoneGeoJson() {
   if (!middleZoneGeoJsonPromise) {
     middleZoneGeoJsonPromise = fetch("/data/middlezones_map_20260320.geojson")
@@ -1161,7 +1173,7 @@ async function drawSchoolZoneLayer(map, homePos) {
 
       window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
         if (infoOverlay) infoOverlay.setMap(null);
-        const name = escapeHtml(props.HAKGUDO_NM || "학구 정보");
+        const name = escapeHtml(props.HAKGUDO_NM || props.name || "학구 정보");
         const type = escapeHtml(props.zone_type || (isShared ? "공동통학구역" : "통학구역"));
         infoOverlay = new window.kakao.maps.CustomOverlay({
           map,
@@ -1503,7 +1515,7 @@ function drawFullZonePolygons(features, mode) {
       window.kakao.maps.event.addListener(polygon, "click", (mouseEvent) => {
         fullZonePolygonClickAt = Date.now();
         if (fullZoneInfoOverlay) fullZoneInfoOverlay.setMap(null);
-        const linked = (props.school_names || []).join(", ");
+        const linked = (props.school_names || props.schools || [props.school || ""]).filter(Boolean).join(", ");
         fullZoneInfoOverlay = new window.kakao.maps.CustomOverlay({
           map: fullZoneMap, position: mouseEvent.latLng, yAnchor: 1.15,
           content: `<div class="schoolzone-map-info zone-area-popup"><strong>${escapeHtml(props.HAKGUDO_NM || "학구 정보")}</strong>${isMiddleMode && linked ? `<span class="zone-area-popup__schools">${escapeHtml(linked)}</span>` : ""}</div>`,
@@ -1596,9 +1608,22 @@ async function initResultMap(homeAddress, schoolItems, options = {}) {
       const geojson = await loadSchoolZoneGeoJson();
       const lat = Number(homePos.getLat());
       const lng = Number(homePos.getLng());
-      const matchedFeatures = options.hideGisBoundary
+      let matchedFeatures = options.hideGisBoundary
         ? []
         : (geojson?.features || []).filter(feature => featureContainsPoint(feature, lng, lat));
+
+      // 2026 원자료와 공개 GIS가 충돌하는 주소는 공개 GIS를 숨긴다.
+      // 반송초 지적도 기반 1차 보정안에 실제 검색 좌표가 포함되는 경우에만
+      // 검증용 보정 경계를 대신 표시한다. 다른 충돌 주소는 기존처럼 경계를 표시하지 않는다.
+      if (options.hideGisBoundary) {
+        try {
+          const corrected = await loadCorrectedElementaryZoneGeoJson();
+          matchedFeatures = (corrected?.features || []).filter(feature => featureContainsPoint(feature, lng, lat));
+        } catch (correctedError) {
+          console.warn("corrected elementary zone layer load failed", correctedError);
+          matchedFeatures = [];
+        }
+      }
       zoneCount = matchedFeatures.length;
       let infoOverlay = null;
 
