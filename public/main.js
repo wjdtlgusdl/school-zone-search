@@ -3441,7 +3441,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-// ===== 2026 초등 통학구역 + 중입배정 통합 조회 =====
+// ===== 초등 통학구역 + 2027학년도 중학군(구) 통합 조회 =====
 function normalizeIntegratedSchool(value) {
   return String(value || "").replace(/\s/g, "").replace(/초등학교$/, "초");
 }
@@ -3478,7 +3478,7 @@ function renderMiddleAssignmentForIntegrated(school) {
   const groups = middleGroupsForSchool(school);
   const rule = integratedAreaRule(school);
   if (!groups.length) {
-    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2026 중입배정 원자료를 확인해 주세요.</span></div>`;
+    return `<div class="integrated-alert integrated-warn"><strong>중입배정 자료에서 학교를 찾지 못했습니다.</strong><span>2027학년도 중학교 학교군 및 중학구 확정 자료를 확인해 주세요.</span></div>`;
   }
 
   if (rule?.type === "fixed") {
@@ -3495,7 +3495,7 @@ function renderMiddleAssignmentForIntegrated(school) {
     return `<div class="integrated-alert integrated-ok"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])} 기준</span></div><div class="integrated-middle-group"><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`;
   }
 
-  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
+  return `<div class="integrated-alert integrated-warn"><strong>주소 세부 확인이 필요한 학교입니다.</strong><span>현재 재학학교가 둘 이상의 중학군(구)에 연결되어 있어, 2027학년도 확정 자료 기준으로 가능한 범위를 모두 표시합니다.</span></div>${groups.map(g=>`<div class="integrated-middle-group"><strong>${escapeHtml(g[0])}</strong><span>${escapeHtml(g[1])}</span><div class="integrated-tags">${(g[2]||[]).map(m=>`<em>${escapeHtml(m)}</em>`).join("")}</div>${g[4]?`<p class="integrated-note">※ ${escapeHtml(g[4])}</p>`:""}</div>`).join("")}`;
 }
 
 function renderEnrollmentComparison(addressSchoolNames) {
@@ -3507,7 +3507,7 @@ function renderEnrollmentComparison(addressSchoolNames) {
   }
   const current = canonicalIntegratedSchool(entered);
   if (!current) {
-    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>등록된 초등학교명을 확인해 주세요.</strong></div></div><div class="integrated-alert integrated-warn"><strong>${escapeHtml(entered)}</strong><span>2026 중입배정 학교 목록에서 정확히 일치하는 학교를 찾지 못했습니다.</span></div></div>`;
+    return `<div class="result-card integrated-card"><div class="card-header"><div class="card-title"><span>재학학교 비교</span><strong>등록된 초등학교명을 확인해 주세요.</strong></div></div><div class="integrated-alert integrated-warn"><strong>${escapeHtml(entered)}</strong><span>2027학년도 중학군(구) 학교 목록에서 정확히 일치하는 학교를 찾지 못했습니다.</span></div></div>`;
   }
   const addressSet = new Set((addressSchoolNames || []).map(normalizeIntegratedSchool));
   const matched = addressSet.has(normalizeIntegratedSchool(current));
