@@ -652,7 +652,7 @@ function renderAddressResult(result) {
           </div>
           <span class="badge">원자료 우선</span>
         </div>
-        <p class="result-note">현재 공공데이터의 통학구역 경계와 2026학년도 통학구역 원자료가 일치하지 않습니다. 반송초 지적도 기반 1차 보정안이 확인된 주소는 지도에 보정 경계를 표시하며, 그 외 충돌 주소는 기존 GIS 경계를 표시하지 않습니다. 배정학교는 2026학년도 통학구역 원자료를 기준으로 확인해 주세요.</p>
+        <p class="result-note">현재 공공데이터의 통학구역 경계와 2026학년도 통학구역 원자료가 일치하지 않습니다. 반송초 반송동 지적도 기반 보정안이 확인된 주소는 지도에 단독·공동학구를 구분하여 표시하며, 그 외 충돌 주소는 기존 GIS 경계를 표시하지 않습니다. 배정학교는 2026학년도 통학구역 원자료를 기준으로 확인해 주세요.</p>
       </div>`;
   }
 
@@ -1030,7 +1030,7 @@ function loadSchoolZoneGeoJson() {
 
 function loadCorrectedElementaryZoneGeoJson() {
   if (!correctedElementaryZoneGeoJsonPromise) {
-    correctedElementaryZoneGeoJsonPromise = fetch(`/data/bansong_corrected_overlay_v1.geojson?v=${APP_VERSION}`)
+    correctedElementaryZoneGeoJsonPromise = fetch(`/data/bansong_corrected_overlay_v2.geojson?v=${APP_VERSION}`)
       .then((response) => {
         if (!response.ok) throw new Error("CORRECTED_ELEMENTARY_GEOJSON_LOAD_FAILED");
         return response.json();
@@ -1613,7 +1613,7 @@ async function initResultMap(homeAddress, schoolItems, options = {}) {
         : (geojson?.features || []).filter(feature => featureContainsPoint(feature, lng, lat));
 
       // 2026 원자료와 공개 GIS가 충돌하는 주소는 공개 GIS를 숨긴다.
-      // 반송초 지적도 기반 1차 보정안에 실제 검색 좌표가 포함되는 경우에만
+      // 반송초 반송동 지적도 기반 보정안에 실제 검색 좌표가 포함되는 경우에만
       // 검증용 보정 경계를 대신 표시한다. 다른 충돌 주소는 기존처럼 경계를 표시하지 않는다.
       if (options.hideGisBoundary) {
         try {
