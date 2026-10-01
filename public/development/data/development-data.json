@@ -1,0 +1,89 @@
+{
+  "blocks": {
+    "A51-1": {
+      "households": 310,
+      "moveIn": "2025.07",
+      "elementaryStudents": 84,
+      "elementarySchool": "화성바른초",
+      "middleStudents": 50,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    },
+    "A51-2": {
+      "households": 414,
+      "moveIn": "2025.07",
+      "elementaryStudents": 111,
+      "elementarySchool": "화성바른초",
+      "middleStudents": 67,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    },
+    "A52": {
+      "households": 679,
+      "moveIn": "2025.07",
+      "elementaryStudents": 184,
+      "elementarySchool": "화성바른초",
+      "middleStudents": 110,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    },
+    "A55": {
+      "households": 660,
+      "moveIn": "2025.07",
+      "elementaryStudents": 179,
+      "elementarySchool": "화성바른초",
+      "middleStudents": 109,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    },
+    "A106": {
+      "households": 640,
+      "moveIn": "2025.08",
+      "elementaryStudents": 124,
+      "elementarySchool": "현민초",
+      "middleStudents": 72,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    },
+    "A107": {
+      "households": 616,
+      "moveIn": "2025.08",
+      "elementaryStudents": 210,
+      "elementarySchool": "현민초",
+      "middleStudents": 99,
+      "middleZone": "동탄2-2중학군",
+      "middleSchools": "방교중, 청림중, 동탄목동중, 서연중, 화성세정중, 화성신동중 / 신설: 바른중, 동탄13중"
+    }
+  },
+  "schools": {
+    "화성바른초등학교": {
+      "shortName": "화성바른초",
+      "classes": 26,
+      "students": 628,
+      "grades": [
+        138,
+        105,
+        98,
+        94,
+        101,
+        92
+      ],
+      "classrooms": 49
+    },
+    "현민초등학교": {
+      "shortName": "현민초",
+      "classes": 14,
+      "students": 265,
+      "grades": [
+        55,
+        41,
+        36,
+        37,
+        53,
+        43
+      ],
+      "classrooms": 49
+    }
+  },
+  "sourceNote": "2026년 3월 초등·중등 중장기배치계획 개발계획/학교현황 기준"
+}
