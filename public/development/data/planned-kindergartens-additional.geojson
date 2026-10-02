@@ -2429,6 +2429,76 @@
           37.21285
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유1",
+        "kindergarten_name": "가칭)향남1유",
+        "district": "향남2",
+        "establishment": "사립",
+        "status": "미설립",
+        "city": "화성",
+        "identity_basis": "사용자 제공 명칭·설립유형·좌표",
+        "label_lng": 126.91494,
+        "label_lat": 37.11943,
+        "geometry_basis": "사용자 지정 좌표"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.91494,
+          37.11943
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유3",
+        "kindergarten_name": "가칭)향남3유",
+        "district": "향남2",
+        "establishment": "미확인",
+        "status": "미설립",
+        "address": "향남읍 하길리 309-20임 일원",
+        "document_area_m2": 2501,
+        "city": "화성",
+        "identity_basis": "2026-02-06 학교용지 현황 명칭·소재지·면적 + 사용자 지정 좌표",
+        "label_lng": 126.90723,
+        "label_lat": 37.11002,
+        "geometry_basis": "사용자 지정 좌표"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.90723,
+          37.11002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유4",
+        "kindergarten_name": "가칭)향남4유",
+        "district": "향남2",
+        "establishment": "미확인",
+        "status": "미설립",
+        "address": "향남읍 하길리 산14-13임 일원",
+        "document_area_m2": 2000,
+        "city": "화성",
+        "identity_basis": "2026-02-06 학교용지 현황 명칭·소재지·면적 + 사용자 지정 좌표",
+        "label_lng": 126.92011,
+        "label_lat": 37.11403,
+        "geometry_basis": "사용자 지정 좌표"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.92011,
+          37.11403
+        ]
+      }
     }
   ]
 }
