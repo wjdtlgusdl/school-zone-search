@@ -91,3 +91,17 @@
   border:1px solid #7c3aed !important;
   font-weight:700 !important;
 }
+
+.block-label{
+  pointer-events:none;
+  padding:2px 5px;
+  border:1px solid rgba(71,84,103,.55);
+  border-radius:5px;
+  background:rgba(255,255,255,.88);
+  color:#344054;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.15;
+  white-space:nowrap;
+  box-shadow:0 1px 3px rgba(0,0,0,.12);
+}
