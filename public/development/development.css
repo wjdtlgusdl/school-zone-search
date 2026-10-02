@@ -68,3 +68,20 @@
 @media(max-width:800px){
   .data-sources{gap:4px 10px;padding:6px 10px}
 }
+
+/* v46: 허용 IP에서만 노출되는 내부 검토 버튼 */
+.internal-review-btn{
+  flex:0 0 auto;
+  margin:0;
+  padding:8px 12px;
+  border:1px solid #7c3aed;
+  border-radius:8px;
+  background:#7c3aed;
+  color:#fff;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.internal-review-btn:hover{filter:brightness(.96)}
+.internal-review-btn[hidden]{display:none!important}
