@@ -119,3 +119,10 @@
 .focus-banner button{border:1px solid #84adff;border-radius:7px;background:#fff;color:#175cd3;padding:4px 8px;font:inherit;font-weight:700;cursor:pointer}
 .focus-banner[hidden],.district-layer-panel[hidden]{display:none!important}
 @media(max-width:800px){.district-layer-panel{position:fixed;left:10px;right:10px;top:110px;width:auto;max-height:65vh}.focus-banner{justify-content:space-between}}
+
+/* v56: 레이어 메뉴가 툴바 overflow에 잘리지 않도록 viewport 기준 표시 */
+.district-layer-panel{
+  position:fixed !important;
+  z-index:3000 !important;
+  max-height:min(65vh,560px);
+}
