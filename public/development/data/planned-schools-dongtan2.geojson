@@ -1,0 +1,54 @@
+{
+  "type": "FeatureCollection",
+  "name": "동탄2_미설립학교_2곳",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.0998707,
+          37.1794709
+        ]
+      },
+      "properties": {
+        "label": "초31",
+        "school_name": "동탄31초",
+        "level": "초등학교",
+        "status": "미설립",
+        "district": "동탄2",
+        "address": "오산동 697-1900답 일원",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202509290004",
+        "shp_area_m2": 13413.39,
+        "document_area_m2": 13413,
+        "position_basis": "도시계획시설 학교부지(SHP)",
+        "identity_basis": "2026-02-06 학교용지 현황의 소재지·면적 + 동탄2 지구단위계획도 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.0992134,
+          37.1808619
+        ]
+      },
+      "properties": {
+        "label": "중15",
+        "school_name": "동탄15중",
+        "level": "중학교",
+        "status": "미설립",
+        "district": "동탄2",
+        "address": "오산동 967-1872전 일원",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202509290005",
+        "shp_area_m2": 15055.56,
+        "document_area_m2": 15057,
+        "position_basis": "도시계획시설 학교부지(SHP)",
+        "identity_basis": "2026-02-06 학교용지 현황의 소재지·면적 + 동탄2 지구단위계획도 대조"
+      }
+    }
+  ]
+}
