@@ -12,16 +12,16 @@
         ]
       },
       "properties": {
-        "label": "16초",
-        "school_name": "송산16초",
+        "label": "3초",
+        "school_name": "송산3초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200012",
         "shp_area_m2": 15012.02,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -34,16 +34,16 @@
         ]
       },
       "properties": {
-        "label": "15초",
-        "school_name": "송산15초",
+        "label": "4초",
+        "school_name": "송산4초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200013",
         "shp_area_m2": 18316.8,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -56,16 +56,16 @@
         ]
       },
       "properties": {
-        "label": "14초",
-        "school_name": "송산14초",
+        "label": "5초",
+        "school_name": "송산5초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200014",
         "shp_area_m2": 16475.98,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -78,16 +78,16 @@
         ]
       },
       "properties": {
-        "label": "13초",
-        "school_name": "송산13초",
+        "label": "6초",
+        "school_name": "송산6초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200015",
         "shp_area_m2": 17904.75,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -100,16 +100,16 @@
         ]
       },
       "properties": {
-        "label": "10초",
-        "school_name": "송산10초",
+        "label": "7초",
+        "school_name": "송산7초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200016",
         "shp_area_m2": 15330.93,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -122,16 +122,16 @@
         ]
       },
       "properties": {
-        "label": "9초",
-        "school_name": "송산9초",
+        "label": "8초",
+        "school_name": "송산8초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200017",
         "shp_area_m2": 14928.53,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -144,16 +144,16 @@
         ]
       },
       "properties": {
-        "label": "8초",
-        "school_name": "송산8초",
+        "label": "9초",
+        "school_name": "송산9초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200018",
         "shp_area_m2": 15000.0,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -166,16 +166,16 @@
         ]
       },
       "properties": {
-        "label": "7초",
-        "school_name": "송산7초",
+        "label": "10초",
+        "school_name": "송산10초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200019",
         "shp_area_m2": 15280.48,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -188,16 +188,16 @@
         ]
       },
       "properties": {
-        "label": "6초",
-        "school_name": "송산6초",
+        "label": "13초",
+        "school_name": "송산13초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200020",
         "shp_area_m2": 12253.32,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -210,16 +210,16 @@
         ]
       },
       "properties": {
-        "label": "5초",
-        "school_name": "송산5초",
+        "label": "14초",
+        "school_name": "송산14초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200021",
         "shp_area_m2": 15297.26,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -232,16 +232,16 @@
         ]
       },
       "properties": {
-        "label": "4초",
-        "school_name": "송산4초",
+        "label": "15초",
+        "school_name": "송산15초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200022",
         "shp_area_m2": 18648.52,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -254,16 +254,16 @@
         ]
       },
       "properties": {
-        "label": "3초",
-        "school_name": "송산3초",
+        "label": "16초",
+        "school_name": "송산16초",
         "level": "초",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200023",
         "shp_area_m2": 15733.36,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -276,16 +276,16 @@
         ]
       },
       "properties": {
-        "label": "9중",
-        "school_name": "송산9중",
+        "label": "2중",
+        "school_name": "송산2중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200005",
         "shp_area_m2": 18884.25,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -298,16 +298,16 @@
         ]
       },
       "properties": {
-        "label": "8중",
-        "school_name": "송산8중",
+        "label": "3중",
+        "school_name": "송산3중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200006",
         "shp_area_m2": 19137.92,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -320,16 +320,16 @@
         ]
       },
       "properties": {
-        "label": "6중",
-        "school_name": "송산6중",
+        "label": "4중",
+        "school_name": "송산4중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200007",
         "shp_area_m2": 13947.57,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -350,8 +350,8 @@
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200008",
         "shp_area_m2": 13839.55,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -364,16 +364,16 @@
         ]
       },
       "properties": {
-        "label": "4중",
-        "school_name": "송산4중",
+        "label": "6중",
+        "school_name": "송산6중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200009",
         "shp_area_m2": 13792.0,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -386,16 +386,16 @@
         ]
       },
       "properties": {
-        "label": "3중",
-        "school_name": "송산3중",
+        "label": "8중",
+        "school_name": "송산8중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200010",
         "shp_area_m2": 13600.21,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -408,16 +408,16 @@
         ]
       },
       "properties": {
-        "label": "2중",
-        "school_name": "송산2중",
+        "label": "9중",
+        "school_name": "송산9중",
         "level": "중",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200011",
         "shp_area_m2": 19394.51,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -430,16 +430,16 @@
         ]
       },
       "properties": {
-        "label": "7고",
-        "school_name": "송산7고",
+        "label": "2고",
+        "school_name": "송산2고",
         "level": "고",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200001",
         "shp_area_m2": 19574.32,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -452,16 +452,16 @@
         ]
       },
       "properties": {
-        "label": "4고",
-        "school_name": "송산4고",
+        "label": "3고",
+        "school_name": "송산3고",
         "level": "고",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200002",
         "shp_area_m2": 15556.06,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -474,16 +474,16 @@
         ]
       },
       "properties": {
-        "label": "3고",
-        "school_name": "송산3고",
+        "label": "4고",
+        "school_name": "송산4고",
         "level": "고",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200003",
         "shp_area_m2": 15740.98,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     },
     {
@@ -496,16 +496,16 @@
         ]
       },
       "properties": {
-        "label": "2고",
-        "school_name": "송산2고",
+        "label": "7고",
+        "school_name": "송산7고",
         "level": "고",
         "status": "미설립",
         "district": "송산그린시티",
         "source_layer": "KLIP_C_UQ155",
         "source_present_sn": "41590UQ155PS202608200004",
         "shp_area_m2": 15061.79,
-        "match_basis": "HWPX 미설립 23교 + 2026-08-20 SHP 학교부지 23개 묶음의 학교급별 연속 일련번호 대응",
-        "review_note": "지도 위치 육안검증 권장"
+        "match_basis": "HWPX 내 송산그린시티 위치도 학교번호 + 도시계획시설 학교부지 위치 대조",
+        "review_note": "학교번호 재검증 완료(2026-10-02)"
       }
     }
   ]
