@@ -22,3 +22,19 @@
 .search-result span{display:block;margin-top:2px;font-size:11px;color:#667085}
 .search-empty{padding:12px;border-radius:8px;background:#f8fafc;color:#667085;font-size:13px}
 @media(max-width:800px){.map-search{order:-2;width:100%;min-width:0}.map-search input{min-width:0;flex:1;width:auto}.map-search button{flex:0 0 auto}}
+
+/* v44: 데스크톱 상단 도구모음 한 줄 유지 */
+@media (min-width:801px){
+  .toolbar{
+    flex-wrap:nowrap;
+    gap:8px;
+    padding:8px 8px;
+    white-space:nowrap;
+    font-size:13px;
+    overflow-x:auto;
+  }
+  .toolbar label,.cityset,.map-search,.toolbar>button#fit,#status{flex:0 0 auto}
+  .map-search{min-width:260px}
+  .map-search input{width:210px}
+  .toolbar>button#fit{margin-left:0}
+}
