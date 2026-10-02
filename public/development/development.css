@@ -105,3 +105,17 @@
   white-space:nowrap;
   box-shadow:0 1px 3px rgba(0,0,0,.12);
 }
+
+/* v55: 개발지구별 레이어 + 검색 집중보기 */
+.district-layer-control{position:relative;flex:0 0 auto}
+#districtLayerBtn{padding:8px 10px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;color:#344054;font:inherit;cursor:pointer;white-space:nowrap}
+.district-layer-panel{position:absolute;top:calc(100% + 7px);left:0;z-index:30;width:310px;max-height:55vh;overflow:auto;padding:10px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(16,24,40,.18);white-space:normal}
+.district-layer-actions{display:flex;gap:6px;position:sticky;top:-10px;background:#fff;padding:2px 0 8px;z-index:1}
+.district-layer-actions button{border:1px solid #d0d5dd;border-radius:6px;background:#f9fafb;padding:5px 8px;cursor:pointer}
+.district-layer-group{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px;padding:7px 0;border-top:1px solid #eaecf0}
+.district-layer-group>b{grid-column:1/-1;color:#475467}
+.district-layer-group label{display:flex;align-items:center;gap:5px;font-size:12px;white-space:normal}
+.focus-banner{display:flex;align-items:center;justify-content:center;gap:12px;padding:7px 12px;background:#eef4ff;border-bottom:1px solid #c7d7fe;color:#1849a9;font-size:13px}
+.focus-banner button{border:1px solid #84adff;border-radius:7px;background:#fff;color:#175cd3;padding:4px 8px;font:inherit;font-weight:700;cursor:pointer}
+.focus-banner[hidden],.district-layer-panel[hidden]{display:none!important}
+@media(max-width:800px){.district-layer-panel{position:fixed;left:10px;right:10px;top:110px;width:auto;max-height:65vh}.focus-banner{justify-content:space-between}}
