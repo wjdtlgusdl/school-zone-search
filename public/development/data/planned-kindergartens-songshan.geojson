@@ -1,0 +1,270 @@
+{
+  "type": "FeatureCollection",
+  "name": "송산그린시티_미설립유치원_12곳",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7011749,
+          37.264476
+        ]
+      },
+      "properties": {
+        "label": "유4",
+        "kindergarten_name": "송산4유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200024",
+        "shp_area_m2": 2728.19,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7995522,
+          37.2740147
+        ]
+      },
+      "properties": {
+        "label": "유12",
+        "kindergarten_name": "송산12유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200027",
+        "shp_area_m2": 3106.34,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7414153,
+          37.2715905
+        ]
+      },
+      "properties": {
+        "label": "유14",
+        "kindergarten_name": "송산14유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200029",
+        "shp_area_m2": 4032.0,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7339403,
+          37.2694533
+        ]
+      },
+      "properties": {
+        "label": "유15",
+        "kindergarten_name": "송산15유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200030",
+        "shp_area_m2": 4980.3,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7352336,
+          37.2647342
+        ]
+      },
+      "properties": {
+        "label": "유16",
+        "kindergarten_name": "송산16유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200031",
+        "shp_area_m2": 4050.0,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7254411,
+          37.2657694
+        ]
+      },
+      "properties": {
+        "label": "유17",
+        "kindergarten_name": "송산17유",
+        "establishment": "공립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200032",
+        "shp_area_m2": 4050.0,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.6929102,
+          37.2628847
+        ]
+      },
+      "properties": {
+        "label": "유9",
+        "kindergarten_name": "송산9유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200025",
+        "shp_area_m2": 931.84,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.6882127,
+          37.2700052
+        ]
+      },
+      "properties": {
+        "label": "유10",
+        "kindergarten_name": "송산10유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200026",
+        "shp_area_m2": 952.63,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.8058498,
+          37.2690896
+        ]
+      },
+      "properties": {
+        "label": "유13",
+        "kindergarten_name": "송산13유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200028",
+        "shp_area_m2": 884.0,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7375993,
+          37.2580525
+        ]
+      },
+      "properties": {
+        "label": "유18",
+        "kindergarten_name": "송산18유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200033",
+        "shp_area_m2": 1085.0,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7215199,
+          37.2699672
+        ]
+      },
+      "properties": {
+        "label": "유19",
+        "kindergarten_name": "송산19유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200034",
+        "shp_area_m2": 1051.78,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.7162186,
+          37.261837
+        ]
+      },
+      "properties": {
+        "label": "유20",
+        "kindergarten_name": "송산20유",
+        "establishment": "사립",
+        "status": "미설립",
+        "district": "송산그린시티",
+        "source_layer": "KLIP_C_UQ155",
+        "source_present_sn": "41590UQ155PS202608200035",
+        "shp_area_m2": 1026.24,
+        "position_basis": "도시계획시설 유치원 부지(SHP)",
+        "identity_basis": "2026 공사립유치원 현황 CSV + HWPX 위치도 + 사용자 KML 보조 대조"
+      }
+    }
+  ]
+}
