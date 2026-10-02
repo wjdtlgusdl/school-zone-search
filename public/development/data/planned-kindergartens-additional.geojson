@@ -2181,24 +2181,70 @@
     {
       "type": "Feature",
       "properties": {
+        "label": "유1",
+        "kindergarten_name": "가칭)세교2-1유",
+        "district": "세교2",
+        "establishment": "사립",
+        "status": "미설립",
+        "address": "궐동 773",
+        "city": "오산",
+        "label_lng": 127.051688,
+        "label_lat": 37.166385,
+        "geometry_basis": "사용자 제공 세교2 배치도 + 기존 세교2 개발사업 공간데이터 위치 정합",
+        "identity_basis": "2026년 미설립 유치원 현황 목록 + 사용자 제공 세교2 배치도"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.051688,
+          37.166385
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "label": "유3",
         "kindergarten_name": "가칭)세교2-3유",
         "district": "세교2",
         "establishment": "공립",
         "status": "미설립",
-        "address": "청학동 산19 (유치원 현황자료: 청학동 306)",
+        "address": "청학동 306",
         "document_area_m2": 1996.7,
         "city": "오산",
-        "label_lng": 127.051778,
-        "label_lat": 37.152739,
-        "geometry_basis": "미설립 부지(공립) KML 위치점",
-        "identity_basis": "2026-02-06 학교용지 현황 + 미설립 유치원 KML + 세교2 계획도 대조"
+        "label_lng": 127.052198,
+        "label_lat": 37.152812,
+        "geometry_basis": "사용자 제공 세교2 배치도 + 기존 세교2 개발사업 공간데이터 위치 정합",
+        "identity_basis": "2026년 미설립 유치원 현황 목록 + 사용자 제공 세교2 배치도"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          127.051778,
-          37.152739
+          127.052198,
+          37.152812
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유5",
+        "kindergarten_name": "가칭)세교2-5유",
+        "district": "세교2",
+        "establishment": "사립",
+        "status": "미설립",
+        "address": "가수동 420",
+        "city": "오산",
+        "label_lng": 127.049815,
+        "label_lat": 37.147061,
+        "geometry_basis": "사용자 제공 세교2 배치도 + 기존 세교2 개발사업 공간데이터 위치 정합",
+        "identity_basis": "2026년 미설립 유치원 현황 목록 + 사용자 제공 세교2 배치도"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.049815,
+          37.147061
         ]
       }
     }
