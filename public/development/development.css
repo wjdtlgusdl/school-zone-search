@@ -38,3 +38,33 @@
   .map-search input{width:210px}
   .toolbar>button#fit{margin-left:0}
 }
+
+/* v45: 상단 도구모음 여유 + 데이터 출처 보조줄 */
+@media (min-width:801px){
+  .toolbar{
+    gap:12px;
+    padding:10px 12px;
+    font-size:14px;
+    overflow-x:auto;
+  }
+  .map-search{min-width:300px}
+  .map-search input{width:245px}
+}
+.data-sources{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px 14px;
+  padding:7px 12px;
+  border-top:1px solid #eef1f5;
+  border-bottom:1px solid #e5e9ef;
+  background:#fafbfc;
+  color:#667085;
+  font-size:11px;
+  line-height:1.45;
+}
+.data-sources b{color:#344054;font-size:11px}
+.data-sources span{white-space:nowrap}
+@media(max-width:800px){
+  .data-sources{gap:4px 10px;padding:6px 10px}
+}
