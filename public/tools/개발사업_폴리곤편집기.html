@@ -10,7 +10,11 @@
 <body>
 <header>
   <input id="file" type="file" accept=".geojson,.json">
-  <select id="featureSelect" disabled><option>GeoJSON을 먼저 불러오세요</option></select>
+  <select id="projectSelect" disabled><option>① 개발사업 선택</option></select>
+  <select id="featureSelect" disabled><option>② 경계/블록 선택</option></select>
+  <button id="newBtn" disabled>＋ 새 경계 그리기</button>
+  <button id="finishBtn" hidden>그리기 완료</button>
+  <button id="cancelNewBtn" hidden>그리기 취소</button>
   <button id="editBtn" disabled>경계 편집</button>
   <button id="moveBtn" disabled>전체 이동</button>
   <button id="addBtn" disabled>꼭짓점 추가</button>
@@ -18,7 +22,7 @@
   <button id="undoBtn" disabled>실행취소</button>
   <button id="saveBtn" disabled>GeoJSON 저장</button>
 </header>
-<div id="status">① development.geojson을 불러오세요. ② 개발지구를 고른 뒤 경계 편집을 누르세요.</div>
+<div id="status">① development.geojson을 불러오세요. ② 개발사업 → 지구 전체 경계/블록을 차례로 선택하세요.</div>
 <div id="map"></div>
 <script src="./polygon-editor.js?v=3"></script>
 </body>
