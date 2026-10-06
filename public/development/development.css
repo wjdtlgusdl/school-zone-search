@@ -126,3 +126,9 @@
   z-index:3000 !important;
   max-height:min(65vh,560px);
 }
+
+/* v57: 개발지구/블록 폴리곤 수동 편집 */
+.edit-map-btn{flex:0 0 auto;padding:8px 10px;border:1px solid #475467;border-radius:8px;background:#fff;color:#344054;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.edit-map-btn.save{background:#047857;color:#fff;border-color:#047857}
+.edit-help{padding:7px 12px;background:#fff7ed;border-bottom:1px solid #fed7aa;color:#9a3412;font-size:12px;font-weight:700;text-align:center}
+.edit-help[hidden]{display:none!important}
