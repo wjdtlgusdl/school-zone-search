@@ -311931,15 +311931,15 @@
       "properties": {
         "featureType": "district",
         "zoneName": "원동8구역",
-        "district": "원동8구역",
+        "displayName": "원동8구역",
         "city": "오산",
-        "source": "오산시 원동 더블오 공동주택 신축공사 환경영향평가 평가준비서",
-        "source_basis": "평가준비서 제3장 구역경계 설정도 및 토지이용계획도를 기준으로 지도 좌표화",
         "location": "오산시 원동 655-12번지 일원",
-        "officialAreaSqm": 43680,
         "households": 774,
-        "geometry_accuracy": "공식 도면 좌표화(원본 SHP 아님)",
-        "note": "공동주택·근린생활시설 계획. 구역면적 43,680㎡."
+        "officialAreaSqm": 43680,
+        "source": "오산시 원동 더블오 공동주택 신축공사 평가준비서",
+        "geometryStatus": "초벌 경계 · 수동보정 필요",
+        "geometrySource": "manual-draft",
+        "note": "공식 도면을 참고한 초벌 폴리곤. 개발사업지도 경계 편집 기능으로 위치·형태를 보정할 것."
       },
       "geometry": {
         "type": "Polygon",
