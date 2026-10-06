@@ -1,5 +1,6 @@
 let map, geo, selectedIndex=-1, polygon=null, vertexMarkers=[], centerMarker=null;
 let coords=[], undoStack=[], mode="view", drawingCoords=[];
+let backgroundPolygons=[], backgroundVisible=true;
 
 const $=id=>document.getElementById(id);
 function status(t){$("status").textContent=t}
@@ -16,6 +17,18 @@ function loadKakao(){
 }
 function initMap(){map=new kakao.maps.Map($("map"),{center:new kakao.maps.LatLng(37.15,127.05),level:7});}
 function clearOverlays(){if(polygon)polygon.setMap(null);polygon=null;vertexMarkers.forEach(m=>m.setMap(null));vertexMarkers=[];if(centerMarker)centerMarker.setMap(null);centerMarker=null;}
+function clearBackground(){backgroundPolygons.forEach(p=>p.setMap(null));backgroundPolygons=[];}
+function drawBackground(){
+ clearBackground(); if(!geo||!backgroundVisible)return;
+ geo.features.forEach((f,i)=>{
+  if(i===selectedIndex||f.geometry?.type!=="Polygon")return;
+  const p=f.properties||{};
+  if(p.featureType!=="district")return;
+  const ring=normalizeRing(f.geometry.coordinates[0]); if(ring.length<3)return;
+  backgroundPolygons.push(new kakao.maps.Polygon({map,path:ring.map(ll),strokeWeight:2,strokeColor:"#4f6f8f",strokeOpacity:.55,fillColor:"#8fa9bd",fillOpacity:.10,clickable:false}));
+ });
+}
+function refreshBackground(){drawBackground();$("bgBtn").textContent=backgroundVisible?"주변 경계 숨기기":"주변 경계 보기";}
 function ll(c){return new kakao.maps.LatLng(c[1],c[0])}
 function clone(a){return JSON.parse(JSON.stringify(a))}
 function normalizeRing(r){let a=clone(r||[]);if(a.length>1&&a[0][0]===a[a.length-1][0]&&a[0][1]===a[a.length-1][1])a.pop();return a}
@@ -31,17 +44,17 @@ function populateProjects(){
  const s=$("projectSelect"), names=[...new Set(geo.features.filter(f=>f.geometry?.type==="Polygon").map(projectName))].sort((a,b)=>a.localeCompare(b,"ko"));
  s.innerHTML='<option value="">① 개발사업 선택</option>';
  names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;s.appendChild(o)});
- s.disabled=false;$("featureSelect").disabled=true;$("newBtn").disabled=false;
+ s.disabled=false;$("featureSelect").disabled=true;$("newBtn").disabled=false;$("bgBtn").disabled=false;refreshBackground();
 }
 function populateFeatures(name){
  const s=$("featureSelect");s.innerHTML='<option value="">② 경계/블록 선택</option>';
  geo.features.forEach((f,i)=>{if(f.geometry?.type==="Polygon"&&projectName(f)===name){const o=document.createElement("option");o.value=i;o.textContent=featureLabel(f,i);s.appendChild(o)}});
- s.disabled=false; clearOverlays(); selectedIndex=-1; enableEdit(false);
+ s.disabled=false; clearOverlays(); selectedIndex=-1; enableEdit(false);refreshBackground();
  status(`${name}: 수정할 '지구 전체 경계' 또는 블록을 선택하세요.`);
 }
 function selectFeature(i){
  clearOverlays();mode="view";setActive();selectedIndex=Number(i);const f=geo.features[selectedIndex];
- coords=normalizeRing(f.geometry.coordinates[0]);undoStack=[];drawPolygon(true);enableEdit(true);
+ coords=normalizeRing(f.geometry.coordinates[0]);undoStack=[];refreshBackground();drawPolygon(true);enableEdit(true);
  status(`${projectName(f)} / ${featureLabel(f,selectedIndex)} 선택됨.`);
 }
 function drawPolygon(fit=false){
@@ -74,7 +87,7 @@ function setMode(m){mode=m;setActive();drawPolygon();const msg={edit:"꼭짓점�
 function setActive(){["editBtn","moveBtn","addBtn","delBtn","newBtn"].forEach(id=>$(id).classList.remove("active"));const ids={edit:"editBtn",move:"moveBtn",add:"addBtn",delete:"delBtn",new:"newBtn"};if(ids[mode])$(ids[mode]).classList.add("active")}
 function enableEdit(v){["editBtn","moveBtn","addBtn","delBtn","saveBtn"].forEach(id=>$(id).disabled=!v)}
 function startNew(){
- clearOverlays();selectedIndex=-1;coords=[];drawingCoords=[];mode="new";setActive();
+ clearOverlays();selectedIndex=-1;coords=[];drawingCoords=[];mode="new";setActive();refreshBackground();
  $("finishBtn").hidden=false;$("cancelNewBtn").hidden=false;enableEdit(false);$("saveBtn").disabled=true;
  status("새 지구경계 그리기: 지도에서 경계 꼭짓점을 순서대로 클릭하세요. 3개 이상 찍은 뒤 '그리기 완료'.");
 }
@@ -101,6 +114,7 @@ $("projectSelect").addEventListener("change",e=>{if(e.target.value)populateFeatu
 $("featureSelect").addEventListener("change",e=>{if(e.target.value!=="")selectFeature(e.target.value)});
 $("editBtn").onclick=()=>setMode("edit");$("moveBtn").onclick=()=>setMode("move");$("addBtn").onclick=()=>setMode("add");$("delBtn").onclick=()=>setMode("delete");
 $("newBtn").onclick=startNew;$("finishBtn").onclick=finishNew;$("cancelNewBtn").onclick=cancelNew;
+$("bgBtn").onclick=()=>{backgroundVisible=!backgroundVisible;refreshBackground();status(backgroundVisible?"주변 개발지구 경계를 표시합니다. 회색 경계는 참고용이며 편집되지 않습니다.":"주변 개발지구 경계를 숨겼습니다.");};
 $("undoBtn").onclick=()=>{if(!undoStack.length)return;coords=undoStack.pop();drawPolygon();$("undoBtn").disabled=!undoStack.length;status("한 단계 되돌렸습니다.");};
 $("saveBtn").onclick=()=>{if(selectedIndex>=0)geo.features[selectedIndex].geometry.coordinates[0]=closed(coords);const blob=new Blob([JSON.stringify(geo,null,2)],{type:"application/geo+json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="development.geojson";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);status("수정된 development.geojson을 저장했습니다.");};
 
