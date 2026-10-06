@@ -1,1 +1,90 @@
-{"type":"FeatureCollection","name":"planned-kindergartens-bibong","features":[{"type":"Feature","properties":{"label":"유1","kindergarten_name":"가칭)비봉1유","district":"비봉 공공주택지구","establishment":"공립","status":"공사중","opening":"2029. 3.","label_lng":126.86731933295,"label_lat":37.2471364182,"source_note":"비봉 지구계획도상 청연초 북측(지도상 우측 상단) 유1 교육시설용지 경계로 위치 수정.","geometry_basis":"비봉 가구 및 획지계획도 유1 교육시설용지와 청연초 도시계획시설 폴리곤 정합"},"geometry":{"type":"Polygon","coordinates":[[[126.8671814322,37.2467002458],[126.8668020108,37.2473152766],[126.8674572337,37.2475725906],[126.8678366551,37.2469575598],[126.8671814322,37.2467002458]]]}},{"type":"Feature","properties":{"label":"유2","kindergarten_name":"가칭)비봉2유","district":"비봉 공공주택지구","establishment":"사립","status":"미설립","address":"경기도 화성시 비봉면 삼화리 1912","label_lng":126.873652109925,"label_lat":37.24117806865,"geometry_basis":"비봉 가구 및 획지계획도 유2 교육시설용지와 청연중·기존 비봉지구 블록 폴리곤 정합","source_note":"사립 미설립 유치원 자료와 비봉 지구계획도 유2 교육시설용지를 대조해 사각형 획지로 수정."},"geometry":{"type":"Polygon","coordinates":[[[126.8736426371,37.2410148192],[126.8734477031,37.241191625],[126.8736615828,37.2413413181],[126.8738565167,37.2411645123],[126.8736426371,37.2410148192]]]}}]}
+{
+  "type": "FeatureCollection",
+  "name": "planned-kindergartens-bibong",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유1",
+        "kindergarten_name": "가칭)비봉1유",
+        "district": "비봉 공공주택지구",
+        "establishment": "공립",
+        "status": "공사중",
+        "opening": "2029. 3.",
+        "label_lng": 126.8672975,
+        "label_lat": 37.247265,
+        "source_note": "사용자가 지도에서 지정한 좌상단·우상단·우하단·좌하단 4개 좌표를 연결한 부지 경계.",
+        "geometry_basis": "사용자 지정 4개 꼭짓점 좌표"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.86693,
+              37.24737
+            ],
+            [
+              126.86743,
+              37.24756
+            ],
+            [
+              126.86767,
+              37.24716
+            ],
+            [
+              126.86716,
+              37.24697
+            ],
+            [
+              126.86693,
+              37.24737
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "label": "유2",
+        "kindergarten_name": "가칭)비봉2유",
+        "district": "비봉 공공주택지구",
+        "establishment": "사립",
+        "status": "미설립",
+        "address": "경기도 화성시 비봉면 삼화리 1912",
+        "label_lng": 126.8736375,
+        "label_lat": 37.24116,
+        "geometry_basis": "사용자 지정 4개 꼭짓점 좌표",
+        "source_note": "사용자가 지도에서 지정한 좌상단·우상단·우하단·좌하단 4개 좌표를 연결한 부지 경계."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.87341,
+              37.24122
+            ],
+            [
+              126.87373,
+              37.24134
+            ],
+            [
+              126.87386,
+              37.2411
+            ],
+            [
+              126.87355,
+              37.24098
+            ],
+            [
+              126.87341,
+              37.24122
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
