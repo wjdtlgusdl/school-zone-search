@@ -49,7 +49,7 @@ function applyFilters(){
   const enabled=new Set([...document.querySelectorAll('[data-filter]:checked')].map(x=>x.dataset.filter));
   const cityOk=x=>state.city==='전체'||x.city===state.city;
   const targetOnly=(kind,x)=>!state.focusTarget||state.focusTarget.kind===kind&&state.focusTarget.item===x;
-  for(const x of state.schoolOverlays){const d=districtForItem('school',x),dn=d?.properties?.zoneName||d?.properties?.displayName||'';const on=enabled.has(x.type)&&cityOk(x)&&districtAllowed(dn)&&targetOnly('school',x);x.overlay.setMap(on?state.map:null)}
+  for(const x of state.schoolOverlays){const d=districtForItem('school',x),dn=d?.properties?.zoneName||d?.properties?.displayName||'';const on=enabled.has(x.type)&&cityOk(x)&&(!state.focusDistrict||districtAllowed(dn))&&targetOnly('school',x);x.overlay.setMap(on?state.map:null)}
   const plannedOn=document.getElementById('plannedSchools')?.checked;
   for(const x of state.plannedSchoolOverlays){const d=districtForItem('planned',x),dn=d?.properties?.zoneName||d?.properties?.displayName||'';const on=plannedOn&&cityOk(x)&&districtAllowed(dn)&&targetOnly('planned',x);x.overlay.setMap(on?state.map:null);for(const poly of x.polys||[])poly.setMap(on?state.map:null)}
   const scheduledOn=document.getElementById('scheduledSchools')?.checked;
