@@ -132,3 +132,7 @@
 
 /* 직선거리 측정 UI */
 main{position:relative}.toolbar #measureToggle.active{background:#1d4ed8;color:white;border-color:#1d4ed8}.measure-tools{position:absolute;z-index:45;left:12px;top:12px;width:min(340px,calc(100% - 330px));min-width:245px;max-height:calc(100% - 24px);overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 5px 20px #0002;padding:14px;font-size:13px}.measure-tools[hidden]{display:none}.measure-tools p{color:#64748b;line-height:1.5;margin:8px 0}.measure-tools #measureResults>strong{display:block;font-size:17px;color:#be123c;margin:10px 0}.measure-tools #measureResults>div{padding:6px 0;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;gap:10px}.measure-tools #measureResults>div b{white-space:nowrap}.measure-actions{display:flex;gap:7px;margin-top:12px}.measure-actions button{border:1px solid #cbd5e1;border-radius:7px;background:#fff;padding:8px;cursor:pointer}.measure-actions button:disabled{opacity:.4;cursor:default}.measure-dot{display:flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:#be123c;border:2px solid white;color:white;font-weight:800;box-shadow:0 1px 5px #0006;pointer-events:none}@media(max-width:800px){.measure-tools{width:min(330px,calc(100% - 24px));min-width:0;top:8px;left:8px;max-height:50%}}
+
+/* 폐교 위치 마커: 기존 학교와 구분 */
+.school-dot.closed-school-dot{background:#64748b;border:2px solid #fff;box-shadow:0 0 0 2px #475569,0 1px 4px #3338}
+.dot.closed-school-legend{background:#64748b}
