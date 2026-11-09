@@ -1,0 +1,77 @@
+{
+  "description": "사용자 제공 폐교·폐분교 정보. 좌표는 미확인으로 카카오 주소검색 성공 시에만 표시",
+  "schools": [
+    {
+      "name": "비봉초 유포분교장",
+      "address": "화성시 비봉면 유포리 307",
+      "opened": "1960-06-26",
+      "closed": "1992-02-28",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "정문초",
+      "address": "화성시 정남면 계향리 411",
+      "opened": "1948-10-21",
+      "closed": "1994-02-28",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "마산초 어도분교장",
+      "address": "화성시 송산면 고포리 826-1",
+      "opened": "1953-05-11",
+      "closed": "1994-02-28",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "창문초",
+      "address": "화성시 남양읍 수화리 236",
+      "opened": "1938-06-07",
+      "closed": "2000-08-31",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "(구)상신초",
+      "address": "화성시 향남읍 상신리 874",
+      "opened": "1952-09-04",
+      "closed": "2017-02-28",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "서신초 제부분교장",
+      "address": "화성시 서신면 제부리 23-1",
+      "opened": "1946-09-01",
+      "closed": "2020-03-01",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "장명초 장일분교장",
+      "address": "화성시 장안면 온수골2길 18",
+      "opened": "1980-10-14",
+      "closed": "2025-03-01",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "화성장안초 석포분교장",
+      "address": "화성시 장안면 버들로 1201-9",
+      "opened": "1963-03-10",
+      "closed": "2026-03-01",
+      "city": "화성",
+      "lat": null,
+      "lng": null
+    }
+  ]
+}
