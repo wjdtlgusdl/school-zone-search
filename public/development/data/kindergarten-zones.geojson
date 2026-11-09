@@ -6,7 +6,17 @@
       "properties": {
         "name": "화성6권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 89,
+          "인가정원": 1914,
+          "총계 (편성)": 85,
+          "편성정원": 1652,
+          "현원 (총계)": 1542,
+          "유치원 수": 16,
+          "충족률 (편성대비)": 93.3,
+          "충족률 (인가대비)": 80.6
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -1077,7 +1087,17 @@
       "properties": {
         "name": "화성7권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 11,
+          "인가정원": 220,
+          "총계 (편성)": 9,
+          "편성정원": 170,
+          "현원 (총계)": 130,
+          "유치원 수": 5,
+          "충족률 (편성대비)": 76.5,
+          "충족률 (인가대비)": 59.1
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -2048,7 +2068,17 @@
       "properties": {
         "name": "화성8권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 144,
+          "인가정원": 3199,
+          "총계 (편성)": 92,
+          "편성정원": 1818,
+          "현원 (총계)": 1346,
+          "유치원 수": 21,
+          "충족률 (편성대비)": 74.0,
+          "충족률 (인가대비)": 42.1
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -3371,7 +3401,17 @@
       "properties": {
         "name": "화성9권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 35,
+          "인가정원": 863,
+          "총계 (편성)": 29,
+          "편성정원": 612,
+          "현원 (총계)": 485,
+          "유치원 수": 7,
+          "충족률 (편성대비)": 79.2,
+          "충족률 (인가대비)": 56.2
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -4174,7 +4214,17 @@
       "properties": {
         "name": "화성10권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 5,
+          "인가정원": 102,
+          "총계 (편성)": 4,
+          "편성정원": 72,
+          "현원 (총계)": 23,
+          "유치원 수": 5,
+          "충족률 (편성대비)": 31.9,
+          "충족률 (인가대비)": 22.5
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -4621,7 +4671,17 @@
       "properties": {
         "name": "화성11권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 8,
+          "인가정원": 148,
+          "총계 (편성)": 8,
+          "편성정원": 128,
+          "현원 (총계)": 80,
+          "유치원 수": 6,
+          "충족률 (편성대비)": 62.5,
+          "충족률 (인가대비)": 54.1
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -4920,7 +4980,17 @@
       "properties": {
         "name": "화성12권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 48,
+          "인가정원": 954,
+          "총계 (편성)": 45,
+          "편성정원": 868,
+          "현원 (총계)": 734,
+          "유치원 수": 5,
+          "충족률 (편성대비)": 84.6,
+          "충족률 (인가대비)": 76.9
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -5331,7 +5401,17 @@
       "properties": {
         "name": "화성1권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 467,
+          "인가정원": 9529,
+          "총계 (편성)": 389,
+          "편성정원": 7512,
+          "현원 (총계)": 6333,
+          "유치원 수": 58,
+          "충족률 (편성대비)": 84.3,
+          "충족률 (인가대비)": 66.5
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -5646,7 +5726,17 @@
       "properties": {
         "name": "화성2권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 146,
+          "인가정원": 3055,
+          "총계 (편성)": 104,
+          "편성정원": 1924,
+          "현원 (총계)": 1414,
+          "유치원 수": 19,
+          "충족률 (편성대비)": 73.5,
+          "충족률 (인가대비)": 46.3
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -6449,7 +6539,17 @@
       "properties": {
         "name": "화성3권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 33,
+          "인가정원": 774,
+          "총계 (편성)": 30,
+          "편성정원": 604,
+          "현원 (총계)": 435,
+          "유치원 수": 6,
+          "충족률 (편성대비)": 72.0,
+          "충족률 (인가대비)": 56.2
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -6840,7 +6940,17 @@
       "properties": {
         "name": "화성5권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 63,
+          "인가정원": 1480,
+          "총계 (편성)": 46,
+          "편성정원": 902,
+          "현원 (총계)": 669,
+          "유치원 수": 11,
+          "충족률 (편성대비)": 74.2,
+          "충족률 (인가대비)": 45.2
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -7947,7 +8057,17 @@
       "properties": {
         "name": "오산1권역",
         "city": "오산",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 110,
+          "인가정원": 2391,
+          "총계 (편성)": 86,
+          "편성정원": 1718,
+          "현원 (총계)": 1222,
+          "유치원 수": 17,
+          "충족률 (편성대비)": 71.1,
+          "충족률 (인가대비)": 51.1
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -8162,7 +8282,17 @@
       "properties": {
         "name": "오산2권역",
         "city": "오산",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 54,
+          "인가정원": 1248,
+          "총계 (편성)": 49,
+          "편성정원": 948,
+          "현원 (총계)": 789,
+          "유치원 수": 11,
+          "충족률 (편성대비)": 83.2,
+          "충족률 (인가대비)": 63.2
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -8257,7 +8387,17 @@
       "properties": {
         "name": "오산3권역",
         "city": "오산",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 118,
+          "인가정원": 2623,
+          "총계 (편성)": 86,
+          "편성정원": 1748,
+          "현원 (총계)": 1362,
+          "유치원 수": 17,
+          "충족률 (편성대비)": 77.9,
+          "충족률 (인가대비)": 51.9
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -8496,7 +8636,17 @@
       "properties": {
         "name": "오산4권역",
         "city": "오산",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 68,
+          "인가정원": 1647,
+          "총계 (편성)": 31,
+          "편성정원": 634,
+          "현원 (총계)": 517,
+          "유치원 수": 5,
+          "충족률 (편성대비)": 81.5,
+          "충족률 (인가대비)": 31.4
+        }
       },
       "geometry": {
         "type": "Polygon",
@@ -8703,7 +8853,17 @@
       "properties": {
         "name": "화성4권역",
         "city": "화성",
-        "featureType": "kindergartenZone"
+        "featureType": "kindergartenZone",
+        "kindergarten_stats": {
+          "총계 (인가)": 180,
+          "인가정원": 4063,
+          "총계 (편성)": 129,
+          "편성정원": 2614,
+          "현원 (총계)": 1950,
+          "유치원 수": 22,
+          "충족률 (편성대비)": 74.6,
+          "충족률 (인가대비)": 48.0
+        }
       },
       "geometry": {
         "type": "Polygon",
