@@ -126,3 +126,6 @@
   z-index:3000 !important;
   max-height:min(65vh,560px);
 }
+
+/* Desktop and mobile: allow dismissing the detail panel without altering map layers. */
+@media(min-width:801px){main.panel-collapsed{grid-template-columns:minmax(0,1fr) 0px}main.panel-collapsed #panel{display:none}#panel{position:relative}#panel h2{padding-right:44px}.panel-close{display:block}}
