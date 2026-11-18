@@ -1,0 +1,6679 @@
+{
+  "basis": "2026학년말",
+  "scope": "일반학급",
+  "source": "초등 학급 본편성(1).xlsx",
+  "schools": [
+    {
+      "name": "석우초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 654,
+      "totalClasses": 28,
+      "average": 23.4,
+      "regularClassrooms": 35,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 2,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 3,
+          "students": 119,
+          "classes": 5,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 126,
+          "classes": 5,
+          "perClass": 25.2
+        },
+        {
+          "grade": 5,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 6,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        }
+      ]
+    },
+    {
+      "name": "예당초등학교",
+      "city": "화성",
+      "location": "석우동",
+      "branch": false,
+      "totalStudents": 512,
+      "totalClasses": 23,
+      "average": 22.3,
+      "regularClassrooms": 24,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 65,
+          "classes": 3,
+          "perClass": 21.7
+        },
+        {
+          "grade": 2,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 87,
+          "classes": 4,
+          "perClass": 21.8
+        },
+        {
+          "grade": 4,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 5,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        },
+        {
+          "grade": 6,
+          "students": 111,
+          "classes": 5,
+          "perClass": 22.2
+        }
+      ]
+    },
+    {
+      "name": "예원초등학교",
+      "city": "화성",
+      "location": "석우동",
+      "branch": false,
+      "totalStudents": 286,
+      "totalClasses": 13,
+      "average": 22.0,
+      "regularClassrooms": 15,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 38,
+          "classes": 2,
+          "perClass": 19.0
+        },
+        {
+          "grade": 2,
+          "students": 40,
+          "classes": 2,
+          "perClass": 20.0
+        },
+        {
+          "grade": 3,
+          "students": 47,
+          "classes": 2,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 49,
+          "classes": 2,
+          "perClass": 24.5
+        },
+        {
+          "grade": 5,
+          "students": 49,
+          "classes": 2,
+          "perClass": 24.5
+        },
+        {
+          "grade": 6,
+          "students": 63,
+          "classes": 3,
+          "perClass": 21.0
+        }
+      ]
+    },
+    {
+      "name": "학동초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 809,
+      "totalClasses": 34,
+      "average": 23.8,
+      "regularClassrooms": 46,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 100,
+          "classes": 4,
+          "perClass": 25.0
+        },
+        {
+          "grade": 2,
+          "students": 145,
+          "classes": 6,
+          "perClass": 24.2
+        },
+        {
+          "grade": 3,
+          "students": 128,
+          "classes": 6,
+          "perClass": 21.3
+        },
+        {
+          "grade": 4,
+          "students": 145,
+          "classes": 6,
+          "perClass": 24.2
+        },
+        {
+          "grade": 5,
+          "students": 138,
+          "classes": 6,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 153,
+          "classes": 6,
+          "perClass": 25.5
+        }
+      ]
+    },
+    {
+      "name": "화성금곡초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 723,
+      "totalClasses": 31,
+      "average": 23.3,
+      "regularClassrooms": 33,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 2,
+          "students": 77,
+          "classes": 3,
+          "perClass": 25.7
+        },
+        {
+          "grade": 3,
+          "students": 115,
+          "classes": 5,
+          "perClass": 23.0
+        },
+        {
+          "grade": 4,
+          "students": 134,
+          "classes": 6,
+          "perClass": 22.3
+        },
+        {
+          "grade": 5,
+          "students": 142,
+          "classes": 6,
+          "perClass": 23.7
+        },
+        {
+          "grade": 6,
+          "students": 158,
+          "classes": 7,
+          "perClass": 22.6
+        }
+      ]
+    },
+    {
+      "name": "숲속초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 501,
+      "totalClasses": 23,
+      "average": 21.8,
+      "regularClassrooms": 28,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        },
+        {
+          "grade": 2,
+          "students": 68,
+          "classes": 3,
+          "perClass": 22.7
+        },
+        {
+          "grade": 3,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 92,
+          "classes": 4,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 102,
+          "classes": 5,
+          "perClass": 20.4
+        },
+        {
+          "grade": 6,
+          "students": 88,
+          "classes": 4,
+          "perClass": 22.0
+        }
+      ]
+    },
+    {
+      "name": "반석초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 749,
+      "totalClasses": 32,
+      "average": 23.4,
+      "regularClassrooms": 35,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 2,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        },
+        {
+          "grade": 3,
+          "students": 119,
+          "classes": 5,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 146,
+          "classes": 6,
+          "perClass": 24.3
+        },
+        {
+          "grade": 6,
+          "students": 167,
+          "classes": 7,
+          "perClass": 23.9
+        }
+      ]
+    },
+    {
+      "name": "반송초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 636,
+      "totalClasses": 29,
+      "average": 21.9,
+      "regularClassrooms": 41,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 48,
+          "classes": 2,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 80,
+          "classes": 4,
+          "perClass": 20.0
+        },
+        {
+          "grade": 3,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        },
+        {
+          "grade": 5,
+          "students": 164,
+          "classes": 7,
+          "perClass": 23.4
+        },
+        {
+          "grade": 6,
+          "students": 134,
+          "classes": 6,
+          "perClass": 22.3
+        }
+      ]
+    },
+    {
+      "name": "솔빛초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 1072,
+      "totalClasses": 44,
+      "average": 24.4,
+      "regularClassrooms": 46,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 127,
+          "classes": 5,
+          "perClass": 25.4
+        },
+        {
+          "grade": 2,
+          "students": 121,
+          "classes": 5,
+          "perClass": 24.2
+        },
+        {
+          "grade": 3,
+          "students": 175,
+          "classes": 7,
+          "perClass": 25.0
+        },
+        {
+          "grade": 4,
+          "students": 184,
+          "classes": 8,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 215,
+          "classes": 9,
+          "perClass": 23.9
+        },
+        {
+          "grade": 6,
+          "students": 250,
+          "classes": 10,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "능동초등학교",
+      "city": "화성",
+      "location": "동탄3동",
+      "branch": false,
+      "totalStudents": 388,
+      "totalClasses": 18,
+      "average": 21.6,
+      "regularClassrooms": 22,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 59,
+          "classes": 3,
+          "perClass": 19.7
+        },
+        {
+          "grade": 2,
+          "students": 46,
+          "classes": 2,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 4,
+          "students": 68,
+          "classes": 3,
+          "perClass": 22.7
+        },
+        {
+          "grade": 5,
+          "students": 58,
+          "classes": 3,
+          "perClass": 19.3
+        },
+        {
+          "grade": 6,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        }
+      ]
+    },
+    {
+      "name": "푸른초등학교",
+      "city": "화성",
+      "location": "능동",
+      "branch": false,
+      "totalStudents": 992,
+      "totalClasses": 41,
+      "average": 24.2,
+      "regularClassrooms": 43,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        },
+        {
+          "grade": 2,
+          "students": 135,
+          "classes": 6,
+          "perClass": 22.5
+        },
+        {
+          "grade": 3,
+          "students": 143,
+          "classes": 6,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 193,
+          "classes": 8,
+          "perClass": 24.1
+        },
+        {
+          "grade": 5,
+          "students": 181,
+          "classes": 7,
+          "perClass": 25.9
+        },
+        {
+          "grade": 6,
+          "students": 226,
+          "classes": 9,
+          "perClass": 25.1
+        }
+      ]
+    },
+    {
+      "name": "한마음초등학교",
+      "city": "화성",
+      "location": "능동",
+      "branch": false,
+      "totalStudents": 660,
+      "totalClasses": 29,
+      "average": 22.8,
+      "regularClassrooms": 30,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 85,
+          "classes": 4,
+          "perClass": 21.2
+        },
+        {
+          "grade": 2,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 3,
+          "students": 107,
+          "classes": 5,
+          "perClass": 21.4
+        },
+        {
+          "grade": 4,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        },
+        {
+          "grade": 5,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 6,
+          "students": 129,
+          "classes": 5,
+          "perClass": 25.8
+        }
+      ]
+    },
+    {
+      "name": "동탄중앙초등학교",
+      "city": "화성",
+      "location": "청계동",
+      "branch": false,
+      "totalStudents": 1253,
+      "totalClasses": 53,
+      "average": 23.6,
+      "regularClassrooms": 62,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 156,
+          "classes": 7,
+          "perClass": 22.3
+        },
+        {
+          "grade": 2,
+          "students": 186,
+          "classes": 8,
+          "perClass": 23.2
+        },
+        {
+          "grade": 3,
+          "students": 188,
+          "classes": 8,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 234,
+          "classes": 10,
+          "perClass": 23.4
+        },
+        {
+          "grade": 5,
+          "students": 235,
+          "classes": 10,
+          "perClass": 23.5
+        },
+        {
+          "grade": 6,
+          "students": 254,
+          "classes": 10,
+          "perClass": 25.4
+        }
+      ]
+    },
+    {
+      "name": "무봉초등학교",
+      "city": "화성",
+      "location": "청계동",
+      "branch": false,
+      "totalStudents": 571,
+      "totalClasses": 25,
+      "average": 22.8,
+      "regularClassrooms": 33,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 77,
+          "classes": 3,
+          "perClass": 25.7
+        },
+        {
+          "grade": 2,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 3,
+          "students": 94,
+          "classes": 4,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 103,
+          "classes": 4,
+          "perClass": 25.8
+        },
+        {
+          "grade": 5,
+          "students": 106,
+          "classes": 5,
+          "perClass": 21.2
+        },
+        {
+          "grade": 6,
+          "students": 107,
+          "classes": 5,
+          "perClass": 21.4
+        }
+      ]
+    },
+    {
+      "name": "아인초등학교",
+      "city": "화성",
+      "location": "청계동",
+      "branch": false,
+      "totalStudents": 944,
+      "totalClasses": 41,
+      "average": 23.0,
+      "regularClassrooms": 42,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 122,
+          "classes": 5,
+          "perClass": 24.4
+        },
+        {
+          "grade": 2,
+          "students": 144,
+          "classes": 6,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 135,
+          "classes": 6,
+          "perClass": 22.5
+        },
+        {
+          "grade": 4,
+          "students": 180,
+          "classes": 8,
+          "perClass": 22.5
+        },
+        {
+          "grade": 5,
+          "students": 179,
+          "classes": 8,
+          "perClass": 22.4
+        },
+        {
+          "grade": 6,
+          "students": 184,
+          "classes": 8,
+          "perClass": 23.0
+        }
+      ]
+    },
+    {
+      "name": "예솔초등학교",
+      "city": "화성",
+      "location": "동탄4동",
+      "branch": false,
+      "totalStudents": 618,
+      "totalClasses": 27,
+      "average": 22.9,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 77,
+          "classes": 4,
+          "perClass": 19.2
+        },
+        {
+          "grade": 2,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 3,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 4,
+          "students": 116,
+          "classes": 5,
+          "perClass": 23.2
+        },
+        {
+          "grade": 5,
+          "students": 143,
+          "classes": 6,
+          "perClass": 23.8
+        },
+        {
+          "grade": 6,
+          "students": 122,
+          "classes": 5,
+          "perClass": 24.4
+        }
+      ]
+    },
+    {
+      "name": "청목초등학교",
+      "city": "화성",
+      "location": "청계동",
+      "branch": false,
+      "totalStudents": 974,
+      "totalClasses": 41,
+      "average": 23.8,
+      "regularClassrooms": 44,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 124,
+          "classes": 5,
+          "perClass": 24.8
+        },
+        {
+          "grade": 2,
+          "students": 139,
+          "classes": 6,
+          "perClass": 23.2
+        },
+        {
+          "grade": 3,
+          "students": 142,
+          "classes": 6,
+          "perClass": 23.7
+        },
+        {
+          "grade": 4,
+          "students": 190,
+          "classes": 8,
+          "perClass": 23.8
+        },
+        {
+          "grade": 5,
+          "students": 181,
+          "classes": 8,
+          "perClass": 22.6
+        },
+        {
+          "grade": 6,
+          "students": 198,
+          "classes": 8,
+          "perClass": 24.8
+        }
+      ]
+    },
+    {
+      "name": "화성청계초등학교",
+      "city": "화성",
+      "location": "청계동",
+      "branch": false,
+      "totalStudents": 1116,
+      "totalClasses": 48,
+      "average": 23.2,
+      "regularClassrooms": 58,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 157,
+          "classes": 7,
+          "perClass": 22.4
+        },
+        {
+          "grade": 2,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        },
+        {
+          "grade": 3,
+          "students": 167,
+          "classes": 7,
+          "perClass": 23.9
+        },
+        {
+          "grade": 4,
+          "students": 210,
+          "classes": 9,
+          "perClass": 23.3
+        },
+        {
+          "grade": 5,
+          "students": 237,
+          "classes": 10,
+          "perClass": 23.7
+        },
+        {
+          "grade": 6,
+          "students": 186,
+          "classes": 8,
+          "perClass": 23.2
+        }
+      ]
+    },
+    {
+      "name": "늘봄초등학교",
+      "city": "화성",
+      "location": "동탄5동",
+      "branch": false,
+      "totalStudents": 499,
+      "totalClasses": 23,
+      "average": 21.7,
+      "regularClassrooms": 25,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 79,
+          "classes": 4,
+          "perClass": 19.8
+        },
+        {
+          "grade": 2,
+          "students": 101,
+          "classes": 4,
+          "perClass": 25.2
+        },
+        {
+          "grade": 3,
+          "students": 92,
+          "classes": 4,
+          "perClass": 23.0
+        },
+        {
+          "grade": 4,
+          "students": 81,
+          "classes": 4,
+          "perClass": 20.2
+        },
+        {
+          "grade": 5,
+          "students": 77,
+          "classes": 4,
+          "perClass": 19.2
+        },
+        {
+          "grade": 6,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        }
+      ]
+    },
+    {
+      "name": "다원초등학교",
+      "city": "화성",
+      "location": "영천동",
+      "branch": false,
+      "totalStudents": 662,
+      "totalClasses": 27,
+      "average": 24.5,
+      "regularClassrooms": 38,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 2,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 3,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 4,
+          "students": 127,
+          "classes": 5,
+          "perClass": 25.4
+        },
+        {
+          "grade": 5,
+          "students": 151,
+          "classes": 6,
+          "perClass": 25.2
+        },
+        {
+          "grade": 6,
+          "students": 142,
+          "classes": 6,
+          "perClass": 23.7
+        }
+      ]
+    },
+    {
+      "name": "치동초등학교",
+      "city": "화성",
+      "location": "영천동",
+      "branch": false,
+      "totalStudents": 697,
+      "totalClasses": 30,
+      "average": 23.2,
+      "regularClassrooms": 33,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 2,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 4,
+          "students": 119,
+          "classes": 5,
+          "perClass": 23.8
+        },
+        {
+          "grade": 5,
+          "students": 141,
+          "classes": 6,
+          "perClass": 23.5
+        },
+        {
+          "grade": 6,
+          "students": 146,
+          "classes": 6,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "영천초등학교",
+      "city": "화성",
+      "location": "영천동",
+      "branch": false,
+      "totalStudents": 618,
+      "totalClasses": 27,
+      "average": 22.9,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 88,
+          "classes": 4,
+          "perClass": 22.0
+        },
+        {
+          "grade": 2,
+          "students": 99,
+          "classes": 4,
+          "perClass": 24.8
+        },
+        {
+          "grade": 3,
+          "students": 95,
+          "classes": 4,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 112,
+          "classes": 5,
+          "perClass": 22.4
+        },
+        {
+          "grade": 5,
+          "students": 118,
+          "classes": 5,
+          "perClass": 23.6
+        },
+        {
+          "grade": 6,
+          "students": 106,
+          "classes": 5,
+          "perClass": 21.2
+        }
+      ]
+    },
+    {
+      "name": "한백초등학교",
+      "city": "화성",
+      "location": "영천동",
+      "branch": false,
+      "totalStudents": 976,
+      "totalClasses": 41,
+      "average": 23.8,
+      "regularClassrooms": 45,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 112,
+          "classes": 5,
+          "perClass": 22.4
+        },
+        {
+          "grade": 2,
+          "students": 144,
+          "classes": 6,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 145,
+          "classes": 6,
+          "perClass": 24.2
+        },
+        {
+          "grade": 4,
+          "students": 173,
+          "classes": 7,
+          "perClass": 24.7
+        },
+        {
+          "grade": 5,
+          "students": 216,
+          "classes": 9,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 186,
+          "classes": 8,
+          "perClass": 23.2
+        }
+      ]
+    },
+    {
+      "name": "동탄초등학교",
+      "city": "화성",
+      "location": "동탄6동",
+      "branch": false,
+      "totalStudents": 1012,
+      "totalClasses": 43,
+      "average": 23.5,
+      "regularClassrooms": 46,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 139,
+          "classes": 6,
+          "perClass": 23.2
+        },
+        {
+          "grade": 2,
+          "students": 153,
+          "classes": 7,
+          "perClass": 21.9
+        },
+        {
+          "grade": 3,
+          "students": 166,
+          "classes": 7,
+          "perClass": 23.7
+        },
+        {
+          "grade": 4,
+          "students": 172,
+          "classes": 7,
+          "perClass": 24.6
+        },
+        {
+          "grade": 5,
+          "students": 192,
+          "classes": 8,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 190,
+          "classes": 8,
+          "perClass": 23.8
+        }
+      ]
+    },
+    {
+      "name": "여울초등학교",
+      "city": "화성",
+      "location": "오산동",
+      "branch": false,
+      "totalStudents": 934,
+      "totalClasses": 42,
+      "average": 22.2,
+      "regularClassrooms": 44,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 124,
+          "classes": 6,
+          "perClass": 20.7
+        },
+        {
+          "grade": 2,
+          "students": 144,
+          "classes": 6,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 151,
+          "classes": 7,
+          "perClass": 21.6
+        },
+        {
+          "grade": 4,
+          "students": 179,
+          "classes": 8,
+          "perClass": 22.4
+        },
+        {
+          "grade": 5,
+          "students": 184,
+          "classes": 8,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 152,
+          "classes": 7,
+          "perClass": 21.7
+        }
+      ]
+    },
+    {
+      "name": "방교초등학교",
+      "city": "화성",
+      "location": "동탄7동",
+      "branch": false,
+      "totalStudents": 1022,
+      "totalClasses": 43,
+      "average": 23.8,
+      "regularClassrooms": 43,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 115,
+          "classes": 5,
+          "perClass": 23.0
+        },
+        {
+          "grade": 2,
+          "students": 125,
+          "classes": 5,
+          "perClass": 25.0
+        },
+        {
+          "grade": 3,
+          "students": 172,
+          "classes": 7,
+          "perClass": 24.6
+        },
+        {
+          "grade": 4,
+          "students": 205,
+          "classes": 9,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 206,
+          "classes": 9,
+          "perClass": 22.9
+        },
+        {
+          "grade": 6,
+          "students": 199,
+          "classes": 8,
+          "perClass": 24.9
+        }
+      ]
+    },
+    {
+      "name": "세정초등학교",
+      "city": "화성",
+      "location": "산척동",
+      "branch": false,
+      "totalStudents": 1028,
+      "totalClasses": 44,
+      "average": 23.4,
+      "regularClassrooms": 48,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 156,
+          "classes": 7,
+          "perClass": 22.3
+        },
+        {
+          "grade": 2,
+          "students": 166,
+          "classes": 7,
+          "perClass": 23.7
+        },
+        {
+          "grade": 3,
+          "students": 188,
+          "classes": 8,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 185,
+          "classes": 8,
+          "perClass": 23.1
+        },
+        {
+          "grade": 5,
+          "students": 168,
+          "classes": 7,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 165,
+          "classes": 7,
+          "perClass": 23.6
+        }
+      ]
+    },
+    {
+      "name": "정현초등학교",
+      "city": "화성",
+      "location": "산척동",
+      "branch": false,
+      "totalStudents": 1099,
+      "totalClasses": 46,
+      "average": 23.9,
+      "regularClassrooms": 54,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 151,
+          "classes": 6,
+          "perClass": 25.2
+        },
+        {
+          "grade": 2,
+          "students": 129,
+          "classes": 6,
+          "perClass": 21.5
+        },
+        {
+          "grade": 3,
+          "students": 185,
+          "classes": 8,
+          "perClass": 23.1
+        },
+        {
+          "grade": 4,
+          "students": 198,
+          "classes": 8,
+          "perClass": 24.8
+        },
+        {
+          "grade": 5,
+          "students": 217,
+          "classes": 9,
+          "perClass": 24.1
+        },
+        {
+          "grade": 6,
+          "students": 219,
+          "classes": 9,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "청림초등학교",
+      "city": "화성",
+      "location": "산척동",
+      "branch": false,
+      "totalStudents": 1387,
+      "totalClasses": 54,
+      "average": 25.7,
+      "regularClassrooms": 57,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 203,
+          "classes": 8,
+          "perClass": 25.4
+        },
+        {
+          "grade": 2,
+          "students": 197,
+          "classes": 8,
+          "perClass": 24.6
+        },
+        {
+          "grade": 3,
+          "students": 209,
+          "classes": 8,
+          "perClass": 26.1
+        },
+        {
+          "grade": 4,
+          "students": 265,
+          "classes": 10,
+          "perClass": 26.5
+        },
+        {
+          "grade": 5,
+          "students": 264,
+          "classes": 10,
+          "perClass": 26.4
+        },
+        {
+          "grade": 6,
+          "students": 249,
+          "classes": 10,
+          "perClass": 24.9
+        }
+      ]
+    },
+    {
+      "name": "서연초등학교",
+      "city": "화성",
+      "location": "장지동",
+      "branch": false,
+      "totalStudents": 1194,
+      "totalClasses": 51,
+      "average": 23.4,
+      "regularClassrooms": 57,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 160,
+          "classes": 7,
+          "perClass": 22.9
+        },
+        {
+          "grade": 2,
+          "students": 160,
+          "classes": 7,
+          "perClass": 22.9
+        },
+        {
+          "grade": 3,
+          "students": 187,
+          "classes": 8,
+          "perClass": 23.4
+        },
+        {
+          "grade": 4,
+          "students": 233,
+          "classes": 10,
+          "perClass": 23.3
+        },
+        {
+          "grade": 5,
+          "students": 236,
+          "classes": 10,
+          "perClass": 23.6
+        },
+        {
+          "grade": 6,
+          "students": 218,
+          "classes": 9,
+          "perClass": 24.2
+        }
+      ]
+    },
+    {
+      "name": "이솔초등학교",
+      "city": "화성",
+      "location": "장지동",
+      "branch": false,
+      "totalStudents": 1185,
+      "totalClasses": 51,
+      "average": 23.2,
+      "regularClassrooms": 53,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 178,
+          "classes": 8,
+          "perClass": 22.2
+        },
+        {
+          "grade": 2,
+          "students": 188,
+          "classes": 8,
+          "perClass": 23.5
+        },
+        {
+          "grade": 3,
+          "students": 178,
+          "classes": 8,
+          "perClass": 22.2
+        },
+        {
+          "grade": 4,
+          "students": 213,
+          "classes": 9,
+          "perClass": 23.7
+        },
+        {
+          "grade": 5,
+          "students": 216,
+          "classes": 9,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 212,
+          "classes": 9,
+          "perClass": 23.6
+        }
+      ]
+    },
+    {
+      "name": "화남초등학교",
+      "city": "화성",
+      "location": "동탄8동",
+      "branch": false,
+      "totalStudents": 860,
+      "totalClasses": 36,
+      "average": 23.9,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 139,
+          "classes": 6,
+          "perClass": 23.2
+        },
+        {
+          "grade": 2,
+          "students": 187,
+          "classes": 8,
+          "perClass": 23.4
+        },
+        {
+          "grade": 3,
+          "students": 163,
+          "classes": 7,
+          "perClass": 23.3
+        },
+        {
+          "grade": 4,
+          "students": 152,
+          "classes": 6,
+          "perClass": 25.3
+        },
+        {
+          "grade": 5,
+          "students": 119,
+          "classes": 5,
+          "perClass": 23.8
+        },
+        {
+          "grade": 6,
+          "students": 100,
+          "classes": 4,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "호연초등학교",
+      "city": "화성",
+      "location": "장지동",
+      "branch": false,
+      "totalStudents": 989,
+      "totalClasses": 38,
+      "average": 26.0,
+      "regularClassrooms": 39,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 157,
+          "classes": 6,
+          "perClass": 26.2
+        },
+        {
+          "grade": 2,
+          "students": 151,
+          "classes": 6,
+          "perClass": 25.2
+        },
+        {
+          "grade": 3,
+          "students": 172,
+          "classes": 7,
+          "perClass": 24.6
+        },
+        {
+          "grade": 4,
+          "students": 184,
+          "classes": 7,
+          "perClass": 26.3
+        },
+        {
+          "grade": 5,
+          "students": 183,
+          "classes": 7,
+          "perClass": 26.1
+        },
+        {
+          "grade": 6,
+          "students": 142,
+          "classes": 5,
+          "perClass": 28.4
+        }
+      ]
+    },
+    {
+      "name": "동탄목동초등학교",
+      "city": "화성",
+      "location": "목동",
+      "branch": false,
+      "totalStudents": 1340,
+      "totalClasses": 57,
+      "average": 23.5,
+      "regularClassrooms": 62,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 162,
+          "classes": 7,
+          "perClass": 23.1
+        },
+        {
+          "grade": 2,
+          "students": 184,
+          "classes": 8,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 235,
+          "classes": 10,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 242,
+          "classes": 10,
+          "perClass": 24.2
+        },
+        {
+          "grade": 5,
+          "students": 260,
+          "classes": 11,
+          "perClass": 23.6
+        },
+        {
+          "grade": 6,
+          "students": 257,
+          "classes": 11,
+          "perClass": 23.4
+        }
+      ]
+    },
+    {
+      "name": "왕배초등학교",
+      "city": "화성",
+      "location": "목동",
+      "branch": false,
+      "totalStudents": 1157,
+      "totalClasses": 49,
+      "average": 23.6,
+      "regularClassrooms": 52,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 174,
+          "classes": 7,
+          "perClass": 24.9
+        },
+        {
+          "grade": 2,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        },
+        {
+          "grade": 3,
+          "students": 181,
+          "classes": 8,
+          "perClass": 22.6
+        },
+        {
+          "grade": 4,
+          "students": 192,
+          "classes": 8,
+          "perClass": 24.0
+        },
+        {
+          "grade": 5,
+          "students": 222,
+          "classes": 9,
+          "perClass": 24.7
+        },
+        {
+          "grade": 6,
+          "students": 229,
+          "classes": 10,
+          "perClass": 22.9
+        }
+      ]
+    },
+    {
+      "name": "한율초등학교",
+      "city": "화성",
+      "location": "목동",
+      "branch": false,
+      "totalStudents": 1399,
+      "totalClasses": 56,
+      "average": 25.0,
+      "regularClassrooms": 57,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 181,
+          "classes": 8,
+          "perClass": 22.6
+        },
+        {
+          "grade": 2,
+          "students": 208,
+          "classes": 8,
+          "perClass": 26.0
+        },
+        {
+          "grade": 3,
+          "students": 195,
+          "classes": 8,
+          "perClass": 24.4
+        },
+        {
+          "grade": 4,
+          "students": 265,
+          "classes": 10,
+          "perClass": 26.5
+        },
+        {
+          "grade": 5,
+          "students": 275,
+          "classes": 11,
+          "perClass": 25.0
+        },
+        {
+          "grade": 6,
+          "students": 275,
+          "classes": 11,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "현민초등학교",
+      "city": "화성",
+      "location": "신동",
+      "branch": false,
+      "totalStudents": 350,
+      "totalClasses": 18,
+      "average": 19.4,
+      "regularClassrooms": 47,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 2,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 3,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 4,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 5,
+          "students": 70,
+          "classes": 3,
+          "perClass": 23.3
+        },
+        {
+          "grade": 6,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        }
+      ]
+    },
+    {
+      "name": "화성바른초등학교",
+      "city": "화성",
+      "location": "신동",
+      "branch": false,
+      "totalStudents": 687,
+      "totalClasses": 32,
+      "average": 21.5,
+      "regularClassrooms": 44,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 153,
+          "classes": 7,
+          "perClass": 21.9
+        },
+        {
+          "grade": 2,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 104,
+          "classes": 5,
+          "perClass": 20.8
+        },
+        {
+          "grade": 5,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 6,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        }
+      ]
+    },
+    {
+      "name": "화성신동초등학교",
+      "city": "화성",
+      "location": "동탄신동",
+      "branch": false,
+      "totalStudents": 837,
+      "totalClasses": 35,
+      "average": 23.9,
+      "regularClassrooms": 39,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 193,
+          "classes": 8,
+          "perClass": 24.1
+        },
+        {
+          "grade": 2,
+          "students": 143,
+          "classes": 6,
+          "perClass": 23.8
+        },
+        {
+          "grade": 3,
+          "students": 147,
+          "classes": 6,
+          "perClass": 24.5
+        },
+        {
+          "grade": 4,
+          "students": 146,
+          "classes": 6,
+          "perClass": 24.3
+        },
+        {
+          "grade": 5,
+          "students": 111,
+          "classes": 5,
+          "perClass": 22.2
+        },
+        {
+          "grade": 6,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        }
+      ]
+    },
+    {
+      "name": "병점초등학교",
+      "city": "화성",
+      "location": "진안동",
+      "branch": false,
+      "totalStudents": 120,
+      "totalClasses": 8,
+      "average": 15.0,
+      "regularClassrooms": 12,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 18,
+          "classes": 1,
+          "perClass": 18.0
+        },
+        {
+          "grade": 2,
+          "students": 23,
+          "classes": 2,
+          "perClass": 11.5
+        },
+        {
+          "grade": 3,
+          "students": 19,
+          "classes": 1,
+          "perClass": 19.0
+        },
+        {
+          "grade": 4,
+          "students": 14,
+          "classes": 1,
+          "perClass": 14.0
+        },
+        {
+          "grade": 5,
+          "students": 17,
+          "classes": 1,
+          "perClass": 17.0
+        },
+        {
+          "grade": 6,
+          "students": 29,
+          "classes": 2,
+          "perClass": 14.5
+        }
+      ]
+    },
+    {
+      "name": "진안초등학교",
+      "city": "화성",
+      "location": "진안동",
+      "branch": false,
+      "totalStudents": 377,
+      "totalClasses": 17,
+      "average": 22.2,
+      "regularClassrooms": 41,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 49,
+          "classes": 2,
+          "perClass": 24.5
+        },
+        {
+          "grade": 2,
+          "students": 58,
+          "classes": 3,
+          "perClass": 19.3
+        },
+        {
+          "grade": 3,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 4,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 5,
+          "students": 65,
+          "classes": 3,
+          "perClass": 21.7
+        },
+        {
+          "grade": 6,
+          "students": 73,
+          "classes": 3,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "서경초등학교",
+      "city": "화성",
+      "location": "기산동",
+      "branch": false,
+      "totalStudents": 688,
+      "totalClasses": 29,
+      "average": 23.7,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 2,
+          "students": 115,
+          "classes": 5,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 4,
+          "students": 149,
+          "classes": 6,
+          "perClass": 24.8
+        },
+        {
+          "grade": 5,
+          "students": 128,
+          "classes": 6,
+          "perClass": 21.3
+        },
+        {
+          "grade": 6,
+          "students": 102,
+          "classes": 4,
+          "perClass": 25.5
+        }
+      ]
+    },
+    {
+      "name": "새봄초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 911,
+      "totalClasses": 39,
+      "average": 23.4,
+      "regularClassrooms": 38,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 132,
+          "classes": 6,
+          "perClass": 22.0
+        },
+        {
+          "grade": 2,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        },
+        {
+          "grade": 3,
+          "students": 147,
+          "classes": 6,
+          "perClass": 24.5
+        },
+        {
+          "grade": 4,
+          "students": 161,
+          "classes": 7,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        },
+        {
+          "grade": 6,
+          "students": 153,
+          "classes": 6,
+          "perClass": 25.5
+        }
+      ]
+    },
+    {
+      "name": "송화초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 689,
+      "totalClasses": 31,
+      "average": 22.2,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 99,
+          "classes": 5,
+          "perClass": 19.8
+        },
+        {
+          "grade": 2,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 4,
+          "students": 130,
+          "classes": 6,
+          "perClass": 21.7
+        },
+        {
+          "grade": 5,
+          "students": 129,
+          "classes": 6,
+          "perClass": 21.5
+        },
+        {
+          "grade": 6,
+          "students": 146,
+          "classes": 6,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "화성벌말초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 351,
+      "totalClasses": 17,
+      "average": 20.6,
+      "regularClassrooms": 36,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 40,
+          "classes": 2,
+          "perClass": 20.0
+        },
+        {
+          "grade": 2,
+          "students": 51,
+          "classes": 3,
+          "perClass": 17.0
+        },
+        {
+          "grade": 3,
+          "students": 47,
+          "classes": 2,
+          "perClass": 23.5
+        },
+        {
+          "grade": 4,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 72,
+          "classes": 4,
+          "perClass": 18.0
+        },
+        {
+          "grade": 6,
+          "students": 72,
+          "classes": 3,
+          "perClass": 24.0
+        }
+      ]
+    },
+    {
+      "name": "구봉초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 696,
+      "totalClasses": 31,
+      "average": 22.5,
+      "regularClassrooms": 43,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 100,
+          "classes": 4,
+          "perClass": 25.0
+        },
+        {
+          "grade": 2,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        },
+        {
+          "grade": 3,
+          "students": 106,
+          "classes": 5,
+          "perClass": 21.2
+        },
+        {
+          "grade": 4,
+          "students": 132,
+          "classes": 6,
+          "perClass": 22.0
+        },
+        {
+          "grade": 5,
+          "students": 132,
+          "classes": 6,
+          "perClass": 22.0
+        },
+        {
+          "grade": 6,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        }
+      ]
+    },
+    {
+      "name": "안화초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 553,
+      "totalClasses": 25,
+      "average": 22.1,
+      "regularClassrooms": 31,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 57,
+          "classes": 3,
+          "perClass": 19.0
+        },
+        {
+          "grade": 2,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        },
+        {
+          "grade": 3,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 112,
+          "classes": 5,
+          "perClass": 22.4
+        },
+        {
+          "grade": 5,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        },
+        {
+          "grade": 6,
+          "students": 124,
+          "classes": 5,
+          "perClass": 24.8
+        }
+      ]
+    },
+    {
+      "name": "태안초등학교",
+      "city": "화성",
+      "location": "병점동",
+      "branch": false,
+      "totalStudents": 407,
+      "totalClasses": 18,
+      "average": 22.6,
+      "regularClassrooms": 26,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 42,
+          "classes": 2,
+          "perClass": 21.0
+        },
+        {
+          "grade": 2,
+          "students": 41,
+          "classes": 2,
+          "perClass": 20.5
+        },
+        {
+          "grade": 3,
+          "students": 73,
+          "classes": 3,
+          "perClass": 24.3
+        },
+        {
+          "grade": 4,
+          "students": 70,
+          "classes": 3,
+          "perClass": 23.3
+        },
+        {
+          "grade": 5,
+          "students": 92,
+          "classes": 4,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        }
+      ]
+    },
+    {
+      "name": "기산초등학교",
+      "city": "화성",
+      "location": "반월동",
+      "branch": false,
+      "totalStudents": 439,
+      "totalClasses": 21,
+      "average": 20.9,
+      "regularClassrooms": 42,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 2,
+          "students": 64,
+          "classes": 3,
+          "perClass": 21.3
+        },
+        {
+          "grade": 3,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        },
+        {
+          "grade": 4,
+          "students": 79,
+          "classes": 4,
+          "perClass": 19.8
+        },
+        {
+          "grade": 5,
+          "students": 83,
+          "classes": 4,
+          "perClass": 20.8
+        },
+        {
+          "grade": 6,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        }
+      ]
+    },
+    {
+      "name": "동학초등학교",
+      "city": "화성",
+      "location": "반월동",
+      "branch": false,
+      "totalStudents": 491,
+      "totalClasses": 22,
+      "average": 22.3,
+      "regularClassrooms": 24,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 72,
+          "classes": 3,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 65,
+          "classes": 3,
+          "perClass": 21.7
+        },
+        {
+          "grade": 3,
+          "students": 68,
+          "classes": 3,
+          "perClass": 22.7
+        },
+        {
+          "grade": 4,
+          "students": 82,
+          "classes": 4,
+          "perClass": 20.5
+        },
+        {
+          "grade": 5,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 6,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        }
+      ]
+    },
+    {
+      "name": "율목초등학교",
+      "city": "화성",
+      "location": "반월동",
+      "branch": false,
+      "totalStudents": 810,
+      "totalClasses": 34,
+      "average": 23.8,
+      "regularClassrooms": 35,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 136,
+          "classes": 6,
+          "perClass": 22.7
+        },
+        {
+          "grade": 2,
+          "students": 153,
+          "classes": 6,
+          "perClass": 25.5
+        },
+        {
+          "grade": 3,
+          "students": 152,
+          "classes": 6,
+          "perClass": 25.3
+        },
+        {
+          "grade": 4,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 123,
+          "classes": 5,
+          "perClass": 24.6
+        },
+        {
+          "grade": 6,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        }
+      ]
+    },
+    {
+      "name": "화성반월초등학교",
+      "city": "화성",
+      "location": "반월동",
+      "branch": false,
+      "totalStudents": 1374,
+      "totalClasses": 56,
+      "average": 24.5,
+      "regularClassrooms": 58,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 227,
+          "classes": 10,
+          "perClass": 22.7
+        },
+        {
+          "grade": 2,
+          "students": 199,
+          "classes": 8,
+          "perClass": 24.9
+        },
+        {
+          "grade": 3,
+          "students": 195,
+          "classes": 8,
+          "perClass": 24.4
+        },
+        {
+          "grade": 4,
+          "students": 250,
+          "classes": 10,
+          "perClass": 25.0
+        },
+        {
+          "grade": 5,
+          "students": 251,
+          "classes": 10,
+          "perClass": 25.1
+        },
+        {
+          "grade": 6,
+          "students": 252,
+          "classes": 10,
+          "perClass": 25.2
+        }
+      ]
+    },
+    {
+      "name": "안녕초등학교",
+      "city": "화성",
+      "location": "안녕동",
+      "branch": false,
+      "totalStudents": 862,
+      "totalClasses": 38,
+      "average": 22.7,
+      "regularClassrooms": 41,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 155,
+          "classes": 7,
+          "perClass": 22.1
+        },
+        {
+          "grade": 2,
+          "students": 155,
+          "classes": 7,
+          "perClass": 22.1
+        },
+        {
+          "grade": 3,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 4,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 6,
+          "students": 138,
+          "classes": 6,
+          "perClass": 23.0
+        }
+      ]
+    },
+    {
+      "name": "화산초등학교",
+      "city": "화성",
+      "location": "송산동",
+      "branch": false,
+      "totalStudents": 214,
+      "totalClasses": 11,
+      "average": 19.5,
+      "regularClassrooms": 27,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 24,
+          "classes": 2,
+          "perClass": 12.0
+        },
+        {
+          "grade": 2,
+          "students": 21,
+          "classes": 1,
+          "perClass": 21.0
+        },
+        {
+          "grade": 3,
+          "students": 34,
+          "classes": 2,
+          "perClass": 17.0
+        },
+        {
+          "grade": 4,
+          "students": 43,
+          "classes": 2,
+          "perClass": 21.5
+        },
+        {
+          "grade": 5,
+          "students": 43,
+          "classes": 2,
+          "perClass": 21.5
+        },
+        {
+          "grade": 6,
+          "students": 49,
+          "classes": 2,
+          "perClass": 24.5
+        }
+      ]
+    },
+    {
+      "name": "서신초등학교",
+      "city": "화성",
+      "location": "서신면",
+      "branch": false,
+      "totalStudents": 54,
+      "totalClasses": 6,
+      "average": 9.0,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 2,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        },
+        {
+          "grade": 5,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 6,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        }
+      ]
+    },
+    {
+      "name": "해운초등학교",
+      "city": "화성",
+      "location": "서신면",
+      "branch": false,
+      "totalStudents": 35,
+      "totalClasses": 6,
+      "average": 5.8,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 2,
+          "students": 1,
+          "classes": 1,
+          "perClass": 1.0
+        },
+        {
+          "grade": 3,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 4,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 5,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 6,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        }
+      ]
+    },
+    {
+      "name": "남양초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 303,
+      "totalClasses": 16,
+      "average": 18.9,
+      "regularClassrooms": 23,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 37,
+          "classes": 2,
+          "perClass": 18.5
+        },
+        {
+          "grade": 2,
+          "students": 47,
+          "classes": 3,
+          "perClass": 15.7
+        },
+        {
+          "grade": 3,
+          "students": 43,
+          "classes": 2,
+          "perClass": 21.5
+        },
+        {
+          "grade": 4,
+          "students": 56,
+          "classes": 3,
+          "perClass": 18.7
+        },
+        {
+          "grade": 5,
+          "students": 63,
+          "classes": 3,
+          "perClass": 21.0
+        },
+        {
+          "grade": 6,
+          "students": 57,
+          "classes": 3,
+          "perClass": 19.0
+        }
+      ]
+    },
+    {
+      "name": "대양초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 1017,
+      "totalClasses": 42,
+      "average": 24.2,
+      "regularClassrooms": 44,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 141,
+          "classes": 6,
+          "perClass": 23.5
+        },
+        {
+          "grade": 2,
+          "students": 169,
+          "classes": 7,
+          "perClass": 24.1
+        },
+        {
+          "grade": 3,
+          "students": 165,
+          "classes": 7,
+          "perClass": 23.6
+        },
+        {
+          "grade": 4,
+          "students": 192,
+          "classes": 8,
+          "perClass": 24.0
+        },
+        {
+          "grade": 5,
+          "students": 182,
+          "classes": 7,
+          "perClass": 26.0
+        },
+        {
+          "grade": 6,
+          "students": 168,
+          "classes": 7,
+          "perClass": 24.0
+        }
+      ]
+    },
+    {
+      "name": "동양초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 715,
+      "totalClasses": 32,
+      "average": 22.3,
+      "regularClassrooms": 34,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 99,
+          "classes": 4,
+          "perClass": 24.8
+        },
+        {
+          "grade": 2,
+          "students": 103,
+          "classes": 5,
+          "perClass": 20.6
+        },
+        {
+          "grade": 3,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        },
+        {
+          "grade": 4,
+          "students": 129,
+          "classes": 6,
+          "perClass": 21.5
+        },
+        {
+          "grade": 5,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 6,
+          "students": 133,
+          "classes": 6,
+          "perClass": 22.2
+        }
+      ]
+    },
+    {
+      "name": "신남초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 684,
+      "totalClasses": 30,
+      "average": 22.8,
+      "regularClassrooms": 41,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 127,
+          "classes": 6,
+          "perClass": 21.2
+        },
+        {
+          "grade": 2,
+          "students": 101,
+          "classes": 4,
+          "perClass": 25.2
+        },
+        {
+          "grade": 3,
+          "students": 112,
+          "classes": 5,
+          "perClass": 22.4
+        },
+        {
+          "grade": 4,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        },
+        {
+          "grade": 5,
+          "students": 116,
+          "classes": 5,
+          "perClass": 23.2
+        },
+        {
+          "grade": 6,
+          "students": 115,
+          "classes": 5,
+          "perClass": 23.0
+        }
+      ]
+    },
+    {
+      "name": "활초초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 79,
+      "totalClasses": 6,
+      "average": 13.2,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 2,
+          "students": 15,
+          "classes": 1,
+          "perClass": 15.0
+        },
+        {
+          "grade": 3,
+          "students": 13,
+          "classes": 1,
+          "perClass": 13.0
+        },
+        {
+          "grade": 4,
+          "students": 15,
+          "classes": 1,
+          "perClass": 15.0
+        },
+        {
+          "grade": 5,
+          "students": 15,
+          "classes": 1,
+          "perClass": 15.0
+        },
+        {
+          "grade": 6,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        }
+      ]
+    },
+    {
+      "name": "마도초등학교",
+      "city": "화성",
+      "location": "마도면",
+      "branch": false,
+      "totalStudents": 67,
+      "totalClasses": 6,
+      "average": 11.2,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 2,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 3,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 4,
+          "students": 17,
+          "classes": 1,
+          "perClass": 17.0
+        },
+        {
+          "grade": 5,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 6,
+          "students": 16,
+          "classes": 1,
+          "perClass": 16.0
+        }
+      ]
+    },
+    {
+      "name": "청원초등학교",
+      "city": "화성",
+      "location": "마도면",
+      "branch": false,
+      "totalStudents": 40,
+      "totalClasses": 6,
+      "average": 6.7,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 2,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 3,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 4,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 5,
+          "students": 10,
+          "classes": 1,
+          "perClass": 10.0
+        },
+        {
+          "grade": 6,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        }
+      ]
+    },
+    {
+      "name": "고정초등학교",
+      "city": "화성",
+      "location": "송산면",
+      "branch": false,
+      "totalStudents": 43,
+      "totalClasses": 6,
+      "average": 7.2,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 10,
+          "classes": 1,
+          "perClass": 10.0
+        },
+        {
+          "grade": 2,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 3,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 4,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 5,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 6,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        }
+      ]
+    },
+    {
+      "name": "마산초등학교",
+      "city": "화성",
+      "location": "송산면",
+      "branch": false,
+      "totalStudents": 39,
+      "totalClasses": 6,
+      "average": 6.5,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 2,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 3,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 4,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        },
+        {
+          "grade": 5,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 6,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        }
+      ]
+    },
+    {
+      "name": "송산초등학교",
+      "city": "화성",
+      "location": "송산면",
+      "branch": false,
+      "totalStudents": 170,
+      "totalClasses": 9,
+      "average": 18.9,
+      "regularClassrooms": 16,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 18,
+          "classes": 1,
+          "perClass": 18.0
+        },
+        {
+          "grade": 2,
+          "students": 24,
+          "classes": 1,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 21,
+          "classes": 1,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 33,
+          "classes": 2,
+          "perClass": 16.5
+        },
+        {
+          "grade": 5,
+          "students": 28,
+          "classes": 2,
+          "perClass": 14.0
+        },
+        {
+          "grade": 6,
+          "students": 46,
+          "classes": 2,
+          "perClass": 23.0
+        }
+      ]
+    },
+    {
+      "name": "새솔초등학교",
+      "city": "화성",
+      "location": "새솔동",
+      "branch": false,
+      "totalStudents": 1540,
+      "totalClasses": 61,
+      "average": 25.2,
+      "regularClassrooms": 64,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 249,
+          "classes": 10,
+          "perClass": 24.9
+        },
+        {
+          "grade": 2,
+          "students": 234,
+          "classes": 9,
+          "perClass": 26.0
+        },
+        {
+          "grade": 3,
+          "students": 284,
+          "classes": 11,
+          "perClass": 25.8
+        },
+        {
+          "grade": 4,
+          "students": 268,
+          "classes": 11,
+          "perClass": 24.4
+        },
+        {
+          "grade": 5,
+          "students": 286,
+          "classes": 11,
+          "perClass": 26.0
+        },
+        {
+          "grade": 6,
+          "students": 219,
+          "classes": 9,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "송린초등학교",
+      "city": "화성",
+      "location": "새솔동",
+      "branch": false,
+      "totalStudents": 1384,
+      "totalClasses": 56,
+      "average": 24.7,
+      "regularClassrooms": 59,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 177,
+          "classes": 7,
+          "perClass": 25.3
+        },
+        {
+          "grade": 2,
+          "students": 202,
+          "classes": 8,
+          "perClass": 25.2
+        },
+        {
+          "grade": 3,
+          "students": 210,
+          "classes": 9,
+          "perClass": 23.3
+        },
+        {
+          "grade": 4,
+          "students": 246,
+          "classes": 10,
+          "perClass": 24.6
+        },
+        {
+          "grade": 5,
+          "students": 275,
+          "classes": 11,
+          "perClass": 25.0
+        },
+        {
+          "grade": 6,
+          "students": 274,
+          "classes": 11,
+          "perClass": 24.9
+        }
+      ]
+    },
+    {
+      "name": "새동초등학교",
+      "city": "화성",
+      "location": "남양읍",
+      "branch": false,
+      "totalStudents": 315,
+      "totalClasses": 15,
+      "average": 21.0,
+      "regularClassrooms": 48,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 72,
+          "classes": 3,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 35,
+          "classes": 2,
+          "perClass": 17.5
+        },
+        {
+          "grade": 3,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 4,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 5,
+          "students": 43,
+          "classes": 2,
+          "perClass": 21.5
+        },
+        {
+          "grade": 6,
+          "students": 30,
+          "classes": 2,
+          "perClass": 15.0
+        }
+      ]
+    },
+    {
+      "name": "석천초등학교",
+      "city": "화성",
+      "location": "우정읍",
+      "branch": false,
+      "totalStudents": 61,
+      "totalClasses": 6,
+      "average": 10.2,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 2,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 5,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        },
+        {
+          "grade": 6,
+          "students": 15,
+          "classes": 1,
+          "perClass": 15.0
+        }
+      ]
+    },
+    {
+      "name": "우정초등학교",
+      "city": "화성",
+      "location": "우정읍",
+      "branch": false,
+      "totalStudents": 132,
+      "totalClasses": 9,
+      "average": 14.7,
+      "regularClassrooms": 11,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 17,
+          "classes": 1,
+          "perClass": 17.0
+        },
+        {
+          "grade": 2,
+          "students": 22,
+          "classes": 1,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 19,
+          "classes": 1,
+          "perClass": 19.0
+        },
+        {
+          "grade": 4,
+          "students": 25,
+          "classes": 2,
+          "perClass": 12.5
+        },
+        {
+          "grade": 5,
+          "students": 22,
+          "classes": 2,
+          "perClass": 11.0
+        },
+        {
+          "grade": 6,
+          "students": 27,
+          "classes": 2,
+          "perClass": 13.5
+        }
+      ]
+    },
+    {
+      "name": "화성화수초등학교",
+      "city": "화성",
+      "location": "우정읍",
+      "branch": false,
+      "totalStudents": 30,
+      "totalClasses": 6,
+      "average": 5.0,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 2,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 3,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 4,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 5,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 6,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        }
+      ]
+    },
+    {
+      "name": "노진초등학교",
+      "city": "화성",
+      "location": "장안면",
+      "branch": false,
+      "totalStudents": 36,
+      "totalClasses": 6,
+      "average": 6.0,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        },
+        {
+          "grade": 2,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 3,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 4,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 5,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 6,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        }
+      ]
+    },
+    {
+      "name": "장명초등학교",
+      "city": "화성",
+      "location": "장안면",
+      "branch": false,
+      "totalStudents": 20,
+      "totalClasses": 6,
+      "average": 3.3,
+      "regularClassrooms": 10,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 2,
+          "students": 1,
+          "classes": 1,
+          "perClass": 1.0
+        },
+        {
+          "grade": 3,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 4,
+          "students": 1,
+          "classes": 1,
+          "perClass": 1.0
+        },
+        {
+          "grade": 5,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 6,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        }
+      ]
+    },
+    {
+      "name": "화성장안초등학교",
+      "city": "화성",
+      "location": "장안면",
+      "branch": false,
+      "totalStudents": 440,
+      "totalClasses": 22,
+      "average": 20.0,
+      "regularClassrooms": 28,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 2,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 52,
+          "classes": 3,
+          "perClass": 17.3
+        },
+        {
+          "grade": 4,
+          "students": 76,
+          "classes": 4,
+          "perClass": 19.0
+        },
+        {
+          "grade": 5,
+          "students": 80,
+          "classes": 4,
+          "perClass": 20.0
+        },
+        {
+          "grade": 6,
+          "students": 97,
+          "classes": 5,
+          "perClass": 19.4
+        }
+      ]
+    },
+    {
+      "name": "갈천초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 42,
+      "totalClasses": 6,
+      "average": 7.0,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 2,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 3,
+          "students": 10,
+          "classes": 1,
+          "perClass": 10.0
+        },
+        {
+          "grade": 4,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 5,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 6,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        }
+      ]
+    },
+    {
+      "name": "도이초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 515,
+      "totalClasses": 23,
+      "average": 22.4,
+      "regularClassrooms": 32,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 48,
+          "classes": 2,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 3,
+          "students": 81,
+          "classes": 4,
+          "perClass": 20.2
+        },
+        {
+          "grade": 4,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 111,
+          "classes": 5,
+          "perClass": 22.2
+        },
+        {
+          "grade": 6,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        }
+      ]
+    },
+    {
+      "name": "발안초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 216,
+      "totalClasses": 13,
+      "average": 16.6,
+      "regularClassrooms": 19,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 34,
+          "classes": 2,
+          "perClass": 17.0
+        },
+        {
+          "grade": 2,
+          "students": 35,
+          "classes": 2,
+          "perClass": 17.5
+        },
+        {
+          "grade": 3,
+          "students": 31,
+          "classes": 2,
+          "perClass": 15.5
+        },
+        {
+          "grade": 4,
+          "students": 29,
+          "classes": 2,
+          "perClass": 14.5
+        },
+        {
+          "grade": 5,
+          "students": 38,
+          "classes": 2,
+          "perClass": 19.0
+        },
+        {
+          "grade": 6,
+          "students": 49,
+          "classes": 3,
+          "perClass": 16.3
+        }
+      ]
+    },
+    {
+      "name": "상신초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 579,
+      "totalClasses": 25,
+      "average": 23.2,
+      "regularClassrooms": 32,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 85,
+          "classes": 4,
+          "perClass": 21.2
+        },
+        {
+          "grade": 2,
+          "students": 120,
+          "classes": 5,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        },
+        {
+          "grade": 4,
+          "students": 95,
+          "classes": 4,
+          "perClass": 23.8
+        },
+        {
+          "grade": 5,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 6,
+          "students": 93,
+          "classes": 4,
+          "perClass": 23.2
+        }
+      ]
+    },
+    {
+      "name": "서봉초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 169,
+      "totalClasses": 10,
+      "average": 16.9,
+      "regularClassrooms": 45,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 64,
+          "classes": 3,
+          "perClass": 21.3
+        },
+        {
+          "grade": 2,
+          "students": 26,
+          "classes": 2,
+          "perClass": 13.0
+        },
+        {
+          "grade": 3,
+          "students": 20,
+          "classes": 1,
+          "perClass": 20.0
+        },
+        {
+          "grade": 4,
+          "students": 30,
+          "classes": 2,
+          "perClass": 15.0
+        },
+        {
+          "grade": 5,
+          "students": 24,
+          "classes": 1,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        }
+      ]
+    },
+    {
+      "name": "제암초등학교",
+      "city": "화성",
+      "location": "향남읍 ",
+      "branch": false,
+      "totalStudents": 433,
+      "totalClasses": 22,
+      "average": 19.7,
+      "regularClassrooms": 30,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 2,
+          "students": 47,
+          "classes": 3,
+          "perClass": 15.7
+        },
+        {
+          "grade": 3,
+          "students": 53,
+          "classes": 3,
+          "perClass": 17.7
+        },
+        {
+          "grade": 4,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 5,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 6,
+          "students": 108,
+          "classes": 5,
+          "perClass": 21.6
+        }
+      ]
+    },
+    {
+      "name": "하길초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 1194,
+      "totalClasses": 51,
+      "average": 23.4,
+      "regularClassrooms": 56,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 134,
+          "classes": 6,
+          "perClass": 22.3
+        },
+        {
+          "grade": 2,
+          "students": 184,
+          "classes": 8,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 210,
+          "classes": 9,
+          "perClass": 23.3
+        },
+        {
+          "grade": 4,
+          "students": 214,
+          "classes": 9,
+          "perClass": 23.8
+        },
+        {
+          "grade": 5,
+          "students": 237,
+          "classes": 10,
+          "perClass": 23.7
+        },
+        {
+          "grade": 6,
+          "students": 215,
+          "classes": 9,
+          "perClass": 23.9
+        }
+      ]
+    },
+    {
+      "name": "향남초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 51,
+      "totalClasses": 6,
+      "average": 8.5,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 2,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 3,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 4,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 5,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 6,
+          "students": 16,
+          "classes": 1,
+          "perClass": 16.0
+        }
+      ]
+    },
+    {
+      "name": "한울초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 828,
+      "totalClasses": 35,
+      "average": 23.7,
+      "regularClassrooms": 44,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 85,
+          "classes": 4,
+          "perClass": 21.2
+        },
+        {
+          "grade": 2,
+          "students": 112,
+          "classes": 5,
+          "perClass": 22.4
+        },
+        {
+          "grade": 3,
+          "students": 125,
+          "classes": 5,
+          "perClass": 25.0
+        },
+        {
+          "grade": 4,
+          "students": 138,
+          "classes": 6,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 174,
+          "classes": 7,
+          "perClass": 24.9
+        },
+        {
+          "grade": 6,
+          "students": 194,
+          "classes": 8,
+          "perClass": 24.2
+        }
+      ]
+    },
+    {
+      "name": "행정초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 768,
+      "totalClasses": 32,
+      "average": 24.0,
+      "regularClassrooms": 37,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        },
+        {
+          "grade": 2,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 3,
+          "students": 103,
+          "classes": 4,
+          "perClass": 25.8
+        },
+        {
+          "grade": 4,
+          "students": 155,
+          "classes": 6,
+          "perClass": 25.8
+        },
+        {
+          "grade": 5,
+          "students": 143,
+          "classes": 6,
+          "perClass": 23.8
+        },
+        {
+          "grade": 6,
+          "students": 163,
+          "classes": 7,
+          "perClass": 23.3
+        }
+      ]
+    },
+    {
+      "name": "화원초등학교",
+      "city": "화성",
+      "location": "향남읍",
+      "branch": false,
+      "totalStudents": 886,
+      "totalClasses": 37,
+      "average": 23.9,
+      "regularClassrooms": 39,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        },
+        {
+          "grade": 2,
+          "students": 121,
+          "classes": 5,
+          "perClass": 24.2
+        },
+        {
+          "grade": 3,
+          "students": 133,
+          "classes": 6,
+          "perClass": 22.2
+        },
+        {
+          "grade": 4,
+          "students": 180,
+          "classes": 7,
+          "perClass": 25.7
+        },
+        {
+          "grade": 5,
+          "students": 169,
+          "classes": 7,
+          "perClass": 24.1
+        },
+        {
+          "grade": 6,
+          "students": 170,
+          "classes": 7,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "팔탄초등학교",
+      "city": "화성",
+      "location": "팔탄면",
+      "branch": false,
+      "totalStudents": 77,
+      "totalClasses": 6,
+      "average": 12.8,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 2,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 18,
+          "classes": 1,
+          "perClass": 18.0
+        },
+        {
+          "grade": 5,
+          "students": 16,
+          "classes": 1,
+          "perClass": 16.0
+        },
+        {
+          "grade": 6,
+          "students": 17,
+          "classes": 1,
+          "perClass": 17.0
+        }
+      ]
+    },
+    {
+      "name": "팔탄초등학교대방분교장",
+      "city": "화성",
+      "location": "팔탄면",
+      "branch": true,
+      "totalStudents": 30,
+      "totalClasses": 6,
+      "average": 5.0,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 2,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 3,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 4,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 5,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 6,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        }
+      ]
+    },
+    {
+      "name": "화성월문초등학교",
+      "city": "화성",
+      "location": "팔탄면",
+      "branch": false,
+      "totalStudents": 51,
+      "totalClasses": 6,
+      "average": 8.5,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        },
+        {
+          "grade": 2,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 3,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 4,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 5,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 6,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        }
+      ]
+    },
+    {
+      "name": "사창초등학교",
+      "city": "화성",
+      "location": "양감면",
+      "branch": false,
+      "totalStudents": 31,
+      "totalClasses": 6,
+      "average": 5.2,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 2,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 3,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 4,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 5,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 6,
+          "students": 2,
+          "classes": 1,
+          "perClass": 2.0
+        }
+      ]
+    },
+    {
+      "name": "양감초등학교",
+      "city": "화성",
+      "location": "양감면",
+      "branch": false,
+      "totalStudents": 46,
+      "totalClasses": 6,
+      "average": 7.7,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 2,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 5,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        },
+        {
+          "grade": 6,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        }
+      ]
+    },
+    {
+      "name": "송라초등학교",
+      "city": "화성",
+      "location": "매송면",
+      "branch": false,
+      "totalStudents": 43,
+      "totalClasses": 6,
+      "average": 7.2,
+      "regularClassrooms": 6,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        },
+        {
+          "grade": 2,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 3,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 4,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 5,
+          "students": 10,
+          "classes": 1,
+          "perClass": 10.0
+        },
+        {
+          "grade": 6,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        }
+      ]
+    },
+    {
+      "name": "화성매송초등학교",
+      "city": "화성",
+      "location": "매송면",
+      "branch": false,
+      "totalStudents": 64,
+      "totalClasses": 6,
+      "average": 10.7,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 9,
+          "classes": 1,
+          "perClass": 9.0
+        },
+        {
+          "grade": 2,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 3,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 4,
+          "students": 13,
+          "classes": 1,
+          "perClass": 13.0
+        },
+        {
+          "grade": 5,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 6,
+          "students": 20,
+          "classes": 1,
+          "perClass": 20.0
+        }
+      ]
+    },
+    {
+      "name": "비봉초등학교",
+      "city": "화성",
+      "location": "비봉면",
+      "branch": false,
+      "totalStudents": 80,
+      "totalClasses": 6,
+      "average": 13.3,
+      "regularClassrooms": 9,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 16,
+          "classes": 1,
+          "perClass": 16.0
+        },
+        {
+          "grade": 2,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 13,
+          "classes": 1,
+          "perClass": 13.0
+        },
+        {
+          "grade": 5,
+          "students": 15,
+          "classes": 1,
+          "perClass": 15.0
+        },
+        {
+          "grade": 6,
+          "students": 18,
+          "classes": 1,
+          "perClass": 18.0
+        }
+      ]
+    },
+    {
+      "name": "청연초등학교",
+      "city": "화성",
+      "location": "비봉면",
+      "branch": false,
+      "totalStudents": 436,
+      "totalClasses": 20,
+      "average": 21.8,
+      "regularClassrooms": 37,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 94,
+          "classes": 4,
+          "perClass": 23.5
+        },
+        {
+          "grade": 2,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 83,
+          "classes": 4,
+          "perClass": 20.8
+        },
+        {
+          "grade": 4,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 5,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 6,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        }
+      ]
+    },
+    {
+      "name": "청룡초등학교",
+      "city": "화성",
+      "location": "비봉면",
+      "branch": false,
+      "totalStudents": 29,
+      "totalClasses": 6,
+      "average": 4.8,
+      "regularClassrooms": 7,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 2,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        },
+        {
+          "grade": 3,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        },
+        {
+          "grade": 4,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        },
+        {
+          "grade": 5,
+          "students": 2,
+          "classes": 1,
+          "perClass": 2.0
+        },
+        {
+          "grade": 6,
+          "students": 4,
+          "classes": 1,
+          "perClass": 4.0
+        }
+      ]
+    },
+    {
+      "name": "정남초등학교",
+      "city": "화성",
+      "location": "정남면",
+      "branch": false,
+      "totalStudents": 146,
+      "totalClasses": 8,
+      "average": 18.2,
+      "regularClassrooms": 13,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 22,
+          "classes": 1,
+          "perClass": 22.0
+        },
+        {
+          "grade": 2,
+          "students": 26,
+          "classes": 2,
+          "perClass": 13.0
+        },
+        {
+          "grade": 3,
+          "students": 25,
+          "classes": 1,
+          "perClass": 25.0
+        },
+        {
+          "grade": 4,
+          "students": 28,
+          "classes": 2,
+          "perClass": 14.0
+        },
+        {
+          "grade": 5,
+          "students": 23,
+          "classes": 1,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 22,
+          "classes": 1,
+          "perClass": 22.0
+        }
+      ]
+    },
+    {
+      "name": "정림초등학교",
+      "city": "화성",
+      "location": "정남면",
+      "branch": false,
+      "totalStudents": 35,
+      "totalClasses": 6,
+      "average": 5.8,
+      "regularClassrooms": 8,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 5,
+          "classes": 1,
+          "perClass": 5.0
+        },
+        {
+          "grade": 2,
+          "students": 3,
+          "classes": 1,
+          "perClass": 3.0
+        },
+        {
+          "grade": 3,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 4,
+          "students": 7,
+          "classes": 1,
+          "perClass": 7.0
+        },
+        {
+          "grade": 5,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 6,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        }
+      ]
+    },
+    {
+      "name": "갈담초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 122,
+      "totalClasses": 7,
+      "average": 17.4,
+      "regularClassrooms": 15,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 21,
+          "classes": 1,
+          "perClass": 21.0
+        },
+        {
+          "grade": 2,
+          "students": 23,
+          "classes": 2,
+          "perClass": 11.5
+        },
+        {
+          "grade": 3,
+          "students": 22,
+          "classes": 1,
+          "perClass": 22.0
+        },
+        {
+          "grade": 4,
+          "students": 20,
+          "classes": 1,
+          "perClass": 20.0
+        },
+        {
+          "grade": 5,
+          "students": 20,
+          "classes": 1,
+          "perClass": 20.0
+        },
+        {
+          "grade": 6,
+          "students": 16,
+          "classes": 1,
+          "perClass": 16.0
+        }
+      ]
+    },
+    {
+      "name": "내리숲초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 694,
+      "totalClasses": 30,
+      "average": 23.1,
+      "regularClassrooms": 38,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 2,
+          "students": 129,
+          "classes": 6,
+          "perClass": 21.5
+        },
+        {
+          "grade": 3,
+          "students": 127,
+          "classes": 5,
+          "perClass": 25.4
+        },
+        {
+          "grade": 4,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 5,
+          "students": 101,
+          "classes": 4,
+          "perClass": 25.2
+        },
+        {
+          "grade": 6,
+          "students": 87,
+          "classes": 4,
+          "perClass": 21.8
+        }
+      ]
+    },
+    {
+      "name": "동화초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 443,
+      "totalClasses": 20,
+      "average": 22.1,
+      "regularClassrooms": 45,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 48,
+          "classes": 2,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 3,
+          "students": 53,
+          "classes": 3,
+          "perClass": 17.7
+        },
+        {
+          "grade": 4,
+          "students": 77,
+          "classes": 3,
+          "perClass": 25.7
+        },
+        {
+          "grade": 5,
+          "students": 93,
+          "classes": 4,
+          "perClass": 23.2
+        },
+        {
+          "grade": 6,
+          "students": 117,
+          "classes": 5,
+          "perClass": 23.4
+        }
+      ]
+    },
+    {
+      "name": "봉담초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 905,
+      "totalClasses": 39,
+      "average": 23.2,
+      "regularClassrooms": 40,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 138,
+          "classes": 6,
+          "perClass": 23.0
+        },
+        {
+          "grade": 2,
+          "students": 149,
+          "classes": 6,
+          "perClass": 24.8
+        },
+        {
+          "grade": 3,
+          "students": 161,
+          "classes": 7,
+          "perClass": 23.0
+        },
+        {
+          "grade": 4,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 5,
+          "students": 158,
+          "classes": 7,
+          "perClass": 22.6
+        },
+        {
+          "grade": 6,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        }
+      ]
+    },
+    {
+      "name": "상봉초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 507,
+      "totalClasses": 23,
+      "average": 22.0,
+      "regularClassrooms": 31,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 2,
+          "students": 45,
+          "classes": 2,
+          "perClass": 22.5
+        },
+        {
+          "grade": 3,
+          "students": 70,
+          "classes": 3,
+          "perClass": 23.3
+        },
+        {
+          "grade": 4,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 134,
+          "classes": 6,
+          "perClass": 22.3
+        },
+        {
+          "grade": 6,
+          "students": 106,
+          "classes": 5,
+          "perClass": 21.2
+        }
+      ]
+    },
+    {
+      "name": "수기초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 47,
+      "totalClasses": 5,
+      "average": 9.4,
+      "regularClassrooms": 9,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 6,
+          "classes": 1,
+          "perClass": 6.0
+        },
+        {
+          "grade": 2,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 3,
+          "students": 11,
+          "classes": 1,
+          "perClass": 11.0
+        },
+        {
+          "grade": 4,
+          "students": 8,
+          "classes": 1,
+          "perClass": 8.0
+        },
+        {
+          "grade": 5,
+          "students": 10,
+          "classes": 1,
+          "perClass": 10.0
+        },
+        {
+          "grade": 6,
+          "students": 12,
+          "classes": 1,
+          "perClass": 12.0
+        }
+      ]
+    },
+    {
+      "name": "수영초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 456,
+      "totalClasses": 20,
+      "average": 22.8,
+      "regularClassrooms": 26,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 2,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 3,
+          "students": 75,
+          "classes": 3,
+          "perClass": 25.0
+        },
+        {
+          "grade": 4,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 5,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 6,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        }
+      ]
+    },
+    {
+      "name": "수현초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 1278,
+      "totalClasses": 52,
+      "average": 24.6,
+      "regularClassrooms": 54,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 247,
+          "classes": 10,
+          "perClass": 24.7
+        },
+        {
+          "grade": 2,
+          "students": 224,
+          "classes": 9,
+          "perClass": 24.9
+        },
+        {
+          "grade": 3,
+          "students": 222,
+          "classes": 9,
+          "perClass": 24.7
+        },
+        {
+          "grade": 4,
+          "students": 229,
+          "classes": 10,
+          "perClass": 22.9
+        },
+        {
+          "grade": 5,
+          "students": 199,
+          "classes": 8,
+          "perClass": 24.9
+        },
+        {
+          "grade": 6,
+          "students": 157,
+          "classes": 6,
+          "perClass": 26.2
+        }
+      ]
+    },
+    {
+      "name": "와우초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 1113,
+      "totalClasses": 47,
+      "average": 23.7,
+      "regularClassrooms": 50,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 157,
+          "classes": 7,
+          "perClass": 22.4
+        },
+        {
+          "grade": 2,
+          "students": 171,
+          "classes": 7,
+          "perClass": 24.4
+        },
+        {
+          "grade": 3,
+          "students": 206,
+          "classes": 9,
+          "perClass": 22.9
+        },
+        {
+          "grade": 4,
+          "students": 198,
+          "classes": 8,
+          "perClass": 24.8
+        },
+        {
+          "grade": 5,
+          "students": 200,
+          "classes": 8,
+          "perClass": 25.0
+        },
+        {
+          "grade": 6,
+          "students": 181,
+          "classes": 8,
+          "perClass": 22.6
+        }
+      ]
+    },
+    {
+      "name": "효행초등학교",
+      "city": "화성",
+      "location": "봉담읍",
+      "branch": false,
+      "totalStudents": 1244,
+      "totalClasses": 52,
+      "average": 23.9,
+      "regularClassrooms": 58,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 166,
+          "classes": 7,
+          "perClass": 23.7
+        },
+        {
+          "grade": 2,
+          "students": 169,
+          "classes": 7,
+          "perClass": 24.1
+        },
+        {
+          "grade": 3,
+          "students": 179,
+          "classes": 8,
+          "perClass": 22.4
+        },
+        {
+          "grade": 4,
+          "students": 222,
+          "classes": 9,
+          "perClass": 24.7
+        },
+        {
+          "grade": 5,
+          "students": 265,
+          "classes": 11,
+          "perClass": 24.1
+        },
+        {
+          "grade": 6,
+          "students": 243,
+          "classes": 10,
+          "perClass": 24.3
+        }
+      ]
+    },
+    {
+      "name": "기안초등학교",
+      "city": "화성",
+      "location": "기안동",
+      "branch": false,
+      "totalStudents": 563,
+      "totalClasses": 25,
+      "average": 22.5,
+      "regularClassrooms": 40,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 2,
+          "students": 79,
+          "classes": 4,
+          "perClass": 19.8
+        },
+        {
+          "grade": 3,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        },
+        {
+          "grade": 4,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 5,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        },
+        {
+          "grade": 6,
+          "students": 119,
+          "classes": 5,
+          "perClass": 23.8
+        }
+      ]
+    },
+    {
+      "name": "배양초등학교",
+      "city": "화성",
+      "location": "배양동",
+      "branch": false,
+      "totalStudents": 214,
+      "totalClasses": 13,
+      "average": 16.5,
+      "regularClassrooms": 21,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 27,
+          "classes": 2,
+          "perClass": 13.5
+        },
+        {
+          "grade": 2,
+          "students": 27,
+          "classes": 2,
+          "perClass": 13.5
+        },
+        {
+          "grade": 3,
+          "students": 35,
+          "classes": 2,
+          "perClass": 17.5
+        },
+        {
+          "grade": 4,
+          "students": 37,
+          "classes": 2,
+          "perClass": 18.5
+        },
+        {
+          "grade": 5,
+          "students": 34,
+          "classes": 2,
+          "perClass": 17.0
+        },
+        {
+          "grade": 6,
+          "students": 54,
+          "classes": 3,
+          "perClass": 18.0
+        }
+      ]
+    },
+    {
+      "name": "다올초등학교",
+      "city": "화성",
+      "location": "반송동",
+      "branch": false,
+      "totalStudents": 634,
+      "totalClasses": 29,
+      "average": 21.9,
+      "regularClassrooms": 35,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 103,
+          "classes": 5,
+          "perClass": 20.6
+        },
+        {
+          "grade": 2,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 3,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        },
+        {
+          "grade": 4,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 108,
+          "classes": 5,
+          "perClass": 21.6
+        },
+        {
+          "grade": 6,
+          "students": 107,
+          "classes": 5,
+          "perClass": 21.4
+        }
+      ]
+    },
+    {
+      "name": "화성장안초등학교석포분교장\n(2026.3.1. 폐지)",
+      "city": "화성",
+      "location": "장안면",
+      "branch": true,
+      "totalStudents": 0,
+      "totalClasses": 0,
+      "average": null,
+      "regularClassrooms": null,
+      "grades": [
+        {
+          "grade": 1,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 2,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 3,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 4,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 5,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        },
+        {
+          "grade": 6,
+          "students": null,
+          "classes": null,
+          "perClass": null
+        }
+      ]
+    },
+    {
+      "name": "가수초등학교",
+      "city": "오산",
+      "location": "가수동",
+      "branch": false,
+      "totalStudents": 480,
+      "totalClasses": 22,
+      "average": 21.8,
+      "regularClassrooms": 24,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 75,
+          "classes": 3,
+          "perClass": 25.0
+        },
+        {
+          "grade": 2,
+          "students": 70,
+          "classes": 3,
+          "perClass": 23.3
+        },
+        {
+          "grade": 3,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 4,
+          "students": 82,
+          "classes": 4,
+          "perClass": 20.5
+        },
+        {
+          "grade": 5,
+          "students": 79,
+          "classes": 4,
+          "perClass": 19.8
+        },
+        {
+          "grade": 6,
+          "students": 88,
+          "classes": 4,
+          "perClass": 22.0
+        }
+      ]
+    },
+    {
+      "name": "광성초등학교",
+      "city": "오산",
+      "location": "세교동",
+      "branch": false,
+      "totalStudents": 420,
+      "totalClasses": 19,
+      "average": 22.1,
+      "regularClassrooms": 25,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 42,
+          "classes": 2,
+          "perClass": 21.0
+        },
+        {
+          "grade": 2,
+          "students": 50,
+          "classes": 3,
+          "perClass": 16.7
+        },
+        {
+          "grade": 3,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 4,
+          "students": 91,
+          "classes": 4,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 75,
+          "classes": 3,
+          "perClass": 25.0
+        },
+        {
+          "grade": 6,
+          "students": 88,
+          "classes": 4,
+          "perClass": 22.0
+        }
+      ]
+    },
+    {
+      "name": "금암초등학교",
+      "city": "오산",
+      "location": "금암동",
+      "branch": false,
+      "totalStudents": 325,
+      "totalClasses": 15,
+      "average": 21.7,
+      "regularClassrooms": 17,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 32,
+          "classes": 2,
+          "perClass": 16.0
+        },
+        {
+          "grade": 2,
+          "students": 44,
+          "classes": 2,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 46,
+          "classes": 2,
+          "perClass": 23.0
+        },
+        {
+          "grade": 4,
+          "students": 62,
+          "classes": 3,
+          "perClass": 20.7
+        },
+        {
+          "grade": 5,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        },
+        {
+          "grade": 6,
+          "students": 75,
+          "classes": 3,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "다온초등학교",
+      "city": "오산",
+      "location": "부산동",
+      "branch": false,
+      "totalStudents": 787,
+      "totalClasses": 35,
+      "average": 22.5,
+      "regularClassrooms": 38,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        },
+        {
+          "grade": 2,
+          "students": 107,
+          "classes": 5,
+          "perClass": 21.4
+        },
+        {
+          "grade": 3,
+          "students": 128,
+          "classes": 6,
+          "perClass": 21.3
+        },
+        {
+          "grade": 4,
+          "students": 142,
+          "classes": 6,
+          "perClass": 23.7
+        },
+        {
+          "grade": 5,
+          "students": 157,
+          "classes": 7,
+          "perClass": 22.4
+        },
+        {
+          "grade": 6,
+          "students": 143,
+          "classes": 6,
+          "perClass": 23.8
+        }
+      ]
+    },
+    {
+      "name": "대호초등학교",
+      "city": "오산",
+      "location": "궐동",
+      "branch": false,
+      "totalStudents": 527,
+      "totalClasses": 24,
+      "average": 22.0,
+      "regularClassrooms": 26,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 2,
+          "students": 83,
+          "classes": 4,
+          "perClass": 20.8
+        },
+        {
+          "grade": 3,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 4,
+          "students": 114,
+          "classes": 5,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 92,
+          "classes": 4,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        }
+      ]
+    },
+    {
+      "name": "마루초등학교",
+      "city": "오산",
+      "location": "탑동",
+      "branch": false,
+      "totalStudents": 428,
+      "totalClasses": 20,
+      "average": 21.4,
+      "regularClassrooms": 39,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 85,
+          "classes": 4,
+          "perClass": 21.2
+        },
+        {
+          "grade": 2,
+          "students": 82,
+          "classes": 4,
+          "perClass": 20.5
+        },
+        {
+          "grade": 3,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 4,
+          "students": 73,
+          "classes": 3,
+          "perClass": 24.3
+        },
+        {
+          "grade": 5,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 6,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        }
+      ]
+    },
+    {
+      "name": "매홀초등학교",
+      "city": "오산",
+      "location": "신장동",
+      "branch": false,
+      "totalStudents": 159,
+      "totalClasses": 10,
+      "average": 15.9,
+      "regularClassrooms": 14,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 25,
+          "classes": 1,
+          "perClass": 25.0
+        },
+        {
+          "grade": 2,
+          "students": 24,
+          "classes": 1,
+          "perClass": 24.0
+        },
+        {
+          "grade": 3,
+          "students": 27,
+          "classes": 2,
+          "perClass": 13.5
+        },
+        {
+          "grade": 4,
+          "students": 28,
+          "classes": 2,
+          "perClass": 14.0
+        },
+        {
+          "grade": 5,
+          "students": 29,
+          "classes": 2,
+          "perClass": 14.5
+        },
+        {
+          "grade": 6,
+          "students": 26,
+          "classes": 2,
+          "perClass": 13.0
+        }
+      ]
+    },
+    {
+      "name": "문시초등학교",
+      "city": "오산",
+      "location": "금암동",
+      "branch": false,
+      "totalStudents": 516,
+      "totalClasses": 23,
+      "average": 22.4,
+      "regularClassrooms": 26,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 2,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 79,
+          "classes": 4,
+          "perClass": 19.8
+        },
+        {
+          "grade": 4,
+          "students": 100,
+          "classes": 4,
+          "perClass": 25.0
+        },
+        {
+          "grade": 5,
+          "students": 102,
+          "classes": 4,
+          "perClass": 25.5
+        },
+        {
+          "grade": 6,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        }
+      ]
+    },
+    {
+      "name": "삼미초등학교",
+      "city": "오산",
+      "location": "외삼미동",
+      "branch": false,
+      "totalStudents": 446,
+      "totalClasses": 19,
+      "average": 23.5,
+      "regularClassrooms": 28,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 2,
+          "students": 75,
+          "classes": 3,
+          "perClass": 25.0
+        },
+        {
+          "grade": 3,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 4,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        },
+        {
+          "grade": 5,
+          "students": 69,
+          "classes": 3,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 70,
+          "classes": 3,
+          "perClass": 23.3
+        }
+      ]
+    },
+    {
+      "name": "성산초등학교",
+      "city": "오산",
+      "location": "오산동",
+      "branch": false,
+      "totalStudents": 123,
+      "totalClasses": 7,
+      "average": 17.6,
+      "regularClassrooms": 12,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 14,
+          "classes": 1,
+          "perClass": 14.0
+        },
+        {
+          "grade": 2,
+          "students": 17,
+          "classes": 1,
+          "perClass": 17.0
+        },
+        {
+          "grade": 3,
+          "students": 19,
+          "classes": 1,
+          "perClass": 19.0
+        },
+        {
+          "grade": 4,
+          "students": 29,
+          "classes": 2,
+          "perClass": 14.5
+        },
+        {
+          "grade": 5,
+          "students": 19,
+          "classes": 1,
+          "perClass": 19.0
+        },
+        {
+          "grade": 6,
+          "students": 25,
+          "classes": 1,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "성호초등학교",
+      "city": "오산",
+      "location": "오산동",
+      "branch": false,
+      "totalStudents": 228,
+      "totalClasses": 12,
+      "average": 19.0,
+      "regularClassrooms": 14,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 39,
+          "classes": 2,
+          "perClass": 19.5
+        },
+        {
+          "grade": 2,
+          "students": 37,
+          "classes": 2,
+          "perClass": 18.5
+        },
+        {
+          "grade": 3,
+          "students": 37,
+          "classes": 2,
+          "perClass": 18.5
+        },
+        {
+          "grade": 4,
+          "students": 40,
+          "classes": 2,
+          "perClass": 20.0
+        },
+        {
+          "grade": 5,
+          "students": 37,
+          "classes": 2,
+          "perClass": 18.5
+        },
+        {
+          "grade": 6,
+          "students": 38,
+          "classes": 2,
+          "perClass": 19.0
+        }
+      ]
+    },
+    {
+      "name": "세담초등학교",
+      "city": "오산",
+      "location": "궐동",
+      "branch": false,
+      "totalStudents": 1314,
+      "totalClasses": 56,
+      "average": 23.5,
+      "regularClassrooms": 60,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 263,
+          "classes": 11,
+          "perClass": 23.9
+        },
+        {
+          "grade": 2,
+          "students": 253,
+          "classes": 11,
+          "perClass": 23.0
+        },
+        {
+          "grade": 3,
+          "students": 207,
+          "classes": 9,
+          "perClass": 23.0
+        },
+        {
+          "grade": 4,
+          "students": 228,
+          "classes": 10,
+          "perClass": 22.8
+        },
+        {
+          "grade": 5,
+          "students": 197,
+          "classes": 8,
+          "perClass": 24.6
+        },
+        {
+          "grade": 6,
+          "students": 166,
+          "classes": 7,
+          "perClass": 23.7
+        }
+      ]
+    },
+    {
+      "name": "세마초등학교",
+      "city": "오산",
+      "location": "지곶동",
+      "branch": false,
+      "totalStudents": 493,
+      "totalClasses": 22,
+      "average": 22.4,
+      "regularClassrooms": 23,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 84,
+          "classes": 4,
+          "perClass": 21.0
+        },
+        {
+          "grade": 2,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 3,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        },
+        {
+          "grade": 4,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        },
+        {
+          "grade": 5,
+          "students": 81,
+          "classes": 4,
+          "perClass": 20.2
+        },
+        {
+          "grade": 6,
+          "students": 100,
+          "classes": 4,
+          "perClass": 25.0
+        }
+      ]
+    },
+    {
+      "name": "세미초등학교",
+      "city": "오산",
+      "location": "신장동",
+      "branch": false,
+      "totalStudents": 1347,
+      "totalClasses": 55,
+      "average": 24.5,
+      "regularClassrooms": 59,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 154,
+          "classes": 7,
+          "perClass": 22.0
+        },
+        {
+          "grade": 2,
+          "students": 176,
+          "classes": 7,
+          "perClass": 25.1
+        },
+        {
+          "grade": 3,
+          "students": 214,
+          "classes": 9,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 258,
+          "classes": 10,
+          "perClass": 25.8
+        },
+        {
+          "grade": 5,
+          "students": 282,
+          "classes": 11,
+          "perClass": 25.6
+        },
+        {
+          "grade": 6,
+          "students": 263,
+          "classes": 11,
+          "perClass": 23.9
+        }
+      ]
+    },
+    {
+      "name": "수청초등학교",
+      "city": "오산",
+      "location": "신장동",
+      "branch": false,
+      "totalStudents": 422,
+      "totalClasses": 20,
+      "average": 21.1,
+      "regularClassrooms": 22,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 57,
+          "classes": 3,
+          "perClass": 19.0
+        },
+        {
+          "grade": 2,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 3,
+          "students": 54,
+          "classes": 3,
+          "perClass": 18.0
+        },
+        {
+          "grade": 4,
+          "students": 60,
+          "classes": 3,
+          "perClass": 20.0
+        },
+        {
+          "grade": 5,
+          "students": 95,
+          "classes": 4,
+          "perClass": 23.8
+        },
+        {
+          "grade": 6,
+          "students": 96,
+          "classes": 4,
+          "perClass": 24.0
+        }
+      ]
+    },
+    {
+      "name": "양산초등학교",
+      "city": "오산",
+      "location": "세마동",
+      "branch": false,
+      "totalStudents": 508,
+      "totalClasses": 24,
+      "average": 21.2,
+      "regularClassrooms": 26,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 72,
+          "classes": 3,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 78,
+          "classes": 4,
+          "perClass": 19.5
+        },
+        {
+          "grade": 3,
+          "students": 82,
+          "classes": 4,
+          "perClass": 20.5
+        },
+        {
+          "grade": 4,
+          "students": 77,
+          "classes": 4,
+          "perClass": 19.2
+        },
+        {
+          "grade": 5,
+          "students": 109,
+          "classes": 5,
+          "perClass": 21.8
+        },
+        {
+          "grade": 6,
+          "students": 90,
+          "classes": 4,
+          "perClass": 22.5
+        }
+      ]
+    },
+    {
+      "name": "오산고현초등학교",
+      "city": "오산",
+      "location": "고현동",
+      "branch": false,
+      "totalStudents": 754,
+      "totalClasses": 33,
+      "average": 22.8,
+      "regularClassrooms": 53,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 2,
+          "students": 107,
+          "classes": 5,
+          "perClass": 21.4
+        },
+        {
+          "grade": 3,
+          "students": 116,
+          "classes": 5,
+          "perClass": 23.2
+        },
+        {
+          "grade": 4,
+          "students": 113,
+          "classes": 5,
+          "perClass": 22.6
+        },
+        {
+          "grade": 5,
+          "students": 159,
+          "classes": 7,
+          "perClass": 22.7
+        },
+        {
+          "grade": 6,
+          "students": 173,
+          "classes": 7,
+          "perClass": 24.7
+        }
+      ]
+    },
+    {
+      "name": "오산대원초등학교",
+      "city": "오산",
+      "location": "갈곶동",
+      "branch": false,
+      "totalStudents": 468,
+      "totalClasses": 22,
+      "average": 21.3,
+      "regularClassrooms": 29,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 55,
+          "classes": 3,
+          "perClass": 18.3
+        },
+        {
+          "grade": 2,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        },
+        {
+          "grade": 3,
+          "students": 83,
+          "classes": 4,
+          "perClass": 20.8
+        },
+        {
+          "grade": 4,
+          "students": 86,
+          "classes": 4,
+          "perClass": 21.5
+        },
+        {
+          "grade": 5,
+          "students": 97,
+          "classes": 4,
+          "perClass": 24.2
+        },
+        {
+          "grade": 6,
+          "students": 81,
+          "classes": 4,
+          "perClass": 20.2
+        }
+      ]
+    },
+    {
+      "name": "오산원당초등학교",
+      "city": "오산",
+      "location": "원동",
+      "branch": false,
+      "totalStudents": 747,
+      "totalClasses": 31,
+      "average": 24.1,
+      "regularClassrooms": 34,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 136,
+          "classes": 6,
+          "perClass": 22.7
+        },
+        {
+          "grade": 2,
+          "students": 130,
+          "classes": 5,
+          "perClass": 26.0
+        },
+        {
+          "grade": 3,
+          "students": 126,
+          "classes": 5,
+          "perClass": 25.2
+        },
+        {
+          "grade": 4,
+          "students": 118,
+          "classes": 5,
+          "perClass": 23.6
+        },
+        {
+          "grade": 5,
+          "students": 135,
+          "classes": 6,
+          "perClass": 22.5
+        },
+        {
+          "grade": 6,
+          "students": 102,
+          "classes": 4,
+          "perClass": 25.5
+        }
+      ]
+    },
+    {
+      "name": "오산원일초등학교",
+      "city": "오산",
+      "location": "원동",
+      "branch": false,
+      "totalStudents": 708,
+      "totalClasses": 30,
+      "average": 23.6,
+      "regularClassrooms": 33,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 76,
+          "classes": 3,
+          "perClass": 25.3
+        },
+        {
+          "grade": 2,
+          "students": 105,
+          "classes": 5,
+          "perClass": 21.0
+        },
+        {
+          "grade": 3,
+          "students": 95,
+          "classes": 4,
+          "perClass": 23.8
+        },
+        {
+          "grade": 4,
+          "students": 148,
+          "classes": 6,
+          "perClass": 24.7
+        },
+        {
+          "grade": 5,
+          "students": 140,
+          "classes": 6,
+          "perClass": 23.3
+        },
+        {
+          "grade": 6,
+          "students": 144,
+          "classes": 6,
+          "perClass": 24.0
+        }
+      ]
+    },
+    {
+      "name": "오산초등학교",
+      "city": "오산",
+      "location": "가수동",
+      "branch": false,
+      "totalStudents": 849,
+      "totalClasses": 37,
+      "average": 22.9,
+      "regularClassrooms": 51,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 139,
+          "classes": 6,
+          "perClass": 23.2
+        },
+        {
+          "grade": 2,
+          "students": 137,
+          "classes": 6,
+          "perClass": 22.8
+        },
+        {
+          "grade": 3,
+          "students": 136,
+          "classes": 6,
+          "perClass": 22.7
+        },
+        {
+          "grade": 4,
+          "students": 129,
+          "classes": 6,
+          "perClass": 21.5
+        },
+        {
+          "grade": 5,
+          "students": 172,
+          "classes": 7,
+          "perClass": 24.6
+        },
+        {
+          "grade": 6,
+          "students": 136,
+          "classes": 6,
+          "perClass": 22.7
+        }
+      ]
+    },
+    {
+      "name": "운산초등학교",
+      "city": "오산",
+      "location": "오산동",
+      "branch": false,
+      "totalStudents": 491,
+      "totalClasses": 21,
+      "average": 23.4,
+      "regularClassrooms": 23,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 67,
+          "classes": 3,
+          "perClass": 22.3
+        },
+        {
+          "grade": 2,
+          "students": 73,
+          "classes": 3,
+          "perClass": 24.3
+        },
+        {
+          "grade": 3,
+          "students": 68,
+          "classes": 3,
+          "perClass": 22.7
+        },
+        {
+          "grade": 4,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 5,
+          "students": 101,
+          "classes": 4,
+          "perClass": 25.2
+        },
+        {
+          "grade": 6,
+          "students": 93,
+          "classes": 4,
+          "perClass": 23.2
+        }
+      ]
+    },
+    {
+      "name": "운암초등학교",
+      "city": "오산",
+      "location": "원동",
+      "branch": false,
+      "totalStudents": 271,
+      "totalClasses": 13,
+      "average": 20.8,
+      "regularClassrooms": 27,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 39,
+          "classes": 2,
+          "perClass": 19.5
+        },
+        {
+          "grade": 2,
+          "students": 38,
+          "classes": 2,
+          "perClass": 19.0
+        },
+        {
+          "grade": 3,
+          "students": 48,
+          "classes": 2,
+          "perClass": 24.0
+        },
+        {
+          "grade": 4,
+          "students": 46,
+          "classes": 2,
+          "perClass": 23.0
+        },
+        {
+          "grade": 5,
+          "students": 47,
+          "classes": 2,
+          "perClass": 23.5
+        },
+        {
+          "grade": 6,
+          "students": 53,
+          "classes": 3,
+          "perClass": 17.7
+        }
+      ]
+    },
+    {
+      "name": "운천초등학교",
+      "city": "오산",
+      "location": "부산동",
+      "branch": false,
+      "totalStudents": 586,
+      "totalClasses": 25,
+      "average": 23.4,
+      "regularClassrooms": 32,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 74,
+          "classes": 3,
+          "perClass": 24.7
+        },
+        {
+          "grade": 2,
+          "students": 71,
+          "classes": 3,
+          "perClass": 23.7
+        },
+        {
+          "grade": 3,
+          "students": 99,
+          "classes": 4,
+          "perClass": 24.8
+        },
+        {
+          "grade": 4,
+          "students": 98,
+          "classes": 4,
+          "perClass": 24.5
+        },
+        {
+          "grade": 5,
+          "students": 134,
+          "classes": 6,
+          "perClass": 22.3
+        },
+        {
+          "grade": 6,
+          "students": 110,
+          "classes": 5,
+          "perClass": 22.0
+        }
+      ]
+    },
+    {
+      "name": "원동초등학교",
+      "city": "오산",
+      "location": "원동",
+      "branch": false,
+      "totalStudents": 510,
+      "totalClasses": 23,
+      "average": 22.2,
+      "regularClassrooms": 25,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 61,
+          "classes": 3,
+          "perClass": 20.3
+        },
+        {
+          "grade": 2,
+          "students": 63,
+          "classes": 3,
+          "perClass": 21.0
+        },
+        {
+          "grade": 3,
+          "students": 73,
+          "classes": 3,
+          "perClass": 24.3
+        },
+        {
+          "grade": 4,
+          "students": 87,
+          "classes": 4,
+          "perClass": 21.8
+        },
+        {
+          "grade": 5,
+          "students": 115,
+          "classes": 5,
+          "perClass": 23.0
+        },
+        {
+          "grade": 6,
+          "students": 111,
+          "classes": 5,
+          "perClass": 22.2
+        }
+      ]
+    },
+    {
+      "name": "필봉초등학교",
+      "city": "오산",
+      "location": "금앙동",
+      "branch": false,
+      "totalStudents": 516,
+      "totalClasses": 22,
+      "average": 23.5,
+      "regularClassrooms": 32,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 48,
+          "classes": 2,
+          "perClass": 24.0
+        },
+        {
+          "grade": 2,
+          "students": 64,
+          "classes": 3,
+          "perClass": 21.3
+        },
+        {
+          "grade": 3,
+          "students": 89,
+          "classes": 4,
+          "perClass": 22.2
+        },
+        {
+          "grade": 4,
+          "students": 111,
+          "classes": 5,
+          "perClass": 22.2
+        },
+        {
+          "grade": 5,
+          "students": 103,
+          "classes": 4,
+          "perClass": 25.8
+        },
+        {
+          "grade": 6,
+          "students": 101,
+          "classes": 4,
+          "perClass": 25.2
+        }
+      ]
+    },
+    {
+      "name": "화성초등학교",
+      "city": "오산",
+      "location": "내삼미동",
+      "branch": false,
+      "totalStudents": 264,
+      "totalClasses": 14,
+      "average": 18.9,
+      "regularClassrooms": 18,
+      "grades": [
+        {
+          "grade": 1,
+          "students": 27,
+          "classes": 2,
+          "perClass": 13.5
+        },
+        {
+          "grade": 2,
+          "students": 35,
+          "classes": 2,
+          "perClass": 17.5
+        },
+        {
+          "grade": 3,
+          "students": 40,
+          "classes": 2,
+          "perClass": 20.0
+        },
+        {
+          "grade": 4,
+          "students": 52,
+          "classes": 3,
+          "perClass": 17.3
+        },
+        {
+          "grade": 5,
+          "students": 44,
+          "classes": 2,
+          "perClass": 22.0
+        },
+        {
+          "grade": 6,
+          "students": 66,
+          "classes": 3,
+          "perClass": 22.0
+        }
+      ]
+    }
+  ]
+}
