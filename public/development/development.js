@@ -105,8 +105,17 @@ function middle2026Html(s){
  const r=middle2026[(s.city||'')+'|'+(s.name||'')];
  if(!r)return '<div class="notice">2026학년도 중등 본편성 자료가 연결되지 않았습니다.</div>';
  const v=x=>x===null||x===undefined?'자료 없음':esc(x);
- const part=['일반','특수','특별'].map(k=>{const g=r.groups[k];return '<tr><td>'+k+'</td><td>'+(g?v(g.classes):'자료 없음')+'</td><td>'+(g?v(g.students):'자료 없음')+'</td><td>'+(g?v(g.average):'자료 없음')+'</td></tr>'}).join('');
- return '<div class="middle-stats-2026"><p><b>2026학년도 중학교 학년말 학급편성 현황</b></p><p><b>중학군(구)</b><br>'+v(r.zone)+'</p><p><b>일반 학생수</b> '+v(r.totalStudents)+'명 · <b>전체 학급수</b> '+v(r.totalClasses)+'학급</p><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center"><thead><tr><th>구분</th><th>학급수</th><th>학생수</th><th>학급당 인원</th></tr></thead><tbody>'+part+'</tbody></table></div><p class="muted" style="font-size:11px">출처: 2026학년도 중등 학급 본편성 엑셀(학년말 기준). 학생수는 일반 학생수를 기준으로 표시하며, 특수교육대상학생은 일반·특수 학생수에 중복 포함될 수 있어 합산하지 않습니다.</p></div>';
+ const fmt=x=>x===null||x===undefined?'—':Number(x).toLocaleString('ko-KR');
+ const part=['일반','특수','특별'].map(k=>{
+   const g=r.groups[k],grades=(r.grades&&r.grades[k])||[];
+   const overall='<tr style="background:#f1f5f9;font-weight:700"><td>'+k+' 전체</td><td>'+(g?fmt(g.classes):'—')+'</td><td>'+(g?fmt(g.students):'—')+'</td><td>'+(g?v(g.average):'—')+'</td></tr>';
+   const details=[1,2,3].map(i=>{
+     const x=grades.find(x=>x.grade===i);
+     return '<tr><td style="padding-left:12px">'+i+'학년</td><td>'+(x?fmt(x.classes):'—')+'</td><td>'+(x?fmt(x.students):'—')+'</td><td>'+(x&&x.average!==null?v(x.average):'—')+'</td></tr>';
+   }).join('');
+   return overall+details;
+ }).join('');
+ return '<div class="middle-stats-2026"><p><b>2026학년도 중학교 학년말 학급편성 현황</b></p><p><b>중학군(구)</b><br>'+v(r.zone)+'</p><p><b>일반 학생수</b> '+v(r.totalStudents)+'명 · <b>전체 학급수</b> '+v(r.totalClasses)+'학급</p><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center"><thead><tr><th>구분</th><th>학급수</th><th>학생수</th><th>학급당 인원</th></tr></thead><tbody>'+part+'</tbody></table></div><p class="muted" style="font-size:11px">출처: 2026학년도 중등 학급 본편성 엑셀(학년말 기준). 학생수는 일반 학생수를 기준으로 표시하며, 특수교육대상학생은 일반·특수 학생수에 중복 포함될 수 있어 합산하지 않습니다. —는 원본에 해당 값이 없는 경우입니다.</p></div>';
 }
 function loadMiddleTrend(){
  if(middleTrendLoading)return middleTrendLoading;
