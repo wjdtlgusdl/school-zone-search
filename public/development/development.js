@@ -34,12 +34,12 @@ function elementary2026Html(s){
  const r=elementary2026[(s.city||'')+'|'+(s.name||'')];
  if(!r)return '<div class="notice">2026학년도 초등학교 학급편성 자료가 연결되지 않았습니다.</div>';
  const val=(v,suffix='')=>v===null||v===undefined?'자료 없음':esc(String(v))+suffix;
- const rows=(r.grades||[]).map(g=>'<tr><td>'+g.grade+'학년</td><td>'+val(g.classes)+'</td><td>'+val(g.students)+'</td><td>'+val(g.perClass)+'</td></tr>').join('');
- return '<div class="elementary-stats-2026"><p><b>2026학년도 학년말 학급편성 현황 (일반학급)</b></p>'+
- '<p>전체 '+val(r.totalClasses,'학급')+' · '+val(r.totalStudents,'명')+' · 학급당 '+val(r.average,'명')+'</p>'+
- '<p><b>보유 보통교실 수</b> '+val(r.regularClassrooms,'실')+'</p>'+
- '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center"><thead><tr><th>학년</th><th>학급수</th><th>학생수</th><th>학급당 인원</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
- '<p class="muted" style="font-size:11px">출처: 초등 학급 본편성, 2026학년말 기준. 특수·특별학급은 위 일반학급 수치에 포함하지 않았습니다.</p></div>';
+ const table=(grades)=>'<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center"><thead><tr><th>학년</th><th>학급수</th><th>학생수</th><th>학급당 인원</th></tr></thead><tbody>'+(grades||[]).map(g=>'<tr><td>'+g.grade+'학년</td><td>'+val(g.classes)+'</td><td>'+val(g.students)+'</td><td>'+val(g.perClass)+'</td></tr>').join('')+'</tbody></table></div>';
+ const section=(label,v)=>'<div style="margin-top:12px;padding-top:8px;border-top:1px solid #ddd"><p><b>'+label+'</b></p>'+(v?'<p>학급 '+val(v.classes,'학급')+' · 학생 '+val(v.students,'명')+' · 학급당 '+val(v.perClass,'명')+'</p>'+table(v.grades):'<p class="muted">자료 없음</p>')+'</div>';
+ return '<div class="elementary-stats-2026"><p><b>2026학년도 학년말 학급편성 현황</b></p>'+section('일반', {classes:r.totalClasses,students:r.totalStudents,perClass:r.average,grades:r.grades})+
+ section('특수',r.special)+section('특별',r.extra)+
+ '<p style="margin-top:10px"><b>보유 보통교실 수</b> '+val(r.regularClassrooms,'실')+'</p>'+
+ '<p class="muted" style="font-size:11px">출처: 초등 학급 본편성, 2026학년말 기준. 특수교육대상학생은 일반학급과 특수학급 학생수에 중복 포함될 수 있으므로 구분별 학생수를 합산하지 않습니다. 원본 빈칸은 자료 없음으로 표시합니다.</p></div>';
 }
 function showSchool(item){clearHighlights();item.el.classList.add('highlight');const s=item.school,k=s.kindergarten_type||'';
   const details=s.type==='유치원'?kindergartenInfoHtml(s.kindergarten_stats):'';
