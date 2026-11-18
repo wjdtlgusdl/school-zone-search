@@ -1,1 +1,5257 @@
-{"schools":{"화성|기산중학교":{"city":"화성","zone":"기산중학군","name":"기산중학교","area":"기산동","ownership":"공립","groups":{"일반":{"students":528,"classes":17,"average":31.06},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":18,"totalStudents":528},"화성|화성반월중학교":{"city":"화성","zone":"기산중학군","name":"화성반월중학교","area":"반월동","ownership":"공립","groups":{"일반":{"students":830,"classes":27,"average":30.74},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":28,"totalStudents":830},"화성|기안중학교":{"city":"화성","zone":"기안중학군","name":"기안중학교","area":"기안동","ownership":"공립","groups":{"일반":{"students":683,"classes":23,"average":29.7},"특수":{"students":11,"classes":2,"average":5.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":25,"totalStudents":683},"화성|와우중학교":{"city":"화성","zone":"기안중학군","name":"와우중학교","area":"봉담읍","ownership":"공립","groups":{"일반":{"students":960,"classes":30,"average":32.0},"특수":{"students":6,"classes":1,"average":6.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":960},"화성|화성동화중학교":{"city":"화성","zone":"기안중학군","name":"화성동화중학교","area":"봉담읍","ownership":"공립","groups":{"일반":{"students":780,"classes":25,"average":31.2},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":26,"totalStudents":780},"화성|남양중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"남양중학교","area":"남양읍","ownership":"공립","groups":{"일반":{"students":479,"classes":18,"average":26.61},"특수":{"students":12,"classes":4,"average":3.0},"특별":{"students":39,"classes":2,"average":19.5}},"totalClasses":24,"totalStudents":479},"화성|새동중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"새동중학교","area":"남양읍","ownership":"공립","groups":{"일반":{"students":54,"classes":4,"average":13.5},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":4,"totalStudents":54},"화성|신백중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"신백중학교","area":"남양읍","ownership":"공립","groups":{"일반":{"students":769,"classes":29,"average":26.52},"특수":{"students":2,"classes":2,"average":1.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":769},"화성|다원중학교":{"city":"화성","zone":"동탄2-1중학군","name":"다원중학교","area":"영천동","ownership":"공립","groups":{"일반":{"students":1169,"classes":35,"average":33.4},"특수":{"students":7,"classes":1,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":36,"totalStudents":1169},"화성|동탄중학교":{"city":"화성","zone":"동탄2-1중학군","name":"동탄중학교","area":"청계동","ownership":"공립","groups":{"일반":{"students":1040,"classes":30,"average":34.67},"특수":{"students":10,"classes":1,"average":10.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":1040},"화성|이산중학교":{"city":"화성","zone":"동탄2-1중학군","name":"이산중학교","area":"오산동","ownership":"공립","groups":{"일반":{"students":919,"classes":27,"average":34.04},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":28,"totalStudents":919},"화성|청계중학교":{"city":"화성","zone":"동탄2-1중학군","name":"청계중학교","area":"청계동","ownership":"공립","groups":{"일반":{"students":1222,"classes":36,"average":33.94},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":37,"totalStudents":1222},"화성|한백중학교":{"city":"화성","zone":"동탄2-1중학군","name":"한백중학교","area":"영천동","ownership":"공립","groups":{"일반":{"students":1194,"classes":35,"average":34.11},"특수":{"students":7,"classes":1,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":36,"totalStudents":1194},"화성|치동중학교":{"city":"화성","zone":"동탄2-1중학군","name":"치동중학교","area":"영천동","ownership":"공립","groups":{"일반":{"students":921,"classes":28,"average":32.89},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":29,"totalStudents":921},"화성|동탄목동중학교":{"city":"화성","zone":"동탄2-2중학군","name":"동탄목동중학교","area":"목동","ownership":"공립","groups":{"일반":{"students":1232,"classes":45,"average":27.38},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":46,"totalStudents":1232},"화성|방교중학교":{"city":"화성","zone":"동탄2-2중학군","name":"방교중학교","area":"송동","ownership":"공립","groups":{"일반":{"students":1213,"classes":36,"average":33.69},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":37,"totalStudents":1213},"화성|서연중학교":{"city":"화성","zone":"동탄2-2중학군","name":"서연중학교","area":"장지동","ownership":"공립","groups":{"일반":{"students":1216,"classes":36,"average":33.78},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":37,"totalStudents":1216},"화성|청림중학교":{"city":"화성","zone":"동탄2-2중학군","name":"청림중학교","area":"산척동","ownership":"공립","groups":{"일반":{"students":1202,"classes":36,"average":33.39},"특수":{"students":10,"classes":1,"average":10.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":37,"totalStudents":1202},"화성|바른중학교":{"city":"화성","zone":"동탄2-2중학군","name":"바른중학교","area":"신동","ownership":"공립","groups":{"일반":{"students":544,"classes":16,"average":34.0}},"totalClasses":16,"totalStudents":544},"화성|화성바른중학교":{"city":"화성","zone":"동탄2-2중학군","name":"화성바른중학교","area":"신동","ownership":"공립","groups":{"특수":{"students":2,"classes":1,"average":2.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":1,"totalStudents":null},"화성|화성세정중학교":{"city":"화성","zone":"동탄2-2중학군","name":"화성세정중학교","area":"산척동","ownership":"공립","groups":{"일반":{"students":1020,"classes":30,"average":34.0},"특수":{"students":6,"classes":1,"average":6.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":1020},"화성|화성신동중학교":{"city":"화성","zone":"동탄2-2중학군","name":"화성신동중학교","area":"신동","ownership":"공립","groups":{"일반":{"students":822,"classes":24,"average":34.25},"특수":{"students":3,"classes":1,"average":3.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":25,"totalStudents":822},"화성|능동중학교":{"city":"화성","zone":"동탄중학군","name":"능동중학교","area":"능동","ownership":"공립","groups":{"일반":{"students":843,"classes":25,"average":33.72},"특수":{"students":14,"classes":2,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":27,"totalStudents":843},"화성|반송중학교":{"city":"화성","zone":"동탄중학군","name":"반송중학교","area":"반송동","ownership":"공립","groups":{"일반":{"students":971,"classes":29,"average":33.48},"특수":{"students":4,"classes":1,"average":4.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":30,"totalStudents":971},"화성|석우중학교":{"city":"화성","zone":"동탄중학군","name":"석우중학교","area":"반송동","ownership":"공립","groups":{"일반":{"students":999,"classes":30,"average":33.3},"특수":{"students":7,"classes":1,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":999},"화성|솔빛중학교":{"city":"화성","zone":"동탄중학군","name":"솔빛중학교","area":"반송동","ownership":"공립","groups":{"일반":{"students":1008,"classes":30,"average":33.6},"특수":{"students":14,"classes":2,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":32,"totalStudents":1008},"화성|예당중학교":{"city":"화성","zone":"동탄중학군","name":"예당중학교","area":"석우동","ownership":"공립","groups":{"일반":{"students":775,"classes":23,"average":33.7},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":24,"totalStudents":775},"화성|푸른중학교":{"city":"화성","zone":"동탄중학군","name":"푸른중학교","area":"능동","ownership":"공립","groups":{"일반":{"students":950,"classes":29,"average":32.76},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":30,"totalStudents":950},"화성|발안중학교":{"city":"화성","zone":"발안중학군","name":"발안중학교","area":"향남읍","ownership":"공립","groups":{"일반":{"students":470,"classes":15,"average":31.33},"특수":{"students":14,"classes":2,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":17,"totalStudents":470},"화성|봉담중학교":{"city":"화성","zone":"봉담중학군","name":"봉담중학교","area":"봉담읍","ownership":"공립","groups":{"일반":{"students":811,"classes":27,"average":30.04},"특수":{"students":12,"classes":2,"average":6.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":29,"totalStudents":811},"화성|수현중학교":{"city":"화성","zone":"봉담중학군","name":"수현중학교","area":"봉담읍","ownership":"공립","groups":{"일반":{"students":515,"classes":19,"average":27.11},"특수":{"students":5,"classes":1,"average":5.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":20,"totalStudents":515},"화성|화담중학교":{"city":"화성","zone":"봉담중학군","name":"화담중학교","area":"봉담읍","ownership":"공립","groups":{"일반":{"students":627,"classes":22,"average":28.5},"특수":{"students":18,"classes":4,"average":4.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":26,"totalStudents":627},"화성|병점중학교":{"city":"화성","zone":"진안중학군","name":"병점중학교","area":"병점동","ownership":"공립","groups":{"일반":{"students":1019,"classes":32,"average":31.84},"특수":{"students":13,"classes":2,"average":6.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":34,"totalStudents":1019},"화성|안화중학교":{"city":"화성","zone":"진안중학군","name":"안화중학교","area":"병점동","ownership":"공립","groups":{"일반":{"students":1142,"classes":35,"average":32.63},"특수":{"students":12,"classes":1,"average":12.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":36,"totalStudents":1142},"화성|진안중학교":{"city":"화성","zone":"진안중학군","name":"진안중학교","area":"진안동","ownership":"공립","groups":{"일반":{"students":456,"classes":16,"average":28.5},"특수":{"students":2,"classes":1,"average":2.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":17,"totalStudents":456},"화성|하길중학교":{"city":"화성","zone":"향남중학군","name":"하길중학교","area":"향남읍","ownership":"공립","groups":{"일반":{"students":1159,"classes":35,"average":33.11},"특수":{"students":16,"classes":3,"average":5.33},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":38,"totalStudents":1159},"화성|향남중학교":{"city":"화성","zone":"향남중학군","name":"향남중학교","area":"향남읍","ownership":"공립","groups":{"일반":{"students":1267,"classes":37,"average":34.24},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":38,"totalStudents":1267},"화성|화성상신중학교":{"city":"화성","zone":"향남중학군","name":"화성상신중학교","area":"향남읍","ownership":"공립","groups":{"일반":{"students":243,"classes":9,"average":27.0},"특수":{"students":6,"classes":1,"average":6.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":10,"totalStudents":243},"화성|동학중학교":{"city":"화성","zone":"동학중학구","name":"동학중학교","area":"반월동","ownership":"공립","groups":{"일반":{"students":650,"classes":24,"average":27.08},"특수":{"students":5,"classes":1,"average":5.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":25,"totalStudents":650},"화성|청연중학교":{"city":"화성","zone":"비봉2중학구","name":"청연중학교","area":"비봉면","ownership":"공립","groups":{"일반":{"students":144,"classes":6,"average":24.0},"특수":{"students":5,"classes":1,"average":5.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":7,"totalStudents":144},"화성|송린중학교":{"city":"화성","zone":"송린중학구","name":"송린중학교","area":"새솔동","ownership":"공립","groups":{"일반":{"students":1302,"classes":48,"average":27.12},"특수":{"students":10,"classes":2,"average":5.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":50,"totalStudents":1302},"화성|양감중학교":{"city":"화성","zone":"양감중학구","name":"양감중학교","area":"양감면","ownership":"공립","groups":{"일반":{"students":30,"classes":3,"average":10.0},"특수":{"students":2,"classes":1,"average":2.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":4,"totalStudents":30},"화성|정남중학교":{"city":"화성","zone":"정남중학구","name":"정남중학교","area":"정남면","ownership":"공립","groups":{"일반":{"students":125,"classes":6,"average":20.83},"특수":{"students":1,"classes":1,"average":1.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":7,"totalStudents":125},"화성|서신중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"서신중학교","area":"서신면","ownership":"사립","groups":{"일반":{"students":57,"classes":4,"average":14.25},"특수":{"students":3,"classes":1,"average":3.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":5,"totalStudents":57},"화성|송산중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"송산중학교","area":"송산면","ownership":"사립","groups":{"일반":{"students":457,"classes":18,"average":25.39},"특수":{"students":7,"classes":1,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":19,"totalStudents":457},"화성|화도중학교":{"city":"화성","zone":"남양서신송산화도중학군","name":"화도중학교","area":"마도면","ownership":"사립","groups":{"일반":{"students":154,"classes":6,"average":25.67},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":6,"totalStudents":154},"화성|화성중학교":{"city":"화성","zone":"발안중학군","name":"화성중학교","area":"향남읍","ownership":"사립","groups":{"일반":{"students":505,"classes":15,"average":33.67},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":15,"totalStudents":505},"화성|비봉중학교":{"city":"화성","zone":"비봉1중학구","name":"비봉중학교","area":"비봉면","ownership":"사립","groups":{"일반":{"students":152,"classes":6,"average":25.33},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":6,"totalStudents":152},"화성|안용중학교":{"city":"화성","zone":"안용중학구","name":"안용중학교","area":"송산동","ownership":"사립","groups":{"일반":{"students":511,"classes":18,"average":28.39},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":18,"totalStudents":511},"화성|삼괴중학교":{"city":"화성","zone":"우정중학구","name":"삼괴중학교","area":"우정읍","ownership":"사립","groups":{"일반":{"students":248,"classes":10,"average":24.8},"특수":{"students":7,"classes":1,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":11,"totalStudents":248},"화성|장안여자중학교":{"city":"화성","zone":"우정중학구","name":"장안여자중학교","area":"장안면","ownership":"사립","groups":{"일반":{"students":254,"classes":10,"average":25.4},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":11,"totalStudents":254},"오산|성호중학교":{"city":"오산","zone":"성호중학군","name":"성호중학교","area":"원동","ownership":"공립","groups":{"일반":{"students":844,"classes":26,"average":32.46},"특수":{"students":8,"classes":1,"average":8.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":27,"totalStudents":844},"오산|오산원일중학교":{"city":"오산","zone":"성호중학군","name":"오산원일중학교","area":"원동","ownership":"공립","groups":{"일반":{"students":1046,"classes":31,"average":33.74},"특수":{"students":17,"classes":3,"average":5.67},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":34,"totalStudents":1046},"오산|매홀중학교":{"city":"오산","zone":"세교중학군","name":"매홀중학교","area":"수청동","ownership":"공립","groups":{"일반":{"students":1153,"classes":34,"average":33.91},"특수":{"students":15,"classes":2,"average":7.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":36,"totalStudents":1153},"오산|문시중학교":{"city":"오산","zone":"세교중학군","name":"문시중학교","area":"금암동","ownership":"공립","groups":{"일반":{"students":1149,"classes":33,"average":34.82},"특수":{"students":14,"classes":2,"average":7.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":35,"totalStudents":1149},"오산|세마중학교":{"city":"오산","zone":"세교중학군","name":"세마중학교","area":"세교동","ownership":"공립","groups":{"일반":{"students":1135,"classes":32,"average":35.47},"특수":{"students":15,"classes":2,"average":7.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":34,"totalStudents":1135},"오산|가수중학교":{"city":"오산","zone":"오산중학군","name":"가수중학교","area":"가수동","ownership":"공립","groups":{"일반":{"students":810,"classes":30,"average":27.0},"특수":{"students":9,"classes":1,"average":9.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":31,"totalStudents":810},"오산|대호중학교":{"city":"오산","zone":"오산중학군","name":"대호중학교","area":"궐동","ownership":"공립","groups":{"일반":{"students":670,"classes":26,"average":25.77},"특수":{"students":15,"classes":2,"average":7.5},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":28,"totalStudents":670},"오산|운암중학교":{"city":"오산","zone":"운암중학군","name":"운암중학교","area":"원동","ownership":"공립","groups":{"일반":{"students":769,"classes":23,"average":33.43},"특수":{"students":10,"classes":1,"average":10.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":24,"totalStudents":769},"오산|운천중학교":{"city":"오산","zone":"운암중학군","name":"운천중학교","area":"오산동","ownership":"공립","groups":{"일반":{"students":794,"classes":25,"average":31.76},"특수":{"students":15,"classes":3,"average":5.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":28,"totalStudents":794},"오산|오산중학교":{"city":"오산","zone":"오산중학군","name":"오산중학교","area":"청학동","ownership":"사립","groups":{"일반":{"students":596,"classes":24,"average":24.83},"특수":{"students":0,"classes":0,"average":0.0},"특별":{"students":0,"classes":0,"average":0.0}},"totalClasses":24,"totalStudents":596}}}
+{
+  "schools": {
+    "화성|기산중학교": {
+      "city": "화성",
+      "zone": "기산중학군",
+      "name": "기산중학교",
+      "area": "기산동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 528,
+          "classes": 17,
+          "average": 31.06
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 18,
+      "totalStudents": 528,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 188,
+            "classes": 6,
+            "average": 31.33
+          },
+          {
+            "grade": 2,
+            "students": 155,
+            "classes": 5,
+            "average": 31
+          },
+          {
+            "grade": 3,
+            "students": 185,
+            "classes": 6,
+            "average": 30.83
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성반월중학교": {
+      "city": "화성",
+      "zone": "기산중학군",
+      "name": "화성반월중학교",
+      "area": "반월동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 830,
+          "classes": 27,
+          "average": 30.74
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 28,
+      "totalStudents": 830,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 239,
+            "classes": 8,
+            "average": 29.88
+          },
+          {
+            "grade": 2,
+            "students": 316,
+            "classes": 10,
+            "average": 31.6
+          },
+          {
+            "grade": 3,
+            "students": 275,
+            "classes": 9,
+            "average": 30.56
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|기안중학교": {
+      "city": "화성",
+      "zone": "기안중학군",
+      "name": "기안중학교",
+      "area": "기안동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 683,
+          "classes": 23,
+          "average": 29.7
+        },
+        "특수": {
+          "students": 11,
+          "classes": 2,
+          "average": 5.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 25,
+      "totalStudents": 683,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 206,
+            "classes": 7,
+            "average": 29.43
+          },
+          {
+            "grade": 2,
+            "students": 206,
+            "classes": 7,
+            "average": 29.43
+          },
+          {
+            "grade": 3,
+            "students": 271,
+            "classes": 9,
+            "average": 30.11
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|와우중학교": {
+      "city": "화성",
+      "zone": "기안중학군",
+      "name": "와우중학교",
+      "area": "봉담읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 960,
+          "classes": 30,
+          "average": 32.0
+        },
+        "특수": {
+          "students": 6,
+          "classes": 1,
+          "average": 6.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 960,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 320,
+            "classes": 10,
+            "average": 32
+          },
+          {
+            "grade": 2,
+            "students": 320,
+            "classes": 10,
+            "average": 32
+          },
+          {
+            "grade": 3,
+            "students": 320,
+            "classes": 10,
+            "average": 32
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성동화중학교": {
+      "city": "화성",
+      "zone": "기안중학군",
+      "name": "화성동화중학교",
+      "area": "봉담읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 780,
+          "classes": 25,
+          "average": 31.2
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 26,
+      "totalStudents": 780,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 248,
+            "classes": 8,
+            "average": 31
+          },
+          {
+            "grade": 2,
+            "students": 249,
+            "classes": 8,
+            "average": 31.12
+          },
+          {
+            "grade": 3,
+            "students": 283,
+            "classes": 9,
+            "average": 31.44
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|남양중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "남양중학교",
+      "area": "남양읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 479,
+          "classes": 18,
+          "average": 26.61
+        },
+        "특수": {
+          "students": 12,
+          "classes": 4,
+          "average": 3.0
+        },
+        "특별": {
+          "students": 39,
+          "classes": 2,
+          "average": 19.5
+        }
+      },
+      "totalClasses": 24,
+      "totalStudents": 479,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 136,
+            "classes": 5,
+            "average": 27.2
+          },
+          {
+            "grade": 2,
+            "students": 164,
+            "classes": 6,
+            "average": 27.33
+          },
+          {
+            "grade": 3,
+            "students": 179,
+            "classes": 7,
+            "average": 25.57
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 2,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 2,
+            "average": 2.5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 15,
+            "classes": 1,
+            "average": 15
+          },
+          {
+            "grade": 2,
+            "students": 12,
+            "classes": 1,
+            "average": 12
+          },
+          {
+            "grade": 3,
+            "students": 12,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|새동중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "새동중학교",
+      "area": "남양읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 54,
+          "classes": 4,
+          "average": 13.5
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 4,
+      "totalStudents": 54,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 38,
+            "classes": 2,
+            "average": 19
+          },
+          {
+            "grade": 2,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 3,
+            "students": 11,
+            "classes": 1,
+            "average": 11
+          }
+        ]
+      }
+    },
+    "화성|신백중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "신백중학교",
+      "area": "남양읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 769,
+          "classes": 29,
+          "average": 26.52
+        },
+        "특수": {
+          "students": 2,
+          "classes": 2,
+          "average": 1.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 769,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 188,
+            "classes": 7,
+            "average": 26.86
+          },
+          {
+            "grade": 2,
+            "students": 290,
+            "classes": 11,
+            "average": 26.36
+          },
+          {
+            "grade": 3,
+            "students": 291,
+            "classes": 11,
+            "average": 26.45
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 1,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|다원중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "다원중학교",
+      "area": "영천동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1169,
+          "classes": 35,
+          "average": 33.4
+        },
+        "특수": {
+          "students": 7,
+          "classes": 1,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 36,
+      "totalStudents": 1169,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 370,
+            "classes": 11,
+            "average": 33.64
+          },
+          {
+            "grade": 2,
+            "students": 412,
+            "classes": 12,
+            "average": 34.33
+          },
+          {
+            "grade": 3,
+            "students": 387,
+            "classes": 12,
+            "average": 32.25
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 7,
+            "classes": 1,
+            "average": 7
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|동탄중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "동탄중학교",
+      "area": "청계동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1040,
+          "classes": 30,
+          "average": 34.67
+        },
+        "특수": {
+          "students": 10,
+          "classes": 1,
+          "average": 10.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 1040,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 340,
+            "classes": 10,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 360,
+            "classes": 10,
+            "average": 36
+          },
+          {
+            "grade": 3,
+            "students": 340,
+            "classes": 10,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|이산중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "이산중학교",
+      "area": "오산동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 919,
+          "classes": 27,
+          "average": 34.04
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 28,
+      "totalStudents": 919,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 272,
+            "classes": 8,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 375,
+            "classes": 11,
+            "average": 34.09
+          },
+          {
+            "grade": 3,
+            "students": 272,
+            "classes": 8,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|청계중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "청계중학교",
+      "area": "청계동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1222,
+          "classes": 36,
+          "average": 33.94
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 37,
+      "totalStudents": 1222,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 408,
+            "classes": 12,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 420,
+            "classes": 12,
+            "average": 35
+          },
+          {
+            "grade": 3,
+            "students": 394,
+            "classes": 12,
+            "average": 32.83
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|한백중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "한백중학교",
+      "area": "영천동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1194,
+          "classes": 35,
+          "average": 34.11
+        },
+        "특수": {
+          "students": 7,
+          "classes": 1,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 36,
+      "totalStudents": 1194,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 367,
+            "classes": 11,
+            "average": 33.36
+          },
+          {
+            "grade": 2,
+            "students": 428,
+            "classes": 12,
+            "average": 35.67
+          },
+          {
+            "grade": 3,
+            "students": 399,
+            "classes": 12,
+            "average": 33.25
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|치동중학교": {
+      "city": "화성",
+      "zone": "동탄2-1중학군",
+      "name": "치동중학교",
+      "area": "영천동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 921,
+          "classes": 28,
+          "average": 32.89
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 29,
+      "totalStudents": 921,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 254,
+            "classes": 8,
+            "average": 31.75
+          },
+          {
+            "grade": 2,
+            "students": 354,
+            "classes": 10,
+            "average": 35.4
+          },
+          {
+            "grade": 3,
+            "students": 313,
+            "classes": 10,
+            "average": 31.3
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|동탄목동중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "동탄목동중학교",
+      "area": "목동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1232,
+          "classes": 45,
+          "average": 27.38
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 46,
+      "totalStudents": 1232,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 419,
+            "classes": 15,
+            "average": 27.93
+          },
+          {
+            "grade": 2,
+            "students": 408,
+            "classes": 15,
+            "average": 27.2
+          },
+          {
+            "grade": 3,
+            "students": 405,
+            "classes": 15,
+            "average": 27
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|방교중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "방교중학교",
+      "area": "송동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1213,
+          "classes": 36,
+          "average": 33.69
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 37,
+      "totalStudents": 1213,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 397,
+            "classes": 12,
+            "average": 33.08
+          },
+          {
+            "grade": 2,
+            "students": 419,
+            "classes": 12,
+            "average": 34.92
+          },
+          {
+            "grade": 3,
+            "students": 397,
+            "classes": 12,
+            "average": 33.08
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|서연중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "서연중학교",
+      "area": "장지동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1216,
+          "classes": 36,
+          "average": 33.78
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 37,
+      "totalStudents": 1216,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 397,
+            "classes": 12,
+            "average": 33.08
+          },
+          {
+            "grade": 2,
+            "students": 419,
+            "classes": 12,
+            "average": 34.92
+          },
+          {
+            "grade": 3,
+            "students": 400,
+            "classes": 12,
+            "average": 33.33
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|청림중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "청림중학교",
+      "area": "산척동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1202,
+          "classes": 36,
+          "average": 33.39
+        },
+        "특수": {
+          "students": 10,
+          "classes": 1,
+          "average": 10.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 37,
+      "totalStudents": 1202,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 398,
+            "classes": 12,
+            "average": 33.17
+          },
+          {
+            "grade": 2,
+            "students": 410,
+            "classes": 12,
+            "average": 34.17
+          },
+          {
+            "grade": 3,
+            "students": 394,
+            "classes": 12,
+            "average": 32.83
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|바른중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "바른중학교",
+      "area": "신동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 544,
+          "classes": 16,
+          "average": 34.0
+        }
+      },
+      "totalClasses": 16,
+      "totalStudents": 544,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 264,
+            "classes": 8,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 140,
+            "classes": 4,
+            "average": 35
+          },
+          {
+            "grade": 3,
+            "students": 140,
+            "classes": 4,
+            "average": 35
+          }
+        ]
+      }
+    },
+    "화성|화성바른중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "화성바른중학교",
+      "area": "신동",
+      "ownership": "공립",
+      "groups": {
+        "특수": {
+          "students": 2,
+          "classes": 1,
+          "average": 2.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 1,
+      "totalStudents": null,
+      "grades": {
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성세정중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "화성세정중학교",
+      "area": "산척동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1020,
+          "classes": 30,
+          "average": 34.0
+        },
+        "특수": {
+          "students": 6,
+          "classes": 1,
+          "average": 6.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 1020,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 330,
+            "classes": 10,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 350,
+            "classes": 10,
+            "average": 35
+          },
+          {
+            "grade": 3,
+            "students": 340,
+            "classes": 10,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성신동중학교": {
+      "city": "화성",
+      "zone": "동탄2-2중학군",
+      "name": "화성신동중학교",
+      "area": "신동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 822,
+          "classes": 24,
+          "average": 34.25
+        },
+        "특수": {
+          "students": 3,
+          "classes": 1,
+          "average": 3.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 25,
+      "totalStudents": 822,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 297,
+            "classes": 9,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 350,
+            "classes": 10,
+            "average": 35
+          },
+          {
+            "grade": 3,
+            "students": 175,
+            "classes": 5,
+            "average": 35
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|능동중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "능동중학교",
+      "area": "능동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 843,
+          "classes": 25,
+          "average": 33.72
+        },
+        "특수": {
+          "students": 14,
+          "classes": 2,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 27,
+      "totalStudents": 843,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 231,
+            "classes": 7,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 306,
+            "classes": 9,
+            "average": 34
+          },
+          {
+            "grade": 3,
+            "students": 306,
+            "classes": 9,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 7,
+            "classes": 1,
+            "average": 7
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|반송중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "반송중학교",
+      "area": "반송동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 971,
+          "classes": 29,
+          "average": 33.48
+        },
+        "특수": {
+          "students": 4,
+          "classes": 1,
+          "average": 4.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 30,
+      "totalStudents": 971,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 298,
+            "classes": 9,
+            "average": 33.11
+          },
+          {
+            "grade": 2,
+            "students": 340,
+            "classes": 10,
+            "average": 34
+          },
+          {
+            "grade": 3,
+            "students": 333,
+            "classes": 10,
+            "average": 33.3
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|석우중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "석우중학교",
+      "area": "반송동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 999,
+          "classes": 30,
+          "average": 33.3
+        },
+        "특수": {
+          "students": 7,
+          "classes": 1,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 999,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 330,
+            "classes": 10,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 338,
+            "classes": 10,
+            "average": 33.8
+          },
+          {
+            "grade": 3,
+            "students": 331,
+            "classes": 10,
+            "average": 33.1
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|솔빛중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "솔빛중학교",
+      "area": "반송동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1008,
+          "classes": 30,
+          "average": 33.6
+        },
+        "특수": {
+          "students": 14,
+          "classes": 2,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 32,
+      "totalStudents": 1008,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 331,
+            "classes": 10,
+            "average": 33.1
+          },
+          {
+            "grade": 2,
+            "students": 337,
+            "classes": 10,
+            "average": 33.7
+          },
+          {
+            "grade": 3,
+            "students": 340,
+            "classes": 10,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 7,
+            "classes": 1,
+            "average": 7
+          },
+          {
+            "grade": 2,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|예당중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "예당중학교",
+      "area": "석우동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 775,
+          "classes": 23,
+          "average": 33.7
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 24,
+      "totalStudents": 775,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 231,
+            "classes": 7,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 272,
+            "classes": 8,
+            "average": 34
+          },
+          {
+            "grade": 3,
+            "students": 272,
+            "classes": 8,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|푸른중학교": {
+      "city": "화성",
+      "zone": "동탄중학군",
+      "name": "푸른중학교",
+      "area": "능동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 950,
+          "classes": 29,
+          "average": 32.76
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 30,
+      "totalStudents": 950,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 297,
+            "classes": 9,
+            "average": 33
+          },
+          {
+            "grade": 2,
+            "students": 330,
+            "classes": 10,
+            "average": 33
+          },
+          {
+            "grade": 3,
+            "students": 323,
+            "classes": 10,
+            "average": 32.3
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|발안중학교": {
+      "city": "화성",
+      "zone": "발안중학군",
+      "name": "발안중학교",
+      "area": "향남읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 470,
+          "classes": 15,
+          "average": 31.33
+        },
+        "특수": {
+          "students": 14,
+          "classes": 2,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 17,
+      "totalStudents": 470,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 170,
+            "classes": 5,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 143,
+            "classes": 5,
+            "average": 28.6
+          },
+          {
+            "grade": 3,
+            "students": 157,
+            "classes": 5,
+            "average": 31.4
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|봉담중학교": {
+      "city": "화성",
+      "zone": "봉담중학군",
+      "name": "봉담중학교",
+      "area": "봉담읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 811,
+          "classes": 27,
+          "average": 30.04
+        },
+        "특수": {
+          "students": 12,
+          "classes": 2,
+          "average": 6.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 29,
+      "totalStudents": 811,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 225,
+            "classes": 8,
+            "average": 28.12
+          },
+          {
+            "grade": 2,
+            "students": 306,
+            "classes": 10,
+            "average": 30.6
+          },
+          {
+            "grade": 3,
+            "students": 280,
+            "classes": 9,
+            "average": 31.11
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|수현중학교": {
+      "city": "화성",
+      "zone": "봉담중학군",
+      "name": "수현중학교",
+      "area": "봉담읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 515,
+          "classes": 19,
+          "average": 27.11
+        },
+        "특수": {
+          "students": 5,
+          "classes": 1,
+          "average": 5.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 20,
+      "totalStudents": 515,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 163,
+            "classes": 6,
+            "average": 27.17
+          },
+          {
+            "grade": 2,
+            "students": 131,
+            "classes": 5,
+            "average": 26.2
+          },
+          {
+            "grade": 3,
+            "students": 221,
+            "classes": 8,
+            "average": 27.62
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화담중학교": {
+      "city": "화성",
+      "zone": "봉담중학군",
+      "name": "화담중학교",
+      "area": "봉담읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 627,
+          "classes": 22,
+          "average": 28.5
+        },
+        "특수": {
+          "students": 18,
+          "classes": 4,
+          "average": 4.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 26,
+      "totalStudents": 627,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 217,
+            "classes": 7,
+            "average": 31
+          },
+          {
+            "grade": 2,
+            "students": 282,
+            "classes": 10,
+            "average": 28.2
+          },
+          {
+            "grade": 3,
+            "students": 128,
+            "classes": 5,
+            "average": 25.6
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 2,
+            "students": 9,
+            "classes": 2,
+            "average": 4.5
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|병점중학교": {
+      "city": "화성",
+      "zone": "진안중학군",
+      "name": "병점중학교",
+      "area": "병점동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1019,
+          "classes": 32,
+          "average": 31.84
+        },
+        "특수": {
+          "students": 13,
+          "classes": 2,
+          "average": 6.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 34,
+      "totalStudents": 1019,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 328,
+            "classes": 10,
+            "average": 32.8
+          },
+          {
+            "grade": 2,
+            "students": 360,
+            "classes": 11,
+            "average": 32.73
+          },
+          {
+            "grade": 3,
+            "students": 331,
+            "classes": 11,
+            "average": 30.09
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|안화중학교": {
+      "city": "화성",
+      "zone": "진안중학군",
+      "name": "안화중학교",
+      "area": "병점동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1142,
+          "classes": 35,
+          "average": 32.63
+        },
+        "특수": {
+          "students": 12,
+          "classes": 1,
+          "average": 12.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 36,
+      "totalStudents": 1142,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 361,
+            "classes": 11,
+            "average": 32.82
+          },
+          {
+            "grade": 2,
+            "students": 392,
+            "classes": 12,
+            "average": 32.67
+          },
+          {
+            "grade": 3,
+            "students": 389,
+            "classes": 12,
+            "average": 32.42
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 10,
+            "classes": 1,
+            "average": 10
+          },
+          {
+            "grade": 2,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|진안중학교": {
+      "city": "화성",
+      "zone": "진안중학군",
+      "name": "진안중학교",
+      "area": "진안동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 456,
+          "classes": 16,
+          "average": 28.5
+        },
+        "특수": {
+          "students": 2,
+          "classes": 1,
+          "average": 2.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 17,
+      "totalStudents": 456,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 141,
+            "classes": 5,
+            "average": 28.2
+          },
+          {
+            "grade": 2,
+            "students": 165,
+            "classes": 6,
+            "average": 27.5
+          },
+          {
+            "grade": 3,
+            "students": 150,
+            "classes": 5,
+            "average": 30
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|하길중학교": {
+      "city": "화성",
+      "zone": "향남중학군",
+      "name": "하길중학교",
+      "area": "향남읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1159,
+          "classes": 35,
+          "average": 33.11
+        },
+        "특수": {
+          "students": 16,
+          "classes": 3,
+          "average": 5.33
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 38,
+      "totalStudents": 1159,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 342,
+            "classes": 10,
+            "average": 34.2
+          },
+          {
+            "grade": 2,
+            "students": 418,
+            "classes": 13,
+            "average": 32.15
+          },
+          {
+            "grade": 3,
+            "students": 399,
+            "classes": 12,
+            "average": 33.25
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 8,
+            "classes": 2,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|향남중학교": {
+      "city": "화성",
+      "zone": "향남중학군",
+      "name": "향남중학교",
+      "area": "향남읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1267,
+          "classes": 37,
+          "average": 34.24
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 38,
+      "totalStudents": 1267,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 374,
+            "classes": 11,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 434,
+            "classes": 13,
+            "average": 33.38
+          },
+          {
+            "grade": 3,
+            "students": 459,
+            "classes": 13,
+            "average": 35.31
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성상신중학교": {
+      "city": "화성",
+      "zone": "향남중학군",
+      "name": "화성상신중학교",
+      "area": "향남읍",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 243,
+          "classes": 9,
+          "average": 27.0
+        },
+        "특수": {
+          "students": 6,
+          "classes": 1,
+          "average": 6.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 10,
+      "totalStudents": 243,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 129,
+            "classes": 5,
+            "average": 25.8
+          },
+          {
+            "grade": 2,
+            "students": 89,
+            "classes": 3,
+            "average": 29.67
+          },
+          {
+            "grade": 3,
+            "students": 25,
+            "classes": 1,
+            "average": 25
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|동학중학교": {
+      "city": "화성",
+      "zone": "동학중학구",
+      "name": "동학중학교",
+      "area": "반월동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 650,
+          "classes": 24,
+          "average": 27.08
+        },
+        "특수": {
+          "students": 5,
+          "classes": 1,
+          "average": 5.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 25,
+      "totalStudents": 650,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 188,
+            "classes": 7,
+            "average": 26.86
+          },
+          {
+            "grade": 2,
+            "students": 244,
+            "classes": 9,
+            "average": 27.11
+          },
+          {
+            "grade": 3,
+            "students": 218,
+            "classes": 8,
+            "average": 27.25
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|청연중학교": {
+      "city": "화성",
+      "zone": "비봉2중학구",
+      "name": "청연중학교",
+      "area": "비봉면",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 144,
+          "classes": 6,
+          "average": 24.0
+        },
+        "특수": {
+          "students": 5,
+          "classes": 1,
+          "average": 5.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 7,
+      "totalStudents": 144,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 57,
+            "classes": 2,
+            "average": 28.5
+          },
+          {
+            "grade": 2,
+            "students": 60,
+            "classes": 3,
+            "average": 20
+          },
+          {
+            "grade": 3,
+            "students": 27,
+            "classes": 1,
+            "average": 27
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|송린중학교": {
+      "city": "화성",
+      "zone": "송린중학구",
+      "name": "송린중학교",
+      "area": "새솔동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1302,
+          "classes": 48,
+          "average": 27.12
+        },
+        "특수": {
+          "students": 10,
+          "classes": 2,
+          "average": 5.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 50,
+      "totalStudents": 1302,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 437,
+            "classes": 16,
+            "average": 27.31
+          },
+          {
+            "grade": 2,
+            "students": 455,
+            "classes": 17,
+            "average": 26.76
+          },
+          {
+            "grade": 3,
+            "students": 410,
+            "classes": 15,
+            "average": 27.33
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|양감중학교": {
+      "city": "화성",
+      "zone": "양감중학구",
+      "name": "양감중학교",
+      "area": "양감면",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 30,
+          "classes": 3,
+          "average": 10.0
+        },
+        "특수": {
+          "students": 2,
+          "classes": 1,
+          "average": 2.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 4,
+      "totalStudents": 30,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 2,
+            "students": 11,
+            "classes": 1,
+            "average": 11
+          },
+          {
+            "grade": 3,
+            "students": 14,
+            "classes": 1,
+            "average": 14
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|정남중학교": {
+      "city": "화성",
+      "zone": "정남중학구",
+      "name": "정남중학교",
+      "area": "정남면",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 125,
+          "classes": 6,
+          "average": 20.83
+        },
+        "특수": {
+          "students": 1,
+          "classes": 1,
+          "average": 1.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 7,
+      "totalStudents": 125,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 31,
+            "classes": 2,
+            "average": 15.5
+          },
+          {
+            "grade": 2,
+            "students": 46,
+            "classes": 2,
+            "average": 23
+          },
+          {
+            "grade": 3,
+            "students": 48,
+            "classes": 2,
+            "average": 24
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|서신중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "서신중학교",
+      "area": "서신면",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 57,
+          "classes": 4,
+          "average": 14.25
+        },
+        "특수": {
+          "students": 3,
+          "classes": 1,
+          "average": 3.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 5,
+      "totalStudents": 57,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 30,
+            "classes": 2,
+            "average": 15
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 3,
+            "students": 21,
+            "classes": 1,
+            "average": 21
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|송산중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "송산중학교",
+      "area": "송산면",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 457,
+          "classes": 18,
+          "average": 25.39
+        },
+        "특수": {
+          "students": 7,
+          "classes": 1,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 19,
+      "totalStudents": 457,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 164,
+            "classes": 6,
+            "average": 27.33
+          },
+          {
+            "grade": 2,
+            "students": 154,
+            "classes": 6,
+            "average": 25.67
+          },
+          {
+            "grade": 3,
+            "students": 139,
+            "classes": 6,
+            "average": 23.17
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화도중학교": {
+      "city": "화성",
+      "zone": "남양서신송산화도중학군",
+      "name": "화도중학교",
+      "area": "마도면",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 154,
+          "classes": 6,
+          "average": 25.67
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 6,
+      "totalStudents": 154,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 40,
+            "classes": 2,
+            "average": 20
+          },
+          {
+            "grade": 2,
+            "students": 59,
+            "classes": 2,
+            "average": 29.5
+          },
+          {
+            "grade": 3,
+            "students": 55,
+            "classes": 2,
+            "average": 27.5
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|화성중학교": {
+      "city": "화성",
+      "zone": "발안중학군",
+      "name": "화성중학교",
+      "area": "향남읍",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 505,
+          "classes": 15,
+          "average": 33.67
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 15,
+      "totalStudents": 505,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 170,
+            "classes": 5,
+            "average": 34
+          },
+          {
+            "grade": 2,
+            "students": 165,
+            "classes": 5,
+            "average": 33
+          },
+          {
+            "grade": 3,
+            "students": 170,
+            "classes": 5,
+            "average": 34
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|비봉중학교": {
+      "city": "화성",
+      "zone": "비봉1중학구",
+      "name": "비봉중학교",
+      "area": "비봉면",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 152,
+          "classes": 6,
+          "average": 25.33
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 6,
+      "totalStudents": 152,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 53,
+            "classes": 2,
+            "average": 26.5
+          },
+          {
+            "grade": 2,
+            "students": 43,
+            "classes": 2,
+            "average": 21.5
+          },
+          {
+            "grade": 3,
+            "students": 56,
+            "classes": 2,
+            "average": 28
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|안용중학교": {
+      "city": "화성",
+      "zone": "안용중학구",
+      "name": "안용중학교",
+      "area": "송산동",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 511,
+          "classes": 18,
+          "average": 28.39
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 18,
+      "totalStudents": 511,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 168,
+            "classes": 6,
+            "average": 28
+          },
+          {
+            "grade": 2,
+            "students": 157,
+            "classes": 6,
+            "average": 26.17
+          },
+          {
+            "grade": 3,
+            "students": 186,
+            "classes": 6,
+            "average": 31
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|삼괴중학교": {
+      "city": "화성",
+      "zone": "우정중학구",
+      "name": "삼괴중학교",
+      "area": "우정읍",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 248,
+          "classes": 10,
+          "average": 24.8
+        },
+        "특수": {
+          "students": 7,
+          "classes": 1,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 11,
+      "totalStudents": 248,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 68,
+            "classes": 3,
+            "average": 22.67
+          },
+          {
+            "grade": 2,
+            "students": 78,
+            "classes": 3,
+            "average": 26
+          },
+          {
+            "grade": 3,
+            "students": 102,
+            "classes": 4,
+            "average": 25.5
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 1,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "화성|장안여자중학교": {
+      "city": "화성",
+      "zone": "우정중학구",
+      "name": "장안여자중학교",
+      "area": "장안면",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 254,
+          "classes": 10,
+          "average": 25.4
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 11,
+      "totalStudents": 254,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 81,
+            "classes": 3,
+            "average": 27
+          },
+          {
+            "grade": 2,
+            "students": 75,
+            "classes": 3,
+            "average": 25
+          },
+          {
+            "grade": 3,
+            "students": 98,
+            "classes": 4,
+            "average": 24.5
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 0,
+            "classes": 0,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|성호중학교": {
+      "city": "오산",
+      "zone": "성호중학군",
+      "name": "성호중학교",
+      "area": "원동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 844,
+          "classes": 26,
+          "average": 32.46
+        },
+        "특수": {
+          "students": 8,
+          "classes": 1,
+          "average": 8.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 27,
+      "totalStudents": 844,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 280,
+            "classes": 9,
+            "average": 31.11
+          },
+          {
+            "grade": 2,
+            "students": 333,
+            "classes": 10,
+            "average": 33.3
+          },
+          {
+            "grade": 3,
+            "students": 231,
+            "classes": 7,
+            "average": 33
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 2,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 1,
+            "classes": 1,
+            "average": 1
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|오산원일중학교": {
+      "city": "오산",
+      "zone": "성호중학군",
+      "name": "오산원일중학교",
+      "area": "원동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1046,
+          "classes": 31,
+          "average": 33.74
+        },
+        "특수": {
+          "students": 17,
+          "classes": 3,
+          "average": 5.67
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 34,
+      "totalStudents": 1046,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 337,
+            "classes": 10,
+            "average": 33.7
+          },
+          {
+            "grade": 2,
+            "students": 371,
+            "classes": 11,
+            "average": 33.73
+          },
+          {
+            "grade": 3,
+            "students": 338,
+            "classes": 10,
+            "average": 33.8
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 3,
+            "students": 9,
+            "classes": 1,
+            "average": 9
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|매홀중학교": {
+      "city": "오산",
+      "zone": "세교중학군",
+      "name": "매홀중학교",
+      "area": "수청동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1153,
+          "classes": 34,
+          "average": 33.91
+        },
+        "특수": {
+          "students": 15,
+          "classes": 2,
+          "average": 7.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 36,
+      "totalStudents": 1153,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 334,
+            "classes": 10,
+            "average": 33.4
+          },
+          {
+            "grade": 2,
+            "students": 409,
+            "classes": 12,
+            "average": 34.08
+          },
+          {
+            "grade": 3,
+            "students": 410,
+            "classes": 12,
+            "average": 34.17
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 3,
+            "students": 6,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|문시중학교": {
+      "city": "오산",
+      "zone": "세교중학군",
+      "name": "문시중학교",
+      "area": "금암동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1149,
+          "classes": 33,
+          "average": 34.82
+        },
+        "특수": {
+          "students": 14,
+          "classes": 2,
+          "average": 7.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 35,
+      "totalStudents": 1149,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 347,
+            "classes": 10,
+            "average": 34.7
+          },
+          {
+            "grade": 2,
+            "students": 353,
+            "classes": 10,
+            "average": 35.3
+          },
+          {
+            "grade": 3,
+            "students": 449,
+            "classes": 13,
+            "average": 34.54
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|세마중학교": {
+      "city": "오산",
+      "zone": "세교중학군",
+      "name": "세마중학교",
+      "area": "세교동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 1135,
+          "classes": 32,
+          "average": 35.47
+        },
+        "특수": {
+          "students": 15,
+          "classes": 2,
+          "average": 7.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 34,
+      "totalStudents": 1135,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 380,
+            "classes": 11,
+            "average": 34.55
+          },
+          {
+            "grade": 2,
+            "students": 432,
+            "classes": 12,
+            "average": 36
+          },
+          {
+            "grade": 3,
+            "students": 323,
+            "classes": 9,
+            "average": 35.89
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|가수중학교": {
+      "city": "오산",
+      "zone": "오산중학군",
+      "name": "가수중학교",
+      "area": "가수동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 810,
+          "classes": 30,
+          "average": 27.0
+        },
+        "특수": {
+          "students": 9,
+          "classes": 1,
+          "average": 9.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 31,
+      "totalStudents": 810,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 324,
+            "classes": 12,
+            "average": 27
+          },
+          {
+            "grade": 2,
+            "students": 324,
+            "classes": 12,
+            "average": 27
+          },
+          {
+            "grade": 3,
+            "students": 162,
+            "classes": 6,
+            "average": 27
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": 4,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 1,
+            "average": 2
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|대호중학교": {
+      "city": "오산",
+      "zone": "오산중학군",
+      "name": "대호중학교",
+      "area": "궐동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 670,
+          "classes": 26,
+          "average": 25.77
+        },
+        "특수": {
+          "students": 15,
+          "classes": 2,
+          "average": 7.5
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 28,
+      "totalStudents": 670,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 189,
+            "classes": 7,
+            "average": 27
+          },
+          {
+            "grade": 2,
+            "students": 208,
+            "classes": 8,
+            "average": 26
+          },
+          {
+            "grade": 3,
+            "students": 273,
+            "classes": 11,
+            "average": 24.82
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          },
+          {
+            "grade": 2,
+            "students": 3,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 7,
+            "classes": 1,
+            "average": 7
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|운암중학교": {
+      "city": "오산",
+      "zone": "운암중학군",
+      "name": "운암중학교",
+      "area": "원동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 769,
+          "classes": 23,
+          "average": 33.43
+        },
+        "특수": {
+          "students": 10,
+          "classes": 1,
+          "average": 10.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 24,
+      "totalStudents": 769,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 237,
+            "classes": 7,
+            "average": 33.86
+          },
+          {
+            "grade": 2,
+            "students": 263,
+            "classes": 8,
+            "average": 32.88
+          },
+          {
+            "grade": 3,
+            "students": 269,
+            "classes": 8,
+            "average": 33.62
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 3,
+            "classes": 1,
+            "average": 3
+          },
+          {
+            "grade": 2,
+            "students": 5,
+            "classes": 0,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": 2,
+            "classes": 0,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|운천중학교": {
+      "city": "오산",
+      "zone": "운암중학군",
+      "name": "운천중학교",
+      "area": "오산동",
+      "ownership": "공립",
+      "groups": {
+        "일반": {
+          "students": 794,
+          "classes": 25,
+          "average": 31.76
+        },
+        "특수": {
+          "students": 15,
+          "classes": 3,
+          "average": 5.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 28,
+      "totalStudents": 794,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 248,
+            "classes": 8,
+            "average": 31
+          },
+          {
+            "grade": 2,
+            "students": 255,
+            "classes": 8,
+            "average": 31.88
+          },
+          {
+            "grade": 3,
+            "students": 291,
+            "classes": 9,
+            "average": 32.33
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": 4,
+            "classes": 1,
+            "average": 4
+          },
+          {
+            "grade": 2,
+            "students": 6,
+            "classes": 1,
+            "average": 6
+          },
+          {
+            "grade": 3,
+            "students": 5,
+            "classes": 1,
+            "average": 5
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    },
+    "오산|오산중학교": {
+      "city": "오산",
+      "zone": "오산중학군",
+      "name": "오산중학교",
+      "area": "청학동",
+      "ownership": "사립",
+      "groups": {
+        "일반": {
+          "students": 596,
+          "classes": 24,
+          "average": 24.83
+        },
+        "특수": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        },
+        "특별": {
+          "students": 0,
+          "classes": 0,
+          "average": 0.0
+        }
+      },
+      "totalClasses": 24,
+      "totalStudents": 596,
+      "grades": {
+        "일반": [
+          {
+            "grade": 1,
+            "students": 192,
+            "classes": 8,
+            "average": 24
+          },
+          {
+            "grade": 2,
+            "students": 165,
+            "classes": 7,
+            "average": 23.57
+          },
+          {
+            "grade": 3,
+            "students": 239,
+            "classes": 9,
+            "average": 26.56
+          }
+        ],
+        "특수": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ],
+        "특별": [
+          {
+            "grade": 1,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 2,
+            "students": null,
+            "classes": null,
+            "average": 0
+          },
+          {
+            "grade": 3,
+            "students": null,
+            "classes": null,
+            "average": 0
+          }
+        ]
+      }
+    }
+  }
+}
