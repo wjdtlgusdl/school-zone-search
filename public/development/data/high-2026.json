@@ -1,0 +1,2353 @@
+{
+  "schools": {
+    "화성|나루고등학교": {
+      "city": "화성",
+      "name": "나루고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 9,
+          "students": 297,
+          "average": 33.0
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 265,
+          "average": 33.12
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 272,
+          "average": 34.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 9,
+              "students": 297
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 265
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 272
+            }
+          ]
+        }
+      ],
+      "totalClasses": 25,
+      "totalStudents": 834,
+      "average": 33.36
+    },
+    "화성|남양고등학교": {
+      "city": "화성",
+      "name": "남양고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 8,
+          "students": 243,
+          "average": 30.38
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 225,
+          "average": 28.12
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 219,
+          "average": 27.38
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 6,
+              "students": 189
+            },
+            {
+              "grade": 2,
+              "classes": 6,
+              "students": 171
+            },
+            {
+              "grade": 3,
+              "classes": 6,
+              "students": 169
+            }
+          ]
+        },
+        {
+          "name": "관광경영과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 54
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 54
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 50
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 687,
+      "average": 28.62
+    },
+    "화성|능동고등학교": {
+      "city": "화성",
+      "name": "능동고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 334,
+          "average": 33.4
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 273,
+          "average": 34.12
+        },
+        {
+          "grade": 3,
+          "classes": 9,
+          "students": 278,
+          "average": 30.89
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 334
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 273
+            },
+            {
+              "grade": 3,
+              "classes": 9,
+              "students": 278
+            }
+          ]
+        }
+      ],
+      "totalClasses": 27,
+      "totalStudents": 885,
+      "average": 32.78
+    },
+    "화성|동탄고등학교": {
+      "city": "화성",
+      "name": "동탄고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 342,
+          "average": 34.2
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 342,
+          "average": 34.2
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 343,
+          "average": 34.3
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 342
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 342
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 343
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1027,
+      "average": 34.23
+    },
+    "화성|동탄중앙고등학교": {
+      "city": "화성",
+      "name": "동탄중앙고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 347,
+          "average": 34.7
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 345,
+          "average": 34.5
+        },
+        {
+          "grade": 3,
+          "classes": 11,
+          "students": 368,
+          "average": 33.45
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 347
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 345
+            },
+            {
+              "grade": 3,
+              "classes": 11,
+              "students": 368
+            }
+          ]
+        }
+      ],
+      "totalClasses": 31,
+      "totalStudents": 1060,
+      "average": 34.19
+    },
+    "화성|반송고등학교": {
+      "city": "화성",
+      "name": "반송고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 11,
+          "students": 365,
+          "average": 33.18
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 335,
+          "average": 33.5
+        },
+        {
+          "grade": 3,
+          "classes": 11,
+          "students": 320,
+          "average": 29.09
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 11,
+              "students": 365
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 335
+            },
+            {
+              "grade": 3,
+              "classes": 11,
+              "students": 320
+            }
+          ]
+        }
+      ],
+      "totalClasses": 32,
+      "totalStudents": 1020,
+      "average": 31.88
+    },
+    "화성|화성반월고등학교": {
+      "city": "화성",
+      "name": "화성반월고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 343,
+          "average": 34.3
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 356,
+          "average": 35.6
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 340,
+          "average": 34.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 343
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 356
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 340
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1039,
+      "average": 34.63
+    },
+    "화성|병점고등학교": {
+      "city": "화성",
+      "name": "병점고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 341,
+          "average": 34.1
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 342,
+          "average": 34.2
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 333,
+          "average": 33.3
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 341
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 342
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 333
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1016,
+      "average": 33.87
+    },
+    "화성|봉담고등학교": {
+      "city": "화성",
+      "name": "봉담고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 9,
+          "students": 299,
+          "average": 33.22
+        },
+        {
+          "grade": 2,
+          "classes": 9,
+          "students": 279,
+          "average": 31.0
+        },
+        {
+          "grade": 3,
+          "classes": 9,
+          "students": 282,
+          "average": 31.33
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 9,
+              "students": 299
+            },
+            {
+              "grade": 2,
+              "classes": 9,
+              "students": 279
+            },
+            {
+              "grade": 3,
+              "classes": 9,
+              "students": 282
+            }
+          ]
+        }
+      ],
+      "totalClasses": 27,
+      "totalStudents": 860,
+      "average": 31.85
+    },
+    "화성|비봉고등학교": {
+      "city": "화성",
+      "name": "비봉고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 291,
+          "average": 29.1
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 222,
+          "average": 22.2
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 213,
+          "average": 21.3
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 6,
+              "students": 192
+            },
+            {
+              "grade": 2,
+              "classes": 6,
+              "students": 144
+            },
+            {
+              "grade": 3,
+              "classes": 6,
+              "students": 166
+            }
+          ]
+        },
+        {
+          "name": "IT경영과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 19
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 11
+            }
+          ]
+        },
+        {
+          "name": "콘텐츠디자인과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 17
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 9
+            }
+          ]
+        },
+        {
+          "name": "서비스마케팅과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 20
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 8
+            }
+          ]
+        },
+        {
+          "name": "웹툰조형과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 22
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 19
+            }
+          ]
+        },
+        {
+          "name": "3D모델링그래픽과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 49
+            },
+            {
+              "grade": 2,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        },
+        {
+          "name": "AI게임콘텐츠과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 2,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 726,
+      "average": 24.2
+    },
+    "화성|삼괴고등학교": {
+      "city": "화성",
+      "name": "삼괴고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 8,
+          "students": 220,
+          "average": 27.5
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 208,
+          "average": 26.0
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 216,
+          "average": 27.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 8,
+              "students": 220
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 208
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 216
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 644,
+      "average": 26.83
+    },
+    "화성|새솔고등학교": {
+      "city": "화성",
+      "name": "새솔고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 9,
+          "students": 279,
+          "average": 31.0
+        },
+        {
+          "grade": 2,
+          "classes": 9,
+          "students": 242,
+          "average": 26.89
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 216,
+          "average": 27.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 9,
+              "students": 279
+            },
+            {
+              "grade": 2,
+              "classes": 9,
+              "students": 242
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 216
+            }
+          ]
+        }
+      ],
+      "totalClasses": 26,
+      "totalStudents": 737,
+      "average": 28.35
+    },
+    "화성|서연고등학교": {
+      "city": "화성",
+      "name": "서연고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 408,
+          "average": 34.0
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 423,
+          "average": 35.25
+        },
+        {
+          "grade": 3,
+          "classes": 12,
+          "students": 423,
+          "average": 35.25
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 408
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 423
+            },
+            {
+              "grade": 3,
+              "classes": 12,
+              "students": 423
+            }
+          ]
+        }
+      ],
+      "totalClasses": 36,
+      "totalStudents": 1254,
+      "average": 34.83
+    },
+    "화성|송산고등학교": {
+      "city": "화성",
+      "name": "송산고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 4,
+          "students": 131,
+          "average": 32.75
+        },
+        {
+          "grade": 2,
+          "classes": 4,
+          "students": 125,
+          "average": 31.25
+        },
+        {
+          "grade": 3,
+          "classes": 4,
+          "students": 122,
+          "average": 30.5
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 4,
+              "students": 131
+            },
+            {
+              "grade": 2,
+              "classes": 4,
+              "students": 125
+            },
+            {
+              "grade": 3,
+              "classes": 4,
+              "students": 122
+            }
+          ]
+        }
+      ],
+      "totalClasses": 12,
+      "totalStudents": 378,
+      "average": 31.5
+    },
+    "화성|안화고등학교": {
+      "city": "화성",
+      "name": "안화고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 349,
+          "average": 34.9
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 345,
+          "average": 34.5
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 340,
+          "average": 34.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 349
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 345
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 340
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1034,
+      "average": 34.47
+    },
+    "화성|예당고등학교": {
+      "city": "화성",
+      "name": "예당고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 345,
+          "average": 34.5
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 326,
+          "average": 32.6
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 338,
+          "average": 33.8
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 345
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 326
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 338
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1009,
+      "average": 33.63
+    },
+    "화성|정현고등학교": {
+      "city": "화성",
+      "name": "정현고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 409,
+          "average": 34.08
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 409,
+          "average": 34.08
+        },
+        {
+          "grade": 3,
+          "classes": 12,
+          "students": 420,
+          "average": 35.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 409
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 409
+            },
+            {
+              "grade": 3,
+              "classes": 12,
+              "students": 420
+            }
+          ]
+        }
+      ],
+      "totalClasses": 36,
+      "totalStudents": 1238,
+      "average": 34.39
+    },
+    "화성|하길고등학교": {
+      "city": "화성",
+      "name": "하길고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 330,
+          "average": 33.0
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 327,
+          "average": 32.7
+        },
+        {
+          "grade": 3,
+          "classes": 11,
+          "students": 332,
+          "average": 30.18
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 330
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 327
+            },
+            {
+              "grade": 3,
+              "classes": 11,
+              "students": 332
+            }
+          ]
+        }
+      ],
+      "totalClasses": 31,
+      "totalStudents": 989,
+      "average": 31.9
+    },
+    "화성|한백고등학교": {
+      "city": "화성",
+      "name": "한백고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 344,
+          "average": 34.4
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 353,
+          "average": 35.3
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 347,
+          "average": 34.7
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 344
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 353
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 347
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 1044,
+      "average": 34.8
+    },
+    "화성|향남고등학교": {
+      "city": "화성",
+      "name": "향남고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 9,
+          "students": 280,
+          "average": 31.11
+        },
+        {
+          "grade": 2,
+          "classes": 9,
+          "students": 279,
+          "average": 31.0
+        },
+        {
+          "grade": 3,
+          "classes": 9,
+          "students": 281,
+          "average": 31.22
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 9,
+              "students": 280
+            },
+            {
+              "grade": 2,
+              "classes": 9,
+              "students": 279
+            },
+            {
+              "grade": 3,
+              "classes": 9,
+              "students": 281
+            }
+          ]
+        }
+      ],
+      "totalClasses": 27,
+      "totalStudents": 840,
+      "average": 31.11
+    },
+    "화성|향일고등학교": {
+      "city": "화성",
+      "name": "향일고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 8,
+          "students": 269,
+          "average": 33.62
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 275,
+          "average": 34.38
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 278,
+          "average": 34.75
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 8,
+              "students": 269
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 275
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 278
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 822,
+      "average": 34.25
+    },
+    "화성|화성고등학교": {
+      "city": "화성",
+      "name": "화성고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 9,
+          "students": 300,
+          "average": 33.33
+        },
+        {
+          "grade": 2,
+          "classes": 9,
+          "students": 301,
+          "average": 33.44
+        },
+        {
+          "grade": 3,
+          "classes": 9,
+          "students": 309,
+          "average": 34.33
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 9,
+              "students": 300
+            },
+            {
+              "grade": 2,
+              "classes": 9,
+              "students": 301
+            },
+            {
+              "grade": 3,
+              "classes": 9,
+              "students": 309
+            }
+          ]
+        }
+      ],
+      "totalClasses": 27,
+      "totalStudents": 910,
+      "average": 33.7
+    },
+    "화성|창의고등학교": {
+      "city": "화성",
+      "name": "창의고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 412,
+          "average": 34.33
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 413,
+          "average": 34.42
+        },
+        {
+          "grade": 3,
+          "classes": 12,
+          "students": 428,
+          "average": 35.67
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 412
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 413
+            },
+            {
+              "grade": 3,
+              "classes": 12,
+              "students": 428
+            }
+          ]
+        }
+      ],
+      "totalClasses": 36,
+      "totalStudents": 1253,
+      "average": 34.81
+    },
+    "화성|이산고등학교": {
+      "city": "화성",
+      "name": "이산고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 13,
+          "students": 442,
+          "average": 34.0
+        },
+        {
+          "grade": 2,
+          "classes": 13,
+          "students": 394,
+          "average": 30.31
+        },
+        {
+          "grade": 3,
+          "classes": 13,
+          "students": 408,
+          "average": 31.38
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 13,
+              "students": 442
+            },
+            {
+              "grade": 2,
+              "classes": 13,
+              "students": 394
+            },
+            {
+              "grade": 3,
+              "classes": 13,
+              "students": 408
+            }
+          ]
+        }
+      ],
+      "totalClasses": 39,
+      "totalStudents": 1244,
+      "average": 31.9
+    },
+    "화성|이솔고등학교": {
+      "city": "화성",
+      "name": "이솔고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 410,
+          "average": 34.17
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 294,
+          "average": 24.5
+        },
+        {
+          "grade": 3,
+          "classes": 12,
+          "students": 387,
+          "average": 32.25
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 410
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 294
+            },
+            {
+              "grade": 3,
+              "classes": 12,
+              "students": 387
+            }
+          ]
+        }
+      ],
+      "totalClasses": 36,
+      "totalStudents": 1091,
+      "average": 30.31
+    },
+    "화성|와우고등학교": {
+      "city": "화성",
+      "name": "와우고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 404,
+          "average": 33.67
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 352,
+          "average": 29.33
+        },
+        {
+          "grade": 3,
+          "classes": 12,
+          "students": 427,
+          "average": 35.58
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 404
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 352
+            },
+            {
+              "grade": 3,
+              "classes": 12,
+              "students": 427
+            }
+          ]
+        }
+      ],
+      "totalClasses": 36,
+      "totalStudents": 1183,
+      "average": 32.86
+    },
+    "화성|치동고등학교": {
+      "city": "화성",
+      "name": "치동고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 331,
+          "average": 33.1
+        },
+        {
+          "grade": 2,
+          "classes": 13,
+          "students": 422,
+          "average": 32.46
+        },
+        {
+          "grade": 3,
+          "classes": 16,
+          "students": 475,
+          "average": 29.69
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 331
+            },
+            {
+              "grade": 2,
+              "classes": 13,
+              "students": 422
+            },
+            {
+              "grade": 3,
+              "classes": 16,
+              "students": 475
+            }
+          ]
+        }
+      ],
+      "totalClasses": 39,
+      "totalStudents": 1228,
+      "average": 31.49
+    },
+    "화성|신동고등학교": {
+      "city": "화성",
+      "name": "신동고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 316,
+          "average": 26.33
+        },
+        {
+          "grade": 2,
+          "classes": 6,
+          "students": 120,
+          "average": 20.0
+        },
+        {
+          "grade": 3,
+          "classes": 0,
+          "students": 0,
+          "average": null
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 316
+            },
+            {
+              "grade": 2,
+              "classes": 6,
+              "students": 120
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        }
+      ],
+      "totalClasses": 18,
+      "totalStudents": 436,
+      "average": 24.22
+    },
+    "화성|화담고등학교": {
+      "city": "화성",
+      "name": "화담고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 12,
+          "students": 398,
+          "average": 33.17
+        },
+        {
+          "grade": 2,
+          "classes": 12,
+          "students": 372,
+          "average": 31.0
+        },
+        {
+          "grade": 3,
+          "classes": 0,
+          "students": 0,
+          "average": null
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 12,
+              "students": 398
+            },
+            {
+              "grade": 2,
+              "classes": 12,
+              "students": 372
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 770,
+      "average": 32.08
+    },
+    "화성|발안바이오과학고등학교": {
+      "city": "화성",
+      "name": "발안바이오과학고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 5,
+          "students": 125,
+          "average": 25.0
+        },
+        {
+          "grade": 2,
+          "classes": 5,
+          "students": 124,
+          "average": 24.8
+        },
+        {
+          "grade": 3,
+          "classes": 5,
+          "students": 119,
+          "average": 23.8
+        }
+      ],
+      "departments": [
+        {
+          "name": "바이오식품과학과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 24
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 25
+            }
+          ]
+        },
+        {
+          "name": "푸드스타일링과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 24
+            }
+          ]
+        },
+        {
+          "name": "외식산업과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 26
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 24
+            }
+          ]
+        },
+        {
+          "name": "레저동물산업과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 50
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 49
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 46
+            }
+          ]
+        }
+      ],
+      "totalClasses": 15,
+      "totalStudents": 368,
+      "average": 24.53
+    },
+    "화성|홍익디자인고등학교": {
+      "city": "화성",
+      "name": "홍익디자인고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 4,
+          "students": 104,
+          "average": 26.0
+        },
+        {
+          "grade": 2,
+          "classes": 4,
+          "students": 104,
+          "average": 26.0
+        },
+        {
+          "grade": 3,
+          "classes": 4,
+          "students": 97,
+          "average": 24.25
+        }
+      ],
+      "departments": [
+        {
+          "name": "IT산업디자인과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 52
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 53
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 49
+            }
+          ]
+        },
+        {
+          "name": "AI시각디자인과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 52
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 51
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 48
+            }
+          ]
+        },
+        {
+          "name": "IT건축디자인과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        }
+      ],
+      "totalClasses": 12,
+      "totalStudents": 305,
+      "average": 25.42
+    },
+    "화성|두레자연고등학교": {
+      "city": "화성",
+      "name": "두레자연고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 2,
+          "students": 41,
+          "average": 20.5
+        },
+        {
+          "grade": 2,
+          "classes": 2,
+          "students": 40,
+          "average": 20.0
+        },
+        {
+          "grade": 3,
+          "classes": 2,
+          "students": 40,
+          "average": 20.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 41
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 40
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 40
+            }
+          ]
+        }
+      ],
+      "totalClasses": 6,
+      "totalStudents": 121,
+      "average": 20.17
+    },
+    "화성|동탄국제고등학교": {
+      "city": "화성",
+      "name": "동탄국제고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 8,
+          "students": 204,
+          "average": 25.5
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 199,
+          "average": 24.88
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 192,
+          "average": 24.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 8,
+              "students": 204
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 199
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 192
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 595,
+      "average": 24.79
+    },
+    "오산|매홀고등학교": {
+      "city": "오산",
+      "name": "매홀고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 304,
+          "average": 30.4
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 342,
+          "average": 34.2
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 315,
+          "average": 31.5
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 304
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 342
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 315
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 961,
+      "average": 32.03
+    },
+    "오산|성호고등학교": {
+      "city": "오산",
+      "name": "성호고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 301,
+          "average": 30.1
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 297,
+          "average": 29.7
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 320,
+          "average": 32.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 301
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 297
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 320
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 918,
+      "average": 30.6
+    },
+    "오산|세교고등학교": {
+      "city": "오산",
+      "name": "세교고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 300,
+          "average": 30.0
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 335,
+          "average": 33.5
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 331,
+          "average": 33.1
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 300
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 335
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 331
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 966,
+      "average": 32.2
+    },
+    "오산|세마고등학교": {
+      "city": "오산",
+      "name": "세마고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 304,
+          "average": 30.4
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 329,
+          "average": 32.9
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 327,
+          "average": 32.7
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 304
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 329
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 327
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 960,
+      "average": 32.0
+    },
+    "오산|오산고등학교": {
+      "city": "오산",
+      "name": "오산고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 301,
+          "average": 30.1
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 312,
+          "average": 31.2
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 333,
+          "average": 33.3
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 301
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 312
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 333
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 946,
+      "average": 31.53
+    },
+    "오산|운암고등학교": {
+      "city": "오산",
+      "name": "운암고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 8,
+          "students": 242,
+          "average": 30.25
+        },
+        {
+          "grade": 2,
+          "classes": 8,
+          "students": 264,
+          "average": 33.0
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 264,
+          "average": 33.0
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 8,
+              "students": 242
+            },
+            {
+              "grade": 2,
+              "classes": 8,
+              "students": 264
+            },
+            {
+              "grade": 3,
+              "classes": 8,
+              "students": 264
+            }
+          ]
+        }
+      ],
+      "totalClasses": 24,
+      "totalStudents": 770,
+      "average": 32.08
+    },
+    "오산|운천고등학교": {
+      "city": "오산",
+      "name": "운천고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 10,
+          "students": 302,
+          "average": 30.2
+        },
+        {
+          "grade": 2,
+          "classes": 10,
+          "students": 335,
+          "average": 33.5
+        },
+        {
+          "grade": 3,
+          "classes": 10,
+          "students": 322,
+          "average": 32.2
+        }
+      ],
+      "departments": [
+        {
+          "name": "보통과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 10,
+              "students": 302
+            },
+            {
+              "grade": 2,
+              "classes": 10,
+              "students": 335
+            },
+            {
+              "grade": 3,
+              "classes": 10,
+              "students": 322
+            }
+          ]
+        }
+      ],
+      "totalClasses": 30,
+      "totalStudents": 959,
+      "average": 31.97
+    },
+    "오산|오산정보고등학교": {
+      "city": "오산",
+      "name": "오산정보고등학교",
+      "grades": [
+        {
+          "grade": 1,
+          "classes": 6,
+          "students": 128,
+          "average": 21.33
+        },
+        {
+          "grade": 2,
+          "classes": 6,
+          "students": 135,
+          "average": 22.5
+        },
+        {
+          "grade": 3,
+          "classes": 8,
+          "students": 133,
+          "average": 16.62
+        }
+      ],
+      "departments": [
+        {
+          "name": "지식재산경영과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 3,
+              "classes": 1,
+              "students": 19
+            }
+          ]
+        },
+        {
+          "name": "브랜드디자인과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 42
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 48
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        },
+        {
+          "name": "자산관리과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 21
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 20
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 28
+            }
+          ]
+        },
+        {
+          "name": "마케팅콘텐츠과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 2,
+              "students": 44
+            },
+            {
+              "grade": 2,
+              "classes": 2,
+              "students": 42
+            },
+            {
+              "grade": 3,
+              "classes": 2,
+              "students": 35
+            }
+          ]
+        },
+        {
+          "name": "융합소프트웨어과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 2,
+              "classes": 0,
+              "students": 0
+            },
+            {
+              "grade": 3,
+              "classes": 3,
+              "students": 51
+            }
+          ]
+        },
+        {
+          "name": "스마트IT과",
+          "grades": [
+            {
+              "grade": 1,
+              "classes": 1,
+              "students": 21
+            },
+            {
+              "grade": 2,
+              "classes": 1,
+              "students": 25
+            },
+            {
+              "grade": 3,
+              "classes": 0,
+              "students": 0
+            }
+          ]
+        }
+      ],
+      "totalClasses": 20,
+      "totalStudents": 396,
+      "average": 19.8
+    }
+  }
+}

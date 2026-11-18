@@ -1,0 +1,870 @@
+{
+  "schools": {
+    "화성|남양고등학교": {
+      "2022": {
+        "students": 555,
+        "classes": 23
+      },
+      "2023": {
+        "students": 601,
+        "classes": 23
+      },
+      "2024": {
+        "students": 656,
+        "classes": 23
+      },
+      "2025": {
+        "students": 683,
+        "classes": 23
+      },
+      "2026": {
+        "students": 687,
+        "classes": 24
+      }
+    },
+    "화성|두레자연고등학교": {
+      "2022": {
+        "students": 113,
+        "classes": 6
+      },
+      "2023": {
+        "students": 119,
+        "classes": 6
+      },
+      "2024": {
+        "students": 119,
+        "classes": 6
+      },
+      "2025": {
+        "students": 121,
+        "classes": 6
+      },
+      "2026": {
+        "students": 121,
+        "classes": 6
+      }
+    },
+    "화성|발안바이오과학고등학교": {
+      "2022": {
+        "students": 301,
+        "classes": 12
+      },
+      "2023": {
+        "students": 307,
+        "classes": 12
+      },
+      "2024": {
+        "students": 334,
+        "classes": 13
+      },
+      "2025": {
+        "students": 350,
+        "classes": 14
+      },
+      "2026": {
+        "students": 368,
+        "classes": 15
+      }
+    },
+    "화성|비봉고등학교": {
+      "2022": {
+        "students": 741,
+        "classes": 33
+      },
+      "2023": {
+        "students": 745,
+        "classes": 33
+      },
+      "2024": {
+        "students": 742,
+        "classes": 32
+      },
+      "2025": {
+        "students": 734,
+        "classes": 31
+      },
+      "2026": {
+        "students": 726,
+        "classes": 30
+      }
+    },
+    "화성|삼괴고등학교": {
+      "2022": {
+        "students": 621,
+        "classes": 26
+      },
+      "2023": {
+        "students": 637,
+        "classes": 26
+      },
+      "2024": {
+        "students": 652,
+        "classes": 26
+      },
+      "2025": {
+        "students": 657,
+        "classes": 26
+      },
+      "2026": {
+        "students": 644,
+        "classes": 24
+      }
+    },
+    "오산|성호고등학교": {
+      "2022": {
+        "students": 883,
+        "classes": 31
+      },
+      "2023": {
+        "students": 906,
+        "classes": 31
+      },
+      "2024": {
+        "students": 946,
+        "classes": 31
+      },
+      "2025": {
+        "students": 969,
+        "classes": 31
+      },
+      "2026": {
+        "students": 918,
+        "classes": 30
+      }
+    },
+    "화성|송산고등학교": {
+      "2022": {
+        "students": 358,
+        "classes": 13
+      },
+      "2023": {
+        "students": 364,
+        "classes": 13
+      },
+      "2024": {
+        "students": 383,
+        "classes": 13
+      },
+      "2025": {
+        "students": 380,
+        "classes": 13
+      },
+      "2026": {
+        "students": 378,
+        "classes": 12
+      }
+    },
+    "화성|홍익디자인고등학교": {
+      "2022": {
+        "students": 310,
+        "classes": 12
+      },
+      "2023": {
+        "students": 313,
+        "classes": 12
+      },
+      "2024": {
+        "students": 306,
+        "classes": 12
+      },
+      "2025": {
+        "students": 302,
+        "classes": 12
+      },
+      "2026": {
+        "students": 305,
+        "classes": 12
+      }
+    },
+    "오산|오산고등학교": {
+      "2022": {
+        "students": 870,
+        "classes": 30
+      },
+      "2023": {
+        "students": 898,
+        "classes": 30
+      },
+      "2024": {
+        "students": 923,
+        "classes": 30
+      },
+      "2025": {
+        "students": 977,
+        "classes": 30
+      },
+      "2026": {
+        "students": 946,
+        "classes": 30
+      }
+    },
+    "오산|오산정보고등학교": {
+      "2022": {
+        "students": 630,
+        "classes": 29
+      },
+      "2023": {
+        "students": 632,
+        "classes": 30
+      },
+      "2024": {
+        "students": 585,
+        "classes": 30
+      },
+      "2025": {
+        "students": 506,
+        "classes": 26
+      },
+      "2026": {
+        "students": 396,
+        "classes": 20
+      }
+    },
+    "화성|화성고등학교": {
+      "2022": {
+        "students": 843,
+        "classes": 27
+      },
+      "2023": {
+        "students": 866,
+        "classes": 27
+      },
+      "2024": {
+        "students": 896,
+        "classes": 27
+      },
+      "2025": {
+        "students": 910,
+        "classes": 27
+      },
+      "2026": {
+        "students": 910,
+        "classes": 27
+      }
+    },
+    "오산|운천고등학교": {
+      "2022": {
+        "students": 869,
+        "classes": 33
+      },
+      "2023": {
+        "students": 877,
+        "classes": 32
+      },
+      "2024": {
+        "students": 943,
+        "classes": 33
+      },
+      "2025": {
+        "students": 977,
+        "classes": 33
+      },
+      "2026": {
+        "students": 959,
+        "classes": 30
+      }
+    },
+    "화성|병점고등학교": {
+      "2022": {
+        "students": 1014,
+        "classes": 32
+      },
+      "2023": {
+        "students": 984,
+        "classes": 32
+      },
+      "2024": {
+        "students": 1006,
+        "classes": 32
+      },
+      "2025": {
+        "students": 1012,
+        "classes": 32
+      },
+      "2026": {
+        "students": 1016,
+        "classes": 30
+      }
+    },
+    "화성|동탄고등학교": {
+      "2022": {
+        "students": 984,
+        "classes": 31
+      },
+      "2023": {
+        "students": 1083,
+        "classes": 34
+      },
+      "2024": {
+        "students": 1117,
+        "classes": 34
+      },
+      "2025": {
+        "students": 1128,
+        "classes": 34
+      },
+      "2026": {
+        "students": 1027,
+        "classes": 30
+      }
+    },
+    "화성|안화고등학교": {
+      "2022": {
+        "students": 1000,
+        "classes": 32
+      },
+      "2023": {
+        "students": 1047,
+        "classes": 33
+      },
+      "2024": {
+        "students": 1071,
+        "classes": 33
+      },
+      "2025": {
+        "students": 1083,
+        "classes": 33
+      },
+      "2026": {
+        "students": 1034,
+        "classes": 30
+      }
+    },
+    "오산|운암고등학교": {
+      "2022": {
+        "students": 687,
+        "classes": 25
+      },
+      "2023": {
+        "students": 698,
+        "classes": 25
+      },
+      "2024": {
+        "students": 746,
+        "classes": 25
+      },
+      "2025": {
+        "students": 788,
+        "classes": 25
+      },
+      "2026": {
+        "students": 770,
+        "classes": 24
+      }
+    },
+    "화성|반송고등학교": {
+      "2022": {
+        "students": 981,
+        "classes": 30
+      },
+      "2023": {
+        "students": 1009,
+        "classes": 31
+      },
+      "2024": {
+        "students": 1037,
+        "classes": 31
+      },
+      "2025": {
+        "students": 1031,
+        "classes": 32
+      },
+      "2026": {
+        "students": 1020,
+        "classes": 32
+      }
+    },
+    "화성|봉담고등학교": {
+      "2022": {
+        "students": 877,
+        "classes": 27
+      },
+      "2023": {
+        "students": 876,
+        "classes": 27
+      },
+      "2024": {
+        "students": 873,
+        "classes": 27
+      },
+      "2025": {
+        "students": 873,
+        "classes": 27
+      },
+      "2026": {
+        "students": 860,
+        "classes": 27
+      }
+    },
+    "화성|예당고등학교": {
+      "2022": {
+        "students": 972,
+        "classes": 31
+      },
+      "2023": {
+        "students": 1019,
+        "classes": 32
+      },
+      "2024": {
+        "students": 1036,
+        "classes": 32
+      },
+      "2025": {
+        "students": 1061,
+        "classes": 32
+      },
+      "2026": {
+        "students": 1009,
+        "classes": 30
+      }
+    },
+    "화성|나루고등학교": {
+      "2022": {
+        "students": 748,
+        "classes": 24
+      },
+      "2023": {
+        "students": 786,
+        "classes": 24
+      },
+      "2024": {
+        "students": 810,
+        "classes": 24
+      },
+      "2025": {
+        "students": 830,
+        "classes": 24
+      },
+      "2026": {
+        "students": 834,
+        "classes": 25
+      }
+    },
+    "화성|향남고등학교": {
+      "2022": {
+        "students": 776,
+        "classes": 26
+      },
+      "2023": {
+        "students": 787,
+        "classes": 26
+      },
+      "2024": {
+        "students": 836,
+        "classes": 27
+      },
+      "2025": {
+        "students": 855,
+        "classes": 28
+      },
+      "2026": {
+        "students": 840,
+        "classes": 27
+      }
+    },
+    "오산|세마고등학교": {
+      "2022": {
+        "students": 865,
+        "classes": 31
+      },
+      "2023": {
+        "students": 901,
+        "classes": 31
+      },
+      "2024": {
+        "students": 960,
+        "classes": 31
+      },
+      "2025": {
+        "students": 1017,
+        "classes": 31
+      },
+      "2026": {
+        "students": 960,
+        "classes": 30
+      }
+    },
+    "화성|능동고등학교": {
+      "2022": {
+        "students": 797,
+        "classes": 25
+      },
+      "2023": {
+        "students": 887,
+        "classes": 27
+      },
+      "2024": {
+        "students": 900,
+        "classes": 27
+      },
+      "2025": {
+        "students": 899,
+        "classes": 28
+      },
+      "2026": {
+        "students": 885,
+        "classes": 27
+      }
+    },
+    "오산|세교고등학교": {
+      "2022": {
+        "students": 900,
+        "classes": 31
+      },
+      "2023": {
+        "students": 902,
+        "classes": 32
+      },
+      "2024": {
+        "students": 959,
+        "classes": 32
+      },
+      "2025": {
+        "students": 1004,
+        "classes": 32
+      },
+      "2026": {
+        "students": 966,
+        "classes": 30
+      }
+    },
+    "화성|향일고등학교": {
+      "2022": {
+        "students": 765,
+        "classes": 25
+      },
+      "2023": {
+        "students": 777,
+        "classes": 26
+      },
+      "2024": {
+        "students": 834,
+        "classes": 26
+      },
+      "2025": {
+        "students": 851,
+        "classes": 26
+      },
+      "2026": {
+        "students": 822,
+        "classes": 24
+      }
+    },
+    "화성|동탄국제고등학교": {
+      "2022": {
+        "students": 588,
+        "classes": 24
+      },
+      "2023": {
+        "students": 587,
+        "classes": 24
+      },
+      "2024": {
+        "students": 583,
+        "classes": 24
+      },
+      "2025": {
+        "students": 590,
+        "classes": 24
+      },
+      "2026": {
+        "students": 595,
+        "classes": 24
+      }
+    },
+    "화성|화성반월고등학교": {
+      "2022": {
+        "students": 871,
+        "classes": 28
+      },
+      "2023": {
+        "students": 939,
+        "classes": 29
+      },
+      "2024": {
+        "students": 1002,
+        "classes": 30
+      },
+      "2025": {
+        "students": 1039,
+        "classes": 32
+      },
+      "2026": {
+        "students": 1039,
+        "classes": 30
+      }
+    },
+    "오산|매홀고등학교": {
+      "2022": {
+        "students": 863,
+        "classes": 32
+      },
+      "2023": {
+        "students": 902,
+        "classes": 32
+      },
+      "2024": {
+        "students": 957,
+        "classes": 32
+      },
+      "2025": {
+        "students": 999,
+        "classes": 31
+      },
+      "2026": {
+        "students": 961,
+        "classes": 30
+      }
+    },
+    "화성|한백고등학교": {
+      "2022": {
+        "students": 994,
+        "classes": 33
+      },
+      "2023": {
+        "students": 1059,
+        "classes": 33
+      },
+      "2024": {
+        "students": 1070,
+        "classes": 32
+      },
+      "2025": {
+        "students": 1089,
+        "classes": 32
+      },
+      "2026": {
+        "students": 1044,
+        "classes": 30
+      }
+    },
+    "화성|동탄중앙고등학교": {
+      "2022": {
+        "students": 977,
+        "classes": 32
+      },
+      "2023": {
+        "students": 984,
+        "classes": 32
+      },
+      "2024": {
+        "students": 1056,
+        "classes": 33
+      },
+      "2025": {
+        "students": 1059,
+        "classes": 33
+      },
+      "2026": {
+        "students": 1060,
+        "classes": 31
+      }
+    },
+    "화성|하길고등학교": {
+      "2022": {
+        "students": 926,
+        "classes": 30
+      },
+      "2023": {
+        "students": 948,
+        "classes": 30
+      },
+      "2024": {
+        "students": 999,
+        "classes": 31
+      },
+      "2025": {
+        "students": 994,
+        "classes": 31
+      },
+      "2026": {
+        "students": 989,
+        "classes": 31
+      }
+    },
+    "화성|이산고등학교": {
+      "2022": {
+        "students": 1195,
+        "classes": 38
+      },
+      "2023": {
+        "students": 1219,
+        "classes": 39
+      },
+      "2024": {
+        "students": 1241,
+        "classes": 39
+      },
+      "2025": {
+        "students": 1262,
+        "classes": 40
+      },
+      "2026": {
+        "students": 1244,
+        "classes": 39
+      }
+    },
+    "화성|창의고등학교": {
+      "2022": {
+        "students": 1170,
+        "classes": 38
+      },
+      "2023": {
+        "students": 1225,
+        "classes": 38
+      },
+      "2024": {
+        "students": 1267,
+        "classes": 37
+      },
+      "2025": {
+        "students": 1291,
+        "classes": 37
+      },
+      "2026": {
+        "students": 1253,
+        "classes": 36
+      }
+    },
+    "화성|정현고등학교": {
+      "2022": {
+        "students": 1203,
+        "classes": 37
+      },
+      "2023": {
+        "students": 1228,
+        "classes": 38
+      },
+      "2024": {
+        "students": 1248,
+        "classes": 38
+      },
+      "2025": {
+        "students": 1263,
+        "classes": 38
+      },
+      "2026": {
+        "students": 1238,
+        "classes": 36
+      }
+    },
+    "화성|새솔고등학교": {
+      "2022": {
+        "students": 404,
+        "classes": 21
+      },
+      "2023": {
+        "students": 514,
+        "classes": 24
+      },
+      "2024": {
+        "students": 644,
+        "classes": 26
+      },
+      "2025": {
+        "students": 699,
+        "classes": 27
+      },
+      "2026": {
+        "students": 737,
+        "classes": 26
+      }
+    },
+    "화성|서연고등학교": {
+      "2022": {
+        "students": 962,
+        "classes": 36
+      },
+      "2023": {
+        "students": 1120,
+        "classes": 37
+      },
+      "2024": {
+        "students": 1211,
+        "classes": 37
+      },
+      "2025": {
+        "students": 1183,
+        "classes": 37
+      },
+      "2026": {
+        "students": 1254,
+        "classes": 36
+      }
+    },
+    "화성|이솔고등학교": {
+      "2022": {
+        "students": 469,
+        "classes": 14
+      },
+      "2023": {
+        "students": 927,
+        "classes": 28
+      },
+      "2024": {
+        "students": 1295,
+        "classes": 40
+      },
+      "2025": {
+        "students": 1141,
+        "classes": 38
+      },
+      "2026": {
+        "students": 1091,
+        "classes": 36
+      }
+    },
+    "화성|와우고등학교": {
+      "2023": {
+        "students": 481,
+        "classes": 15
+      },
+      "2024": {
+        "students": 927,
+        "classes": 28
+      },
+      "2025": {
+        "students": 1278,
+        "classes": 38
+      },
+      "2026": {
+        "students": 1183,
+        "classes": 36
+      }
+    },
+    "화성|치동고등학교": {
+      "2024": {
+        "students": 535,
+        "classes": 16
+      },
+      "2025": {
+        "students": 922,
+        "classes": 29
+      },
+      "2026": {
+        "students": 1228,
+        "classes": 39
+      }
+    },
+    "화성|화담고등학교": {
+      "2025": {
+        "students": 399,
+        "classes": 13
+      },
+      "2026": {
+        "students": 770,
+        "classes": 24
+      }
+    },
+    "화성|신동고등학교": {
+      "2025": {
+        "students": 130,
+        "classes": 7
+      },
+      "2026": {
+        "students": 436,
+        "classes": 18
+      }
+    }
+  }
+}
