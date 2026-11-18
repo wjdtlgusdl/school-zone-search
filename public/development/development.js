@@ -1,3 +1,23 @@
+
+let developmentPlanData=null;
+async function loadDevelopmentPlan(){
+ if(developmentPlanData)return developmentPlanData;
+ try{const r=await fetch('./data/development-plan-2026.json');if(!r.ok)throw Error('개발계획 자료 로드 실패');developmentPlanData=await r.json();return developmentPlanData}
+ catch(e){console.error(e);return null}
+}
+function developmentPlanPanel(p){
+ clearHighlights();const name=p.zoneName||p.displayName||'개발사업지구',key=(p.city||'')+'|'+name;
+ panel(esc(name),`<div class="eyebrow">${esc(p.city||'')} · 개발사업지구</div><p>중장기배치계획의 공동주택 정보를 불러오는 중입니다.</p>`);
+ loadDevelopmentPlan().then(data=>{
+  const box=data?.districts?.[key];
+  if(!box?.length){panel(esc(name),`<div class="eyebrow">${esc(p.city||'')} · 개발사업지구</div><p class="source">중장기배치계획 개발계획 시트에서 명칭을 확인해 연결한 공동주택 자료가 없습니다. 미연결 지구는 0명으로 처리하지 않았습니다.</p>`);return}
+  const total=field=>box.every(x=>Number.isFinite(x[field]))?box.reduce((a,x)=>a+x[field],0).toLocaleString('ko-KR'):'일부 미확인';
+  const field=(label,value)=>`<div style="margin:5px 0"><b>${label}</b><br>${esc(value===null||value===undefined||value===''?'자료 없음':String(value))}</div>`;
+  const rows=box.map((x,i)=>`<details style="margin:8px 0;padding:10px;border:1px solid #d5dce6;border-radius:8px"><summary style="cursor:pointer;font-weight:700">${esc(x.apartment)} <small style="font-weight:400">(${esc(x.moveIn||'입주시기 미확인')})</small></summary><div style="padding-top:8px;font-size:13px">${field('원본 지구명',x.zone)}${field('입주시기',x.moveIn)}${field('세대수',x.households===null?'자료 없음':x.households.toLocaleString('ko-KR')+'세대')}${field('초등 추정 학생수',x.elementaryStudents===null?'자료 없음':x.elementaryStudents.toLocaleString('ko-KR')+'명')}${field('초등 배치예정교',x.elementarySchool)}${field('중등 추정 학생수',x.middleStudents===null?'자료 없음':x.middleStudents.toLocaleString('ko-KR')+'명')}${field('중학군(구)',x.middleZone)}${field('중등 학교현황',x.middleSchools)}</div></details>`).join('');
+  panel(esc(name),`<div class="eyebrow">${esc(p.city||'')} · 2026년 3월 중장기배치계획</div><p><b>연결 공동주택 ${box.length}건</b></p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center"><div style="padding:8px 3px;background:#eff6ff;border-radius:8px"><small>세대수</small><br><b>${total('households')}</b></div><div style="padding:8px 3px;background:#eff6ff;border-radius:8px"><small>초등 추정</small><br><b>${total('elementaryStudents')}</b></div><div style="padding:8px 3px;background:#eff6ff;border-radius:8px"><small>중등 추정</small><br><b>${total('middleStudents')}</b></div></div><p class="source">사업지구에 연결된 원본 행의 단순 합계입니다. 기입주·입주예정이 함께 포함될 수 있으며, 중복·변경계획을 확정 검증한 순증 학생수는 아닙니다.</p><div style="max-height:55vh;overflow-y:auto">${rows}</div><p class="source">자료: 화성·오산 중등 중장기배치계획(2026년 3월), 개발계획 시트</p>`);
+ });
+}
+
 const kindergartenZoneColors={'화성1권역':'#e11d48','화성2권역':'#ea580c','화성3권역':'#ca8a04','화성4권역':'#65a30d','화성5권역':'#059669','화성6권역':'#0d9488','화성7권역':'#0891b2','화성8권역':'#0284c7','화성9권역':'#2563eb','화성10권역':'#4f46e5','화성11권역':'#7c3aed','화성12권역':'#c026d3','오산1권역':'#db2777','오산2권역':'#b45309','오산3권역':'#4d7c0f','오산4권역':'#475569'};
 const state={map:null,schoolOverlays:[],closedSchoolOverlays:[],closedSchoolRecords:[],plannedSchoolOverlays:[],plannedKindergartenOverlays:[],scheduledSchoolOverlays:[],blockLabelOverlays:[],polys:[],kindergartenZones:[],districts:[],searchItems:[],boundsByCity:{전체:null,화성:null,오산:null},city:'전체',selectedDistricts:null,focusDistrict:null,focusTarget:null};
 const measure={active:false,points:[],lines:[],dots:[],labels:[],markerInteractionUntil:0};
@@ -18,7 +38,7 @@ function restoreLegend(){const el=document.getElementById('panel');el.innerHTML=
 function panel(title,html,open=true){const el=document.getElementById('panel');el.innerHTML=`<button class="panel-close" type="button" aria-label="범례로 돌아가기">×</button><h2>${title}</h2><div class="info">${html}</div>`;el.querySelector('.panel-close').onclick=restoreLegend;if(open){el.classList.add('open');document.querySelector('main')?.classList.remove('panel-collapsed');if(state.map)requestAnimationFrame(()=>state.map.relayout())}}
 function coordsToPaths(coords){return coords.map(r=>r.map(([lng,lat])=>new kakao.maps.LatLng(lat,lng)))}
 function clearHighlights(){for(const x of [...state.schoolOverlays,...state.closedSchoolOverlays])x.el.classList.remove('highlight');for(const x of state.plannedSchoolOverlays){x.el.classList.remove('highlight');for(const poly of x.polys||[])poly.setOptions(x.base)}for(const x of state.plannedKindergartenOverlays)x.el.classList.remove('highlight');for(const x of state.scheduledSchoolOverlays){x.el.classList.remove('highlight');for(const poly of x.polys||[])poly.setOptions(x.base)}for(const x of state.polys)x.poly.setOptions(x.base)}
-function districtPanel(p){clearHighlights();panel(esc(p.zoneName||p.displayName||'개발사업지구'),`<div class="eyebrow">${esc(p.city||'')} · 공식 공간정보</div><span class="tag">사업지구 경계</span><p class="source">공개 가능한 공간정보만 표시하는 버전입니다.</p>`)}
+function districtPanel(p){developmentPlanPanel(p)}
 function blockPanel(p){clearHighlights();panel(esc(p.blockName||p.displayName||'개발블록'),`<div class="eyebrow">${esc(p.city||'')}${p.district?` · ${esc(p.district)}`:''}</div><span class="tag">${esc(p.blockType||'개발블록')}</span><p><b>사업지구</b><br>${esc(p.zoneName||p.district||'')}</p><p><b>입주일</b><br>${esc(p.moveInDate||'자료 없음')}</p><p class="source">${esc(p.source||'공식 공간정보')} · 중장기배치계획 포함 여부와 관계없이 표시</p>`)}
 function kindergartenInfoHtml(k){
   if(!k)return '<p class="muted">2026년 유치원 현황자료에 해당 시설의 수치가 없습니다.</p>';
