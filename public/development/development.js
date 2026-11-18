@@ -41,9 +41,65 @@ function elementary2026Html(s){
  '<p style="margin-top:10px"><b>보유 보통교실 수</b> '+val(r.regularClassrooms,'실')+'</p>'+
  '<p class="muted" style="font-size:11px">출처: 초등 학급 본편성, 2026학년말 기준. 특수교육대상학생은 일반학급과 특수학급 학생수에 중복 포함될 수 있으므로 구분별 학생수를 합산하지 않습니다. 원본 빈칸은 자료 없음으로 표시합니다.</p></div>';
 }
+
+// 2022~2026 초등학교 학생수·학급수 추이 (자료가 없는 연도는 연결하지 않음)
+let elementaryTrend=Object.create(null);
+let elementaryTrendReady=false;
+let elementaryTrendLoading=null;
+function loadElementaryTrend(){
+ if(elementaryTrendReady)return Promise.resolve();
+ if(elementaryTrendLoading)return elementaryTrendLoading;
+ elementaryTrendLoading=fetch('./data/elementary-trend-2022-2026.json').then(r=>{
+  if(!r.ok)throw new Error('5개년 추이 자료를 불러오지 못했습니다.');return r.json();
+ }).then(data=>{elementaryTrend=data.schools||Object.create(null);elementaryTrendReady=true;}).finally(()=>{elementaryTrendLoading=null});
+ return elementaryTrendLoading;
+}
+function trendChartHtml(years,records,field,label,unit){
+ const values=years.map(y=>records[y]&&Number.isFinite(records[y][field])?records[y][field]:null);
+ const valid=values.filter(v=>v!==null);
+ if(!valid.length)return '<p class="muted">'+label+' 자료가 없습니다.</p>';
+ const min=Math.min(...valid),max=Math.max(...valid),range=Math.max(1,max-min);
+ const w=340,h=172,left=42,right=14,top=18,bottom=34,pw=w-left-right,ph=h-top-bottom;
+ const xy=i=>[left+i*pw/(years.length-1),top+(max-values[i])/range*ph];
+ const grid=[0,.5,1].map(f=>{const y=top+ph*f,v=Math.round(max-(max-min)*f);return '<line x1="'+left+'" y1="'+y+'" x2="'+(w-right)+'" y2="'+y+'" stroke="#e5e7eb"/><text x="'+(left-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="#64748b">'+v.toLocaleString()+'</text>';}).join('');
+ let segments=[],segment=[];
+ values.forEach((v,i)=>{if(v===null){if(segment.length>1)segments.push(segment);segment=[];}else segment.push(xy(i).join(','));});
+ if(segment.length>1)segments.push(segment);
+ const lines=segments.map(p=>'<polyline points="'+p.join(' ')+'" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>').join('');
+ const dots=values.map((v,i)=>{if(v===null)return '';const [x,y]=xy(i);return '<circle cx="'+x+'" cy="'+y+'" r="4.5" fill="#2563eb" stroke="white" stroke-width="1.5"><title>'+years[i]+'년: '+v.toLocaleString()+' '+unit+'</title></circle><circle cx="'+x+'" cy="'+y+'" r="13" fill="transparent" tabindex="0" role="img" aria-label="'+years[i]+'년 '+v.toLocaleString()+unit+'"><title>'+years[i]+'년: '+v.toLocaleString()+' '+unit+'</title></circle>';}).join('');
+ const ticks=years.map((year,i)=>'<text x="'+(left+i*pw/(years.length-1))+'" y="'+(h-12)+'" text-anchor="middle" font-size="11" fill="#475569">'+year+'</text>').join('');
+ return '<div class="trend-chart" style="margin:14px 0 22px"><b>'+label+'</b><svg viewBox="0 0 '+w+' '+h+'" style="width:100%;height:auto;display:block;overflow:visible" aria-label="'+label+' 2022년부터 2026년까지 꺾은선 그래프">'+grid+lines+dots+ticks+'</svg><div style="display:flex;flex-wrap:wrap;gap:5px 10px;font-size:11px;color:#475569">'+years.map((y,i)=>'<span>'+y+': '+(values[i]===null?'자료 없음':values[i].toLocaleString()+unit)+'</span>').join('')+'</div></div>';
+}
+function elementaryTrendHtml(s){
+ const years=['2022','2023','2024','2025','2026'];
+ const data=elementaryTrend[(s.city||'')+'|'+(s.name||'')];
+ if(!data)return '<p class="muted">이 학교의 5개년 자료가 연결되지 않았습니다.</p>';
+ return '<div style="margin-top:8px"><p class="muted" style="font-size:12px">그래프의 점에 마우스를 올리면 해당 연도의 수치를 확인할 수 있습니다.</p>'+
+ trendChartHtml(years,data,'students','전체 학생수','명')+
+ trendChartHtml(years,data,'classes','전체 학급수','학급')+
+ '<p class="muted" style="font-size:11px">2022~2025: 경기도교육청 학교현황 JSON의 학생수(계)·학급수(계). 2026: 초등 학급 본편성 자료의 일반 학생수 및 일반·특수·특별 학급수 합계. 집계 기준과 조사 시점은 연도별로 다를 수 있습니다. 자료 누락은 0으로 표시하지 않습니다.</p></div>';
+}
+function enableElementaryTrendPage(s){
+ const el=document.getElementById('panel');if(!el)return;
+ const info=el.querySelector('.info');const close=el.querySelector('.panel-close');
+ if(!info||!close)return;
+ const original=info.innerHTML;
+ const btn=document.createElement('button');btn.type='button';btn.className='panel-trend-toggle';btn.setAttribute('aria-label','5개년 추이 보기');btn.title='5개년 추이 보기';btn.textContent='›';
+ btn.style.cssText='position:absolute;right:44px;top:12px;z-index:2;min-width:30px;min-height:30px;border:1px solid #cbd5e1;border-radius:6px;background:white;color:#334155;font-size:24px;line-height:24px;cursor:pointer';
+ el.style.position='relative';close.style.display='block';const heading=el.querySelector('h2');if(heading)heading.style.paddingRight='78px';btn.style.right='56px';close.parentNode.insertBefore(btn,close);
+ let page=0;
+ btn.onclick=()=>{
+  if(page===1){page=0;btn.textContent='›';btn.title='5개년 추이 보기';btn.setAttribute('aria-label','5개년 추이 보기');info.innerHTML=original;return;}
+  page=1;btn.textContent='‹';btn.title='학교 상세정보로 돌아가기';btn.setAttribute('aria-label','학교 상세정보로 돌아가기');
+  info.innerHTML='<p class="muted">5개년 자료를 불러오는 중입니다.</p>';
+  loadElementaryTrend().then(()=>{if(page===1&&el.contains(btn))info.innerHTML=elementaryTrendHtml(s);}).catch(err=>{if(page===1&&el.contains(btn))info.innerHTML='<p class="muted">'+esc(err.message)+'</p>';});
+ };
+}
+
 function showSchool(item){clearHighlights();item.el.classList.add('highlight');const s=item.school,k=s.kindergarten_type||'';
   const details=s.type==='유치원'?kindergartenInfoHtml(s.kindergarten_stats):'';
   panel(esc(s.name),`<span class="tag">${esc(k||s.type)}</span><p><b>주소</b><br>${esc(s.address||'')}</p>${details}${elementary2026Html(s)}${s.status?`<p class="muted">${esc(s.status)}</p>`:''}<div class="notice">2026년 유치원 현황 CSV 기준입니다. 중장기배치계획 등 내부자료는 이 배포본에 포함하지 않았습니다.</div>`);
+  if(s.type==='초등학교')enableElementaryTrendPage(s);
 }
 function addPolygon(feature){const g=feature.geometry,p=feature.properties||{};let groups=g.type==='Polygon'?[g.coordinates]:g.coordinates;for(const polyCoords of groups){const paths=coordsToPaths(polyCoords),isDistrict=p.featureType==='district';const base={strokeWeight:isDistrict?3:2,strokeColor:isDistrict?'#1d4ed8':'#dc2626',strokeOpacity:.82,fillColor:isDistrict?'#60a5fa':'#fca5a5',fillOpacity:isDistrict?.06:.28};const poly=new kakao.maps.Polygon({map:state.map,path:paths,...base});kakao.maps.event.addListener(poly,'click',()=>isDistrict?districtPanel(p):blockPanel(p));const item={poly,city:p.city,base,properties:p,feature,bounds:new kakao.maps.LatLngBounds(),isDistrict};state.polys.push(item);for(const ring of paths)for(const pt of ring){item.bounds.extend(pt);state.boundsByCity.전체.extend(pt);state.boundsByCity[p.city]?.extend(pt)}if(isDistrict)state.districts.push(item);else{const labelText=p.blockName||p.displayName;if(labelText){const el=document.createElement('div');el.className='block-label';el.textContent=labelText;const overlay=new kakao.maps.CustomOverlay({map:state.map,position:new kakao.maps.LatLng((item.bounds.getSouthWest().getLat()+item.bounds.getNorthEast().getLat())/2,(item.bounds.getSouthWest().getLng()+item.bounds.getNorthEast().getLng())/2),content:el,xAnchor:.5,yAnchor:.5,zIndex:3});state.blockLabelOverlays.push({overlay,city:p.city,el,properties:p})}}}}
 function kindergartenZonePanel(p){clearHighlights();const k=p.kindergarten_stats;const info=k?`<p><b>유치원 수</b><br>${esc(k['유치원 수'])}</p><p><b>총계 (인가)</b><br>${esc(k['총계 (인가)'])}</p><p><b>인가정원</b><br>${esc(k['인가정원'])}</p><p><b>총계 (편성)</b><br>${esc(k['총계 (편성)'])}</p><p><b>편성정원</b><br>${esc(k['편성정원'])}</p><p><b>현원 (총계)</b><br>${esc(k['현원 (총계)'])}</p><p><b>충족률 (편성대비)</b><br>${esc(k['충족률 (편성대비)'])}%</p><p><b>충족률 (인가대비)</b><br>${esc(k['충족률 (인가대비)'])}%</p>`:'<p>권역 현황자료 없음</p>';panel(esc(p.name||'유치원 취학권역'),`<div class="eyebrow">${esc(p.city||'')} · 유치원 취학권역</div><span class="tag">취학권역</span>${info}<p class="source">2026년 화성오산 공사립유치원현황 CSV 기준 집계. 공식 권역별 집계와 차이가 있을 수 있습니다.</p>`)}
