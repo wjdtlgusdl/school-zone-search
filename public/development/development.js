@@ -26,9 +26,24 @@ function kindergartenInfoHtml(k){
   const fields=['취학권역','행정동','설립유형','개원일자','일반 학급 (인가)','특수 (인가)','총계 (인가)','인가정원','편성 학급 (일반)','편성 학급 (특수)','총계 (편성)','편성정원','현원 (일반)','현원 (특수)','현원 (총계)','충족률 (편성대비)','충족률 (인가대비)'];
   return fields.map(key=>line(key==='취학권역'?'취학권역':key,key==='취학권역'&&k[key]&&!String(k[key]).endsWith('권역')?k[key]+'권역':k[key])).join('');
 }
+
+let elementary2026 = Object.create(null);
+fetch('./data/elementary-2026.json').then(r=>{if(!r.ok)throw new Error('초등학교 2026 현황 파일 없음');return r.json()}).then(data=>{for(const rec of data.schools||[]){const key=rec.city+'|'+rec.name;if(!elementary2026[key])elementary2026[key]=rec;}}).catch(err=>console.warn('초등학교 현황을 불러오지 못했습니다:',err));
+function elementary2026Html(s){
+ if(s.type!=='초등학교')return '';
+ const r=elementary2026[(s.city||'')+'|'+(s.name||'')];
+ if(!r)return '<div class="notice">2026학년도 초등학교 학급편성 자료가 연결되지 않았습니다.</div>';
+ const val=(v,suffix='')=>v===null||v===undefined?'자료 없음':esc(String(v))+suffix;
+ const rows=(r.grades||[]).map(g=>'<tr><td>'+g.grade+'학년</td><td>'+val(g.classes)+'</td><td>'+val(g.students)+'</td><td>'+val(g.perClass)+'</td></tr>').join('');
+ return '<div class="elementary-stats-2026"><p><b>2026학년도 학년말 학급편성 현황 (일반학급)</b></p>'+
+ '<p>전체 '+val(r.totalClasses,'학급')+' · '+val(r.totalStudents,'명')+' · 학급당 '+val(r.average,'명')+'</p>'+
+ '<p><b>보유 보통교실 수</b> '+val(r.regularClassrooms,'실')+'</p>'+
+ '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center"><thead><tr><th>학년</th><th>학급수</th><th>학생수</th><th>학급당 인원</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+ '<p class="muted" style="font-size:11px">출처: 초등 학급 본편성, 2026학년말 기준. 특수·특별학급은 위 일반학급 수치에 포함하지 않았습니다.</p></div>';
+}
 function showSchool(item){clearHighlights();item.el.classList.add('highlight');const s=item.school,k=s.kindergarten_type||'';
   const details=s.type==='유치원'?kindergartenInfoHtml(s.kindergarten_stats):'';
-  panel(esc(s.name),`<span class="tag">${esc(k||s.type)}</span><p><b>주소</b><br>${esc(s.address||'')}</p>${details}${s.status?`<p class="muted">${esc(s.status)}</p>`:''}<div class="notice">2026년 유치원 현황 CSV 기준입니다. 중장기배치계획 등 내부자료는 이 배포본에 포함하지 않았습니다.</div>`);
+  panel(esc(s.name),`<span class="tag">${esc(k||s.type)}</span><p><b>주소</b><br>${esc(s.address||'')}</p>${details}${elementary2026Html(s)}${s.status?`<p class="muted">${esc(s.status)}</p>`:''}<div class="notice">2026년 유치원 현황 CSV 기준입니다. 중장기배치계획 등 내부자료는 이 배포본에 포함하지 않았습니다.</div>`);
 }
 function addPolygon(feature){const g=feature.geometry,p=feature.properties||{};let groups=g.type==='Polygon'?[g.coordinates]:g.coordinates;for(const polyCoords of groups){const paths=coordsToPaths(polyCoords),isDistrict=p.featureType==='district';const base={strokeWeight:isDistrict?3:2,strokeColor:isDistrict?'#1d4ed8':'#dc2626',strokeOpacity:.82,fillColor:isDistrict?'#60a5fa':'#fca5a5',fillOpacity:isDistrict?.06:.28};const poly=new kakao.maps.Polygon({map:state.map,path:paths,...base});kakao.maps.event.addListener(poly,'click',()=>isDistrict?districtPanel(p):blockPanel(p));const item={poly,city:p.city,base,properties:p,feature,bounds:new kakao.maps.LatLngBounds(),isDistrict};state.polys.push(item);for(const ring of paths)for(const pt of ring){item.bounds.extend(pt);state.boundsByCity.전체.extend(pt);state.boundsByCity[p.city]?.extend(pt)}if(isDistrict)state.districts.push(item);else{const labelText=p.blockName||p.displayName;if(labelText){const el=document.createElement('div');el.className='block-label';el.textContent=labelText;const overlay=new kakao.maps.CustomOverlay({map:state.map,position:new kakao.maps.LatLng((item.bounds.getSouthWest().getLat()+item.bounds.getNorthEast().getLat())/2,(item.bounds.getSouthWest().getLng()+item.bounds.getNorthEast().getLng())/2),content:el,xAnchor:.5,yAnchor:.5,zIndex:3});state.blockLabelOverlays.push({overlay,city:p.city,el,properties:p})}}}}
 function kindergartenZonePanel(p){clearHighlights();const k=p.kindergarten_stats;const info=k?`<p><b>유치원 수</b><br>${esc(k['유치원 수'])}</p><p><b>총계 (인가)</b><br>${esc(k['총계 (인가)'])}</p><p><b>인가정원</b><br>${esc(k['인가정원'])}</p><p><b>총계 (편성)</b><br>${esc(k['총계 (편성)'])}</p><p><b>편성정원</b><br>${esc(k['편성정원'])}</p><p><b>현원 (총계)</b><br>${esc(k['현원 (총계)'])}</p><p><b>충족률 (편성대비)</b><br>${esc(k['충족률 (편성대비)'])}%</p><p><b>충족률 (인가대비)</b><br>${esc(k['충족률 (인가대비)'])}%</p>`:'<p>권역 현황자료 없음</p>';panel(esc(p.name||'유치원 취학권역'),`<div class="eyebrow">${esc(p.city||'')} · 유치원 취학권역</div><span class="tag">취학권역</span>${info}<p class="source">2026년 화성오산 공사립유치원현황 CSV 기준 집계. 공식 권역별 집계와 차이가 있을 수 있습니다.</p>`)}
