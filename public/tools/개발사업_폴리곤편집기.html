@@ -10,9 +10,12 @@
 <body>
 <header>
   <input id="file" type="file" accept=".geojson,.json">
+  <label>학교용지 GeoJSON <input id="schoolFile" type="file" accept=".geojson,.json"></label>
+  <button id="newSchoolFileBtn">학교용지 새 파일 생성</button>
   <select id="projectSelect" disabled><option>① 개발사업 선택</option></select>
   <select id="featureSelect" disabled><option>② 경계/블록 선택</option></select>
-  <button id="newBtn" disabled>＋ 새 경계 그리기</button>
+  <select id="newType" aria-label="새 폴리곤 종류"><option value="district">지구 전체 경계</option><option value="block">공동주택 블록</option><option value="school">학교용지</option></select>
+  <button id="newBtn" disabled>＋ 새 폴리곤 그리기</button>
   <button id="bgBtn" disabled>주변 경계 숨기기</button>
   <button id="finishBtn" hidden>그리기 완료</button>
   <button id="cancelNewBtn" hidden>그리기 취소</button>
@@ -21,10 +24,11 @@
   <button id="addBtn" disabled>꼭짓점 추가</button>
   <button id="delBtn" disabled>꼭짓점 삭제</button>
   <button id="undoBtn" disabled>실행취소</button>
-  <button id="saveBtn" disabled>GeoJSON 저장</button>
+  <button id="saveBtn" disabled>개발사업 GeoJSON 저장</button>
+  <button id="schoolSaveBtn" disabled>학교용지 GeoJSON 저장</button>
 </header>
-<div id="status">① development.geojson을 불러오세요. ② 개발사업 → 지구 전체 경계/블록을 차례로 선택하세요.</div>
+<div id="status">① development.geojson을 불러오세요. ② 학교용지를 편집하려면 planned-schools-additional.geojson도 불러오세요. ③ 사업지구를 선택하고 기존 경계를 보면서 새 폴리곤을 그리세요.</div>
 <div id="map"></div>
-<script src="./polygon-editor.js?v=5"></script>
+<script src="./polygon-editor.js?v=6"></script>
 </body>
 </html>
