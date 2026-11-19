@@ -90,7 +90,7 @@ function center(a){return[a.reduce((s,p)=>s+p[0],0)/a.length,a.reduce((s,p)=>s+p
 function nearestSegment(pt){let best=0,bd=Infinity;for(let i=0;i<coords.length;i++){const a=coords[i],b=coords[(i+1)%coords.length],vx=b[0]-a[0],vy=b[1]-a[1],wx=pt[0]-a[0],wy=pt[1]-a[1],vv=vx*vx+vy*vy;let t=vv?((wx*vx+wy*vy)/vv):0;t=Math.max(0,Math.min(1,t));const x=a[0]+t*vx,y=a[1]+t*vy,d=(pt[0]-x)**2+(pt[1]-y)**2;if(d<bd){bd=d;best=i}}return best}
 function setMode(m){mode=m;setActive();drawPolygon();const msg={edit:"꼭짓점을 드래그해 경계를 수정하세요.",move:"중앙 마커를 드래그하면 전체 경계가 이동합니다.",add:"지도에서 원하는 위치를 클릭하면 가장 가까운 선 사이에 꼭짓점이 추가됩니다.",delete:"삭제할 꼭짓점 마커를 클릭하세요."};status(msg[m]||"")}
 function setActive(){["editBtn","moveBtn","addBtn","delBtn","newBtn"].forEach(id=>$(id).classList.remove("active"));const ids={edit:"editBtn",move:"moveBtn",add:"addBtn",delete:"delBtn",new:"newBtn"};if(ids[mode])$(ids[mode]).classList.add("active")}
-function enableEdit(v){["editBtn","moveBtn","addBtn","delBtn","saveBtn"].forEach(id=>$(id).disabled=!v)}
+function enableEdit(v){["editBtn","moveBtn","addBtn","delBtn","saveBtn","infoEditBtn"].forEach(id=>$(id).disabled=!v)}
 function startNew(){
  if(!geo){status("개발사업 GeoJSON을 먼저 불러오세요.");return;}
  commitSelected();drawingType=$("newType").value; if(drawingType==="school"&&!schoolGeo){status("학교용지 파일을 먼저 불러오거나 ‘학교용지 새 파일 생성’을 누르세요.");return;}
@@ -103,35 +103,82 @@ function drawDraft(){
  vertexMarkers.forEach(m=>m.setMap(null));vertexMarkers=[];
  drawingCoords.forEach((c,i)=>{const m=new kakao.maps.Marker({map,position:ll(c)});vertexMarkers.push(m)});
 }
+function infoField(key,title,value="",type="text",wide=false){
+ const label=document.createElement("label");if(wide)label.className="wide";
+ label.textContent=title;const input=document.createElement("input");input.name=key;input.type=type;input.value=value??"";label.appendChild(input);return label;
+}
+function infoSelect(key,title,options,value=""){
+ const label=document.createElement("label");label.textContent=title;const s=document.createElement("select");s.name=key;
+ options.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=value;label.appendChild(s);return label;
+}
+function showInfoDialog(type,existingProps,callback){
+ const dialog=$("infoDialog"),fields=$("infoFields"),p=existingProps||{};fields.replaceChildren();
+ const add=(...args)=>fields.appendChild(infoField(...args));
+ const projectNames=[...new Set([...geo.features,...(schoolGeo?.features||[])].map(projectName).filter(n=>n!=="(이름 없음)"))].sort((a,b)=>a.localeCompare(b,"ko"));
+ const current=$('projectSelect').value||p.district||p.zoneName||"";
+ add("district","사업지구명 (지도 표시명)",current,"text",true);
+ fields.appendChild(infoSelect("city","지역",[["화성","화성"],["오산","오산"],["","미지정"]],p.city||geo.features.find(f=>projectName(f)===current)?.properties?.city||""));
+ if(type==="block"){
+  add("blockName","아파트·블록명",p.blockName||"","text",true);
+  add("moveIn","입주시기",p.moveIn||p.moveInDate||"");add("households","세대수",p.households??"","number");
+  add("elementaryStudents","초등 추정 학생수",p.elementaryStudents??"","number");add("middleStudents","중등 추정 학생수",p.middleStudents??"","number");
+  add("elementarySchool","초등 배치예정교",p.elementarySchool||"","text",true);
+  add("middleSchool","중등 배치예정교",p.middleSchool||"","text",true);
+  add("middleSchoolZone","중학군(구)",p.middleSchoolZone||"","text",true);
+ }else if(type==="school"){
+  add("label","학교용지 표시명",p.label||"초1","text",true);
+  add("school_name","학교명 (확정 시)",p.school_name||"","text",true);
+  fields.appendChild(infoSelect("level","학교급",[["초등학교","초등학교"],["중학교","중학교"],["고등학교","고등학교"],["유치원","유치원"]],p.level||"초등학교"));
+ }
+ $("infoTitle").textContent=type==="district"?"사업지구 경계 정보":type==="block"?"공동주택 블록 정보":"학교용지 정보";
+ $("infoHelp").textContent="정보를 저장하면 편집기 데이터에 반영됩니다. 최종 반영하려면 GeoJSON 파일도 저장하세요.";
+ const submit=e=>{e.preventDefault();const data=Object.fromEntries(new FormData($("infoForm")).entries());
+  if(!data.district.trim()||(type==="block"&&!data.blockName.trim())||(type==="school"&&!data.label.trim())){alert("사업지구명과 필수 명칭을 입력하세요.");return;}
+  ["households","elementaryStudents","middleStudents"].forEach(k=>{if(data[k]!==undefined)data[k]=data[k]===""?null:Number(data[k])});
+  dialog.close();cleanup();callback(data);
+ };
+ const cancel=()=>{dialog.close();cleanup()};
+ const cleanup=()=>{$("infoForm").removeEventListener("submit",submit);$("infoCancel").removeEventListener("click",cancel);dialog.removeEventListener("cancel",onCancel)};
+ const onCancel=()=>{cleanup();};
+ $("infoForm").addEventListener("submit",submit);$("infoCancel").addEventListener("click",cancel);dialog.addEventListener("cancel",onCancel);
+ dialog.showModal();
+}
 function finishNew(){
  if(drawingCoords.length<3){status("최소 3개의 꼭짓점을 찍어주세요.");return}
- const existing=$('projectSelect').value;
- const name=existing||prompt("개발사업/지구 이름을 입력하세요. 예: 원동8구역");if(!name)return;
- const city=existing?(geo.features.find(f=>projectName(f)===name)?.properties?.city||""):(prompt("도시를 입력하세요. (화성 또는 오산)","화성")||"");
- let props;
- if(drawingType==="district")props={featureType:"district",zoneName:name,city,source:"manual-editor",geometry_accuracy:"수동 작성"};
- else if(drawingType==="block"){
-  const blockName=prompt("공동주택 블록 이름 (예: A1)","A1");if(!blockName)return;
-  props={featureType:"block",zoneName:name,district:name,city,blockName,blockType:"공동주택용지",source:"manual-editor",geometry_accuracy:"수동 작성"};
- }else{
-  const label=prompt("학교용지 표시 이름 (예: 초1, 중1, 고1)","초1");if(!label)return;
-  const level=label.startsWith("중")?"중학교":label.startsWith("고")?"고등학교":label.startsWith("유")?"유치원":"초등학교";
-  props={label,school_name:"",level,status:"미설립",district:name,city,geometry_basis:"폴리곤 편집기 수동 작성",source:"manual-editor"};
- }
- const target=drawingType==="school"?schoolGeo:geo;
- target.features.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:[closed(drawingCoords)]}});
- mode="view";$("finishBtn").hidden=true;$("cancelNewBtn").hidden=true;
- populateProjects();$("projectSelect").value=name;populateFeatures(name);
- const idx=target.features.length-1;$("featureSelect").value=`${drawingType==="school"?"school":"development"}:${idx}`;selectFeature($("featureSelect").value);
- status(`${name}의 ${featureLabel(target.features[idx],idx)} 추가 완료. 각 GeoJSON을 저장하세요.`);
+ showInfoDialog(drawingType,{},data=>{
+  const name=data.district.trim(),city=data.city;
+  let props;
+  if(drawingType==="district")props={featureType:"district",zoneName:name,city,source:"manual-editor",geometry_accuracy:"수동 작성"};
+  else if(drawingType==="block")props={featureType:"block",zoneName:name,district:name,city,blockName:data.blockName,blockType:"공동주택용지",moveIn:data.moveIn,households:data.households,elementaryStudents:data.elementaryStudents,middleStudents:data.middleStudents,elementarySchool:data.elementarySchool,middleSchool:data.middleSchool,middleSchoolZone:data.middleSchoolZone,source:"manual-editor",geometry_accuracy:"수동 작성"};
+  else props={label:data.label,school_name:data.school_name,level:data.level,status:"미설립",district:name,city,geometry_basis:"폴리곤 편집기 수동 작성",source:"manual-editor"};
+  const target=drawingType==="school"?schoolGeo:geo;
+  target.features.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:[closed(drawingCoords)]}});
+  mode="view";$("finishBtn").hidden=true;$("cancelNewBtn").hidden=true;
+  populateProjects();$("projectSelect").value=name;populateFeatures(name);
+  const idx=target.features.length-1;$("featureSelect").value=`${drawingType==="school"?"school":"development"}:${idx}`;selectFeature($("featureSelect").value);
+  status(`${name}의 ${featureLabel(target.features[idx],idx)} 추가 완료. GeoJSON을 저장하세요.`);
+ });
 }
+function editInfo(){
+ if(selectedIndex<0)return;commitSelected();const f=activeCollection().features[selectedIndex];const type=selectedSource==="school"?"school":f.properties?.featureType==="district"?"district":"block";
+ showInfoDialog(type,f.properties,data=>{
+  const p=f.properties;
+  if(type==="district"){p.zoneName=data.district;p.district=data.district;p.city=data.city;}
+  else if(type==="block")Object.assign(p,{zoneName:data.district,district:data.district,city:data.city,blockName:data.blockName,moveIn:data.moveIn,households:data.households,elementaryStudents:data.elementaryStudents,middleStudents:data.middleStudents,elementarySchool:data.elementarySchool,middleSchool:data.middleSchool,middleSchoolZone:data.middleSchoolZone});
+  else Object.assign(p,{district:data.district,city:data.city,label:data.label,school_name:data.school_name,level:data.level});
+  const source=selectedSource,index=selectedIndex;populateProjects();$("projectSelect").value=data.district;populateFeatures(data.district);
+  $("featureSelect").value=`${source}:${index}`;selectFeature($("featureSelect").value);
+  status("폴리곤 정보를 수정했습니다. GeoJSON을 저장하세요.");
+ });
+}
+
 function cancelNew(){drawingCoords=[];coords=[];clearOverlays();mode="view";$("finishBtn").hidden=true;$("cancelNewBtn").hidden=true;setActive();status("새 경계 그리기를 취소했습니다.");}
 
 $("file").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{geo=JSON.parse(await f.text());if(!Array.isArray(geo.features))throw new Error("FeatureCollection이 아닙니다.");populateProjects();$("saveBtn").disabled=false;status(`GeoJSON ${geo.features.length}개 Feature를 불러왔습니다. 개발사업을 선택하세요.`)}catch(err){status("GeoJSON 읽기 실패: "+err.message)}});
 $("projectSelect").addEventListener("change",e=>{if(e.target.value)populateFeatures(e.target.value)});
 $("featureSelect").addEventListener("change",e=>{if(e.target.value!=="")selectFeature(e.target.value)});
 $("editBtn").onclick=()=>setMode("edit");$("moveBtn").onclick=()=>setMode("move");$("addBtn").onclick=()=>setMode("add");$("delBtn").onclick=()=>setMode("delete");
-$("newBtn").onclick=startNew;$("finishBtn").onclick=finishNew;$("cancelNewBtn").onclick=cancelNew;
+$("infoEditBtn").onclick=editInfo;$("newBtn").onclick=startNew;$("finishBtn").onclick=finishNew;$("cancelNewBtn").onclick=cancelNew;
 $("bgBtn").onclick=()=>{backgroundVisible=!backgroundVisible;refreshBackground();status(backgroundVisible?"선택한 사업지구의 경계·공동주택·학교용지를 참고용으로 표시합니다.":"참고용 폴리곤을 숨겼습니다.");};
 $("undoBtn").onclick=()=>{if(!undoStack.length)return;coords=undoStack.pop();drawPolygon();$("undoBtn").disabled=!undoStack.length;status("한 단계 되돌렸습니다.");};
 function downloadGeo(obj,filename){const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/geo+json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>개발사업 폴리곤 편집기</title>
-<link rel="stylesheet" href="./polygon-editor.css?v=5">
+<link rel="stylesheet" href="./polygon-editor.css?v=7">
 <script src="../map-config.js"></script>
 </head>
 <body>
@@ -19,6 +19,7 @@
   <button id="bgBtn" disabled>주변 경계 숨기기</button>
   <button id="finishBtn" hidden>그리기 완료</button>
   <button id="cancelNewBtn" hidden>그리기 취소</button>
+  <button id="infoEditBtn" disabled>정보 수정</button>
   <button id="editBtn" disabled>경계 편집</button>
   <button id="moveBtn" disabled>전체 이동</button>
   <button id="addBtn" disabled>꼭짓점 추가</button>
@@ -29,6 +30,7 @@
 </header>
 <div id="status">① development.geojson을 불러오세요. ② 학교용지를 편집하려면 planned-schools-additional.geojson도 불러오세요. ③ 사업지구를 선택하고 기존 경계를 보면서 새 폴리곤을 그리세요.</div>
 <div id="map"></div>
-<script src="./polygon-editor.js?v=6"></script>
+<dialog id="infoDialog" aria-labelledby="infoTitle"><form id="infoForm" method="dialog"><h2 id="infoTitle">폴리곤 정보 입력</h2><p id="infoHelp">그린 경계에 대한 정보를 입력하세요.</p><div id="infoFields"></div><div class="dialog-actions"><button type="button" id="infoCancel">취소</button><button type="submit" id="infoSave">정보 저장</button></div></form></dialog>
+<script src="./polygon-editor.js?v=7"></script>
 </body>
 </html>
